@@ -1,6 +1,15 @@
 <?php
-session_start();
+include("../config/koneksi_mysql.php");
+
+$sql = mysqli_query($koneksi,"SELECT * FROM master_karyawan");
+
 ?>
+
+<?php
+error_reporting(0)
+?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -94,6 +103,32 @@ session_start();
                                     </div>
                                 </nav>
                             </div>
+                            <div class="sb-sidenav-menu-heading">Payroll Cycle</div>
+                            <a class="nav-link" href="charts.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Kelola Karyawan
+                            </a>
+                            <a class="nav-link" href="tables.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Penggajian
+                            </a>
+                            <a class="nav-link" href="tables.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Rekap Presensi
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Mastering</div>
+                            <a class="nav-link" href="charts.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Data Karyawan
+                            </a>
+                            <a class="nav-link" href="tables.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Data Jabatan
+                            </a>
+                            <a class="nav-link" href="tables.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Data Divisi
+                            </a>
                             <div class="sb-sidenav-menu-heading">Addons</div>
                             <a class="nav-link" href="charts.html">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
@@ -111,144 +146,54 @@ session_start();
                     </div>
                 </nav>
             </div>
+
+
             <div id="layoutSidenav_content">
                 <main>
-                    <div class="container-fluid px-4">
-                        <h1 class="mt-4">Dashboard</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Dashboard</li>
-                        </ol>
-                        <div class="row">
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-primary text-white mb-4">
-                                    <div class="card-body">Primary Card</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-warning text-white mb-4">
-                                    <div class="card-body">Warning Card</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-success text-white mb-4">
-                                    <div class="card-body">Success Card</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-danger text-white mb-4">
-                                    <div class="card-body">Danger Card</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xl-6">
-                                <div class="card mb-4">
-                                    <div class="card-header">
-                                        <i class="fas fa-chart-area me-1"></i>
-                                        Area Chart Example
-                                    </div>
-                                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
-                                </div>
-                            </div>
-                            <div class="col-xl-6">
-                                <div class="card mb-4">
-                                    <div class="card-header">
-                                        <i class="fas fa-chart-bar me-1"></i>
-                                        Bar Chart Example
-                                    </div>
-                                    <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-table me-1"></i>
-                                DataTable Example
-                            </div>
-                            <div class="card-body">
-                                <table id="datatablesSimple">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                            <th>Age</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                            <th>Age</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        <tr>
-                                            <td>Tiger Nixon</td>
-                                            <td>System Architect</td>
-                                            <td>Edinburgh</td>
-                                            <td>61</td>
-                                            <td>2011/04/25</td>
-                                            <td>$320,800</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Garrett Winters</td>
-                                            <td>Accountant</td>
-                                            <td>Tokyo</td>
-                                            <td>63</td>
-                                            <td>2011/07/25</td>
-                                            <td>$170,750</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Ashton Cox</td>
-                                            <td>Junior Technical Author</td>
-                                            <td>San Francisco</td>
-                                            <td>66</td>
-                                            <td>2009/01/12</td>
-                                            <td>$86,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Cedric Kelly</td>
-                                            <td>Senior Javascript Developer</td>
-                                            <td>Edinburgh</td>
-                                            <td>22</td>
-                                            <td>2012/03/29</td>
-                                            <td>$433,060</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Olivia Liang</td>
-                                            <td>Support Engineer</td>
-                                            <td>Singapore</td>
-                                            <td>64</td>
-                                            <td>2011/02/03</td>
-                                            <td>$234,500</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                <div class="container-fluid">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="height: 50vh;">
+                                <thead>
+                                    <tr>
+                                        <th>NIK</th>
+                                        <th>Nama Karyawan</th>
+                                        <th>Alamat</th>
+                                        <th>Tanggal Lahir</th>
+                                        <th>Jenis Kelamin</th>
+                                        <th>No. Telp</th>
+                                        <th>Email</th>
+                                        <th>Tanggal Bergabung</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    // Pastikan querynya sesuai dengan tabel yang benar, misalnya 'karyawan'
+                                    while ($row = mysqli_fetch_array($sql)) {
+                                        $nik = $row['NIK']; // Sesuaikan dengan nama kolom NIK
+                                        echo "<tr>";
+                                        echo "<td>" . $row['NIK'] . "</td>"; // Menampilkan NIK
+                                        echo "<td>" . $row['nama_karyawan'] . "</td>"; // Menampilkan Nama Karyawan
+                                        echo "<td>" . $row['alamat_karyawan'] . "</td>"; // Menampilkan Alamat
+                                        echo "<td>" . $row['tgl_lahir'] . "</td>"; // Menampilkan Tanggal Lahir
+                                        echo "<td>" . $row['jenis_kelamin'] . "</td>"; // Menampilkan Jenis Kelamin
+                                        echo "<td>" . $row['no_telp'] . "</td>"; // Menampilkan Nomor Telepon
+                                        echo "<td>" . $row['email'] . "</td>"; // Menampilkan Email
+                                        echo "<td>" . $row['tgl_bergabung'] . "</td>"; // Menampilkan Tanggal Bergabung
+                                        echo "<td>
+                                            <a href='update_karyawan.php?nik=$nik'>Update</a> |
+                                            <a href='delete_karyawan.php?nik=$nik'>Delete</a>
+                                        </td>";
+                                        echo "</tr>";
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                            <a href="add_karyawan.php" class="btn btn-success" role="button">Add Data</a>
                         </div>
                     </div>
+                </div>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
@@ -273,4 +218,3 @@ session_start();
         <script src="js/datatables-simple-demo.js"></script>
     </body>
 </html>
-
