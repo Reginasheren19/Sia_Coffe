@@ -2,11 +2,11 @@
 
     include("../config/koneksi_mysql.php");
 
-    $hapus_id_jadwal = $_GET['jadwal'];
+    $hapus_nik = $_GET['nik'];
 
     $sql = mysqli_query($koneksi,
 
-            "DELETE FROM master_karyawan WHERE id_jadwal = '$hapus_id_jadwal'");
+            "DELETE FROM master_karyawan WHERE NIK = '$hapus_nik'");
 
 if($sql){
 
