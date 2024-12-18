@@ -7683,6 +7683,12 @@ textarea.form-control-lg {
   margin-bottom: 1.5rem !important;
 }
 
+.table-responsive {
+  max-height: calc(100vh - 250px); /* Menyesuaikan tinggi tabel agar tidak terpotong oleh navbar */
+  overflow-y: auto;
+}
+
+
 .mb-5 {
   margin-bottom: 3rem !important;
 }
