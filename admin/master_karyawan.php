@@ -103,6 +103,11 @@ error_reporting(0)
                                     </div>
                                 </nav>
                             </div>
+                            <div class="sb-sidenav-menu-heading">Revenue Cycle</div>
+                            <a class="nav-link" href="charts.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Pendapatan
+                            </a>
                             <div class="sb-sidenav-menu-heading">Payroll Cycle</div>
                             <a class="nav-link" href="charts.html">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
@@ -129,6 +134,10 @@ error_reporting(0)
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Divisi
                             </a>
+                            <a class="nav-link" href="tables.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Data Produk
+                            </a>
                             <div class="sb-sidenav-menu-heading">Addons</div>
                             <a class="nav-link" href="charts.html">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
@@ -146,69 +155,80 @@ error_reporting(0)
                     </div>
                 </nav>
             </div>
-
-
-            <div id="layoutSidenav_content">
-                <main>
-                <div class="container-fluid">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="height: 50vh;">
-                                <thead>
-                                    <tr>
-                                        <th>NIK</th>
-                                        <th>Nama Karyawan</th>
-                                        <th>Alamat</th>
-                                        <th>Tanggal Lahir</th>
-                                        <th>Jenis Kelamin</th>
-                                        <th>No. Telp</th>
-                                        <th>Email</th>
-                                        <th>Tanggal Bergabung</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    // Pastikan querynya sesuai dengan tabel yang benar, misalnya 'karyawan'
-                                    while ($row = mysqli_fetch_array($sql)) {
-                                        $nik = $row['NIK']; // Sesuaikan dengan nama kolom NIK
-                                        echo "<tr>";
-                                        echo "<td>" . $row['NIK'] . "</td>"; // Menampilkan NIK
-                                        echo "<td>" . $row['nama_karyawan'] . "</td>"; // Menampilkan Nama Karyawan
-                                        echo "<td>" . $row['alamat_karyawan'] . "</td>"; // Menampilkan Alamat
-                                        echo "<td>" . $row['tgl_lahir'] . "</td>"; // Menampilkan Tanggal Lahir
-                                        echo "<td>" . $row['jenis_kelamin'] . "</td>"; // Menampilkan Jenis Kelamin
-                                        echo "<td>" . $row['no_telp'] . "</td>"; // Menampilkan Nomor Telepon
-                                        echo "<td>" . $row['email'] . "</td>"; // Menampilkan Email
-                                        echo "<td>" . $row['tgl_bergabung'] . "</td>"; // Menampilkan Tanggal Bergabung
-                                        echo "<td>
-                                            <a href='update_karyawan.php?nik=$nik'>Update</a> |
-                                            <a href='delete_karyawan.php?nik=$nik'>Delete</a>
-                                        </td>";
-                                        echo "</tr>";
-                                    }
-                                    ?>
-                                </tbody>
-                            </table>
+    </div>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">Karyawan</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Karyawan</li>
+                    </ol>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            Employee Data Table
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="height: 50vh;">
+                                    <thead>
+                                        <tr>
+                                            <th>NIK</th>
+                                            <th>Nama Karyawan</th>
+                                            <th>Alamat</th>
+                                            <th>Tanggal Lahir</th>
+                                            <th>Jenis Kelamin</th>
+                                            <th>No. Telp</th>
+                                            <th>Email</th>
+                                            <th>Tanggal Bergabung</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        // Pastikan querynya sesuai dengan tabel yang benar, misalnya 'karyawan'
+                                        while ($row = mysqli_fetch_array($sql)) {
+                                            $nik = $row['NIK']; // Sesuaikan dengan nama kolom NIK
+                                            echo "<tr>";
+                                            echo "<td>" . $row['NIK'] . "</td>"; // Menampilkan NIK
+                                            echo "<td>" . $row['nama_karyawan'] . "</td>"; // Menampilkan Nama Karyawan
+                                            echo "<td>" . $row['alamat_karyawan'] . "</td>"; // Menampilkan Alamat
+                                            echo "<td>" . $row['tgl_lahir'] . "</td>"; // Menampilkan Tanggal Lahir
+                                            echo "<td>" . $row['jenis_kelamin'] . "</td>"; // Menampilkan Jenis Kelamin
+                                            echo "<td>" . $row['no_telp'] . "</td>"; // Menampilkan Nomor Telepon
+                                            echo "<td>" . $row['email'] . "</td>"; // Menampilkan Email
+                                            echo "<td>" . $row['tgl_bergabung'] . "</td>"; // Menampilkan Tanggal Bergabung
+                                            echo "<td>
+                                                <a href='update_karyawan.php?nik=$nik'>Update</a> |
+                                                <a href='delete_karyawan.php?nik=$nik'>Delete</a>
+                                            </td>";
+                                            echo "</tr>";
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
                             <a href="add_karyawan.php" class="btn btn-success" role="button">Add Data</a>
                         </div>
                     </div>
                 </div>
-                </main>
-                <footer class="py-4 bg-light mt-auto">
-                    <div class="container-fluid px-4">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div>
+            </main>
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; Your Website 2023</div>
+                        <div>
+                            <a href="#">Privacy Policy</a>
+                            &middot;
+                            <a href="#">Terms & Conditions</a>
                         </div>
                     </div>
-                </footer>
-            </div>
+                </div>
+            </footer>
         </div>
+    </div>
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
