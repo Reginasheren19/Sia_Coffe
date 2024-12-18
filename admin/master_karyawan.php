@@ -170,6 +170,10 @@ error_reporting(0)
                             Employee Data Table
                         </div>
                         <div class="card-body">
+                        <div class="mb-3 d-flex justify-content-end">
+                            <a href="add_karyawan.php" class="btn btn-success" role="button">Add Data</a>
+                        </div>
+
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="height: 50vh;">
                                     <thead>
@@ -200,8 +204,8 @@ error_reporting(0)
                                             echo "<td>" . $row['email'] . "</td>"; // Menampilkan Email
                                             echo "<td>" . $row['tgl_bergabung'] . "</td>"; // Menampilkan Tanggal Bergabung
                                             echo "<td>
-                                                <a href='update_karyawan.php?nik=$nik'>Update</a> |
-                                                <a href='delete_karyawan.php?nik=$nik'>Delete</a>
+                                                <a href='update_karyawan.php?nik=$nik' class='btn btn-primary btn-sm'>Update</a>
+                                                <a href='delete_karyawan.php?nik=$nik' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this employee?')\">Delete</a>
                                             </td>";
                                             echo "</tr>";
                                         }
@@ -209,7 +213,6 @@ error_reporting(0)
                                     </tbody>
                                 </table>
                             </div>
-                            <a href="add_karyawan.php" class="btn btn-success" role="button">Add Data</a>
                         </div>
                     </div>
                 </div>
