@@ -94,6 +94,11 @@ session_start();
                                     </div>
                                 </nav>
                             </div>
+                            <div class="sb-sidenav-menu-heading">Revenue Cycle</div>
+                            <a class="nav-link" href="charts.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Pendapatan
+                            </a>
                             <div class="sb-sidenav-menu-heading">Payroll Cycle</div>
                             <a class="nav-link" href="charts.html">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
