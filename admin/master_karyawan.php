@@ -117,7 +117,7 @@ error_reporting(0)
                                 Rekap Presensi
                             </a>
                             <div class="sb-sidenav-menu-heading">Mastering</div>
-                            <a class="nav-link" href="charts.html">
+                            <a class="nav-link" href="master_karyawan.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Karyawan
                             </a>
