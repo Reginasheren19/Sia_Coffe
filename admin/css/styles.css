@@ -1930,6 +1930,7 @@ progress {
   -webkit-overflow-scrolling: touch;
 }
 
+
 @media (max-width: 575.98px) {
   .table-responsive-sm {
     overflow-x: auto;
