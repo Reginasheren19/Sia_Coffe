@@ -155,68 +155,68 @@ error_reporting(0)
                     </div>
                 </nav>
             </div>
-    </div>
-        <div id="layoutSidenav_content">
-            <main>
-                <div class="container-fluid px-4">
-                    <h1 class="mt-4">Karyawan</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Karyawan</li>
-                    </ol>
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-table me-1"></i>
-                            Employee Data Table
-                        </div>
-                        <div class="card-body">
-                        <div class="mb-3 d-flex justify-content-end">
-                            <a href="add_karyawan.php" class="btn btn-success" role="button">Add Data</a>
-                        </div>
+        </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Karyawan</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Karyawan</li>
+                        </ol>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                Employee Data Table
+                            </div>
+                            <div class="card-body">
+                            <div class="mb-3 d-flex justify-content-end">
+                                <a href="add_karyawan.php" class="btn btn-success" role="button">Add Data</a>
+                            </div>
 
-                            <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="height: 50vh;">
-                                    <thead>
-                                        <tr>
-                                            <th>NIK</th>
-                                            <th>Nama Karyawan</th>
-                                            <th>Alamat</th>
-                                            <th>Tanggal Lahir</th>
-                                            <th>Jenis Kelamin</th>
-                                            <th>No. Telp</th>
-                                            <th>Email</th>
-                                            <th>Tanggal Bergabung</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        // Pastikan querynya sesuai dengan tabel yang benar, misalnya 'karyawan'
-                                        while ($row = mysqli_fetch_array($sql)) {
-                                            $nik = $row['NIK']; // Sesuaikan dengan nama kolom NIK
-                                            echo "<tr>";
-                                            echo "<td>" . $row['NIK'] . "</td>"; // Menampilkan NIK
-                                            echo "<td>" . $row['nama_karyawan'] . "</td>"; // Menampilkan Nama Karyawan
-                                            echo "<td>" . $row['alamat_karyawan'] . "</td>"; // Menampilkan Alamat
-                                            echo "<td>" . $row['tgl_lahir'] . "</td>"; // Menampilkan Tanggal Lahir
-                                            echo "<td>" . $row['jenis_kelamin'] . "</td>"; // Menampilkan Jenis Kelamin
-                                            echo "<td>" . $row['no_telp'] . "</td>"; // Menampilkan Nomor Telepon
-                                            echo "<td>" . $row['email'] . "</td>"; // Menampilkan Email
-                                            echo "<td>" . $row['tgl_bergabung'] . "</td>"; // Menampilkan Tanggal Bergabung
-                                            echo "<td>
-                                                <a href='update_karyawan.php?nik=$nik' class='btn btn-primary btn-sm'>Update</a>
-                                                <a href='delete_karyawan.php?nik=$nik' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this employee?')\">Delete</a>
-                                            </td>";
-                                            echo "</tr>";
-                                        }
-                                        ?>
-                                    </tbody>
-                                </table>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="height: 50vh;">
+                                        <thead>
+                                            <tr>
+                                                <th>NIK</th>
+                                                <th>Nama Karyawan</th>
+                                                <th>Alamat</th>
+                                                <th>Tanggal Lahir</th>
+                                                <th>Jenis Kelamin</th>
+                                                <th>No. Telp</th>
+                                                <th>Email</th>
+                                                <th>Tanggal Bergabung</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            // Pastikan querynya sesuai dengan tabel yang benar, misalnya 'karyawan'
+                                            while ($row = mysqli_fetch_array($sql)) {
+                                                $nik = $row['NIK']; // Sesuaikan dengan nama kolom NIK
+                                                echo "<tr>";
+                                                echo "<td>" . $row['NIK'] . "</td>"; // Menampilkan NIK
+                                                echo "<td>" . $row['nama_karyawan'] . "</td>"; // Menampilkan Nama Karyawan
+                                                echo "<td>" . $row['alamat_karyawan'] . "</td>"; // Menampilkan Alamat
+                                                echo "<td>" . $row['tgl_lahir'] . "</td>"; // Menampilkan Tanggal Lahir
+                                                echo "<td>" . $row['jenis_kelamin'] . "</td>"; // Menampilkan Jenis Kelamin
+                                                echo "<td>" . $row['no_telp'] . "</td>"; // Menampilkan Nomor Telepon
+                                                echo "<td>" . $row['email'] . "</td>"; // Menampilkan Email
+                                                echo "<td>" . $row['tgl_bergabung'] . "</td>"; // Menampilkan Tanggal Bergabung
+                                                echo "<td>
+                                                    <a href='update_karyawan.php?nik=$nik' class='btn btn-primary btn-sm'>Update</a>
+                                                    <a href='delete_karyawan.php?nik=$nik' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this employee?')\">Delete</a>
+                                                </td>";
+                                                echo "</tr>";
+                                            }
+                                            ?>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </main>
+                </main>
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">
