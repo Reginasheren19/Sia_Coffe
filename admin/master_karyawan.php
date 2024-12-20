@@ -163,7 +163,7 @@ error_reporting(0)
                             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                             <li class="breadcrumb-item active">Karyawan</li>
                         </ol>
-                        <div class="mb-3 d-flex justify-content-end">
+                            <div class="mb-3 d-flex justify-content-end">
                                 <a href="add_karyawan.php" class="btn btn-success" role="button">Add Data</a>
                             </div>
                         <div class="card mb-4">
