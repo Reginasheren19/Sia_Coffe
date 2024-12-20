@@ -155,7 +155,6 @@ error_reporting(0)
                     </div>
                 </nav>
             </div>
-        </div>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
@@ -164,15 +163,16 @@ error_reporting(0)
                             <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                             <li class="breadcrumb-item active">Karyawan</li>
                         </ol>
+                        <div class="mb-3 d-flex justify-content-end">
+                                <a href="add_karyawan.php" class="btn btn-success" role="button">Add Data</a>
+                            </div>
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
                                 Employee Data Table
                             </div>
                             <div class="card-body">
-                            <div class="mb-3 d-flex justify-content-end">
-                                <a href="add_karyawan.php" class="btn btn-success" role="button">Add Data</a>
-                            </div>
+
 
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="height: 50vh;">
@@ -229,6 +229,7 @@ error_reporting(0)
                     </div>
                 </div>
             </footer>
+            </div>
         </div>
     </div>
 
