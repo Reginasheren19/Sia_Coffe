@@ -10868,7 +10868,9 @@ body {
 
 #layoutSidenav {
   display: flex;
+  height: 100vh;
 }
+
 #layoutSidenav #layoutSidenav_nav {
   flex-basis: 225px;
   flex-shrink: 0;
