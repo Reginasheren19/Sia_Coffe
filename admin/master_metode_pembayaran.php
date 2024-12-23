@@ -200,7 +200,7 @@ error_reporting(0)
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="data_produk">
+                                    <tbody id="data_metode_pembayaran">
                                         <?php
                                         // Query data produk dari database
                                         $result = mysqli_query($koneksi, "SELECT * FROM master_metode_pembayaran");
