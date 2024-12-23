@@ -146,6 +146,10 @@ session_start();
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Produk
                             </a>
+                            <a class="nav-link" href="master_jenis_pendapatan.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Data Jenis Pendapatan
+                            </a>
                             
 
 
