@@ -175,10 +175,10 @@ error_reporting(0)
             <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Master Customer</h1>
+                    <h1 class="mt-4">Master Supplier</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Data Customer</li>
+                        <li class="breadcrumb-item active">Data Supplier</li>
                     </ol>
                     <div class="card mb-4">
                         <div class="card-header">
