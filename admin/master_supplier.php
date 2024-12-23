@@ -1,7 +1,7 @@
 <?php
 include("../config/koneksi_mysql.php");
 
-$sql = mysqli_query($koneksi,"SELECT * FROM master_karyawan");
+$sql = mysqli_query($koneksi,"SELECT * FROM master_supplier");
 
 ?>
 
@@ -27,7 +27,7 @@ error_reporting(0)
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.html">SIA Coffee Shop</a>
+            <a class="navbar-brand ps-3" href="index.php">SIA Coffee Shop</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -42,8 +42,6 @@ error_reporting(0)
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
                         <li><hr class="dropdown-divider" /></li>
                         <li><a class="dropdown-item" href="#!">Logout</a></li>
                     </ul>
@@ -56,15 +54,9 @@ error_reporting(0)
                     <div class="sb-sidenav-menu">
                         <div class="nav">
                             <div class="sb-sidenav-menu-heading">Core</div>
-                            <a class="nav-link" href="index.html">
+                            <a class="nav-link" href="index.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
-                            </a>
-                            <div class="sb-sidenav-menu-heading">Interface</div>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Layouts
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
@@ -83,13 +75,6 @@ error_reporting(0)
                                         Authentication
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                     </a>
-                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="login.html">Login</a>
-                                            <a class="nav-link" href="register.html">Register</a>
-                                            <a class="nav-link" href="password.html">Forgot Password</a>
-                                        </nav>
-                                    </div>
                                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
                                         Error
                                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -130,11 +115,11 @@ error_reporting(0)
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Jabatan
                             </a>
-                            <a class="nav-link" href="tables.html">
+                            <a class="nav-link" href="master_divisi.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Divisi
                             </a>
-                            <a class="nav-link" href="tables.html">
+                            <a class="nav-link" href="master_produk.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Produk
                             </a>
@@ -154,21 +139,11 @@ error_reporting(0)
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Supplier
                             </a>
-
-                            <div class="sb-sidenav-menu-heading">Addons</div>
-                            <a class="nav-link" href="charts.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                                Charts
-                            </a>
-                            <a class="nav-link" href="tables.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Tables
-                            </a>
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Logged in as:</div>
-                        Start Bootstrap
+                        Admin
                     </div>
                 </nav>
             </div>
@@ -177,13 +152,12 @@ error_reporting(0)
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">Master Supplier</h1>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                         <li class="breadcrumb-item active">Data Supplier</li>
                     </ol>
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            Customer Data Table
+                            Supplier Data Table
                         </div>
                         <div class="card-body">
                             <!-- Tombol Tambah Data -->
@@ -203,7 +177,7 @@ error_reporting(0)
                                             <th>Alamat</th>
                                             <th>No Telepon</th>
                                             <th>Email</th>
-                                            <th>Saldo Piutang</th>
+                                            <th>Saldo Hutang</th>
                                         </tr>
                                     </thead>
                                     <tbody id="data_supplier">
@@ -217,7 +191,7 @@ error_reporting(0)
                                                 <td>{$row['alamat_supplier']}</td>
                                                 <td>{$row['no_telp_supplier']}</td>
                                                 <td>{$row['email_supplier']}</td>
-                                                <td>{$row['saldo_piutang']}</td>
+                                                <td>{$row['saldo_hutang']}</td>
                                                 <td>
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
                                                     <a href='delete_supplier.php?id_supplier={$row['id_supplier']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data supplier?')\">Delete</a>
@@ -233,120 +207,6 @@ error_reporting(0)
                 </div>
             </main>
 
-            <!-- Modal Tambah Data -->
-            <div class="modal fade" id="addProdukModal" tabindex="-1" aria-labelledby="addProdukModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form id="form_add_produk">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="addProdukModalLabel">Tambah Data Produk</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="id_produk" class="form-label">ID Produk</label>
-                                    <input type="text" class="form-control" id="id_produk" name="id_produk" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="nama_produk" class="form-label">Nama Produk</label>
-                                    <input type="text" class="form-control" id="nama_produk" name="nama_produk" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="kategori_produk" class="form-label">Kategori Produk</label>
-                                    <select class="form-select" id="kategori_produk" name="kategori_produk" required>
-                                        <option value="">Pilih Kategori</option>
-                                        <option value="Minuman Panas">Minuman Panas</option>
-                                        <option value="Minuman Dingin">Minuman Dingin</option>
-                                        <option value="Makanan Ringan">Makanan Ringan</option>
-                                        <option value="Dessert">Dessert</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="harga_satuan" class="form-label">Harga Satuan (Rp)</label>
-                                    <input type="number" class="form-control" id="harga_satuan" name="harga_satuan" placeholder="Contoh: 25000" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="satuan" class="form-label">Satuan</label>
-                                    <input type="text" class="form-control" id="satuan" name="satuan" placeholder="Contoh: Gelas, Piring" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="deskripsi" class="form-label">Deskripsi</label>
-                                    <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" placeholder="Contoh: Minuman kopi dengan susu dan busa lembut" required></textarea>
-                                </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-primary">Simpan</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal Update Data Produk -->
-            <div class="modal fade" id="updateProdukModal" tabindex="-1" aria-labelledby="updateProdukModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form id="form_update_produk">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="updateProdukModalLabel">Update Data Produk Coffee Shop</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <!-- Hidden input for ID produk -->
-                                <input type="hidden" id="update_id_produk" name="id_produk">
-                                <div class="mb-3">
-                                    <label for="update_nama_produk" class="form-label">Nama Produk</label>
-                                    <input type="text" class="form-control" id="update_nama_produk" name="nama_produk" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="update_kategori_produk" class="form-label">Kategori Produk</label>
-                                    <select class="form-select" id="update_kategori_produk" name="kategori_produk" required>
-                                        <option value="Minuman">Minuman</option>
-                                        <option value="Makanan">Makanan</option>
-                                        <option value="Snack">Snack</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="update_harga_satuan" class="form-label">Harga Satuan</label>
-                                    <input type="number" class="form-control" id="update_harga_satuan" name="harga_satuan" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="update_satuan" class="form-label">Satuan</label>
-                                    <input type="text" class="form-control" id="update_satuan" name="satuan" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="update_deskripsi" class="form-label">Deskripsi</label>
-                                    <textarea class="form-control" id="update_deskripsi" name="deskripsi" rows="3" required></textarea>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-primary">Update</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <script>
-                 $(document).ready(function() {
-                    // Submit form tambah produk
-                    $('#form_add_produk').on('submit', function(event) {
-                        event.preventDefault();
-                        $.ajax({
-                            url: "add_produk.php", // URL untuk proses tambah data produk
-                            method: "POST",
-                            data: $(this).serialize(),
-                            success: function(data) {
-                                alert(data); // Menampilkan pesan sukses atau error dari server
-                                $('#form_add_produk')[0].reset(); // Reset form tambah produk
-                                $('#addProdukModal').modal('hide'); // Menutup modal tambah produk
-                                location.reload(); // Refresh halaman untuk memuat data baru
-                            }
-                        });
-                    });
-                });
-            </script>
-        </div>
 
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
