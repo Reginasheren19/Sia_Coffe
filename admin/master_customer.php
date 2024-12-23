@@ -150,7 +150,7 @@ error_reporting(0)
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Customer
                             </a>
-                            
+
                             <div class="sb-sidenav-menu-heading">Addons</div>
                             <a class="nav-link" href="charts.html">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
@@ -171,10 +171,10 @@ error_reporting(0)
             <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Master Data Jenis Pendapatan</h1>
+                    <h1 class="mt-4">Master Customer</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Data Jenis Pendapatan</li>
+                        <li class="breadcrumb-item active">Data Customer</li>
                     </ol>
                     <div class="card mb-4">
                         <div class="card-header">
