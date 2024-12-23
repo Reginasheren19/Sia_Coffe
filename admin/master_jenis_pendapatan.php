@@ -176,7 +176,7 @@ error_reporting(0)
                                 </button>
                             </div>
 
-                            <!-- Tabel Data Produk -->
+                            <!-- Tabel Data Jenis Pendapatan -->
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
@@ -193,15 +193,12 @@ error_reporting(0)
                                         $result = mysqli_query($koneksi, "SELECT * FROM master_produk");
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>
-                                                <td>{$row['id_produk']}</td>
-                                                <td>{$row['nama_produk']}</td>
-                                                <td>{$row['kategori_produk']}</td>
-                                                <td>{$row['harga_satuan']}</td>
-                                                <td>{$row['satuan']}</td>
+                                                <td>{$row['id_jenis_pendapatan']}</td>
+                                                <td>{$row['nama_jenis_pendapatan']}</td>
                                                 <td>{$row['deskripsi']}</td>
                                                 <td>
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                    <a href='delete_produk.php?id_produk={$row['id_produk']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this product?')\">Delete</a>
+                                                    <a href='delete_jenis_pendapatan.php?id_produk={$row['id_jenis_pendapatan']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data?')\">Delete</a>
                                                 </td>
                                             </tr>";
                                         }
