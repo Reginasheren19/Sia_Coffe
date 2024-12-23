@@ -117,7 +117,7 @@ session_start();
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Karyawan
                             </a>
-                            <a class="nav-link" href="tables.html">
+                            <a class="nav-link" href="master_jabatan.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Jabatan
                             </a>
