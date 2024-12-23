@@ -154,6 +154,10 @@ session_start();
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Metode Pembayaran
                             </a>
+                            <a class="nav-link" href="master_customer.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Data Customer
+                            </a>
                             
 
 
