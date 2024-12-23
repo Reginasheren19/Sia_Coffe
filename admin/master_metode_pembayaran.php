@@ -193,12 +193,12 @@ error_reporting(0)
                                         $result = mysqli_query($koneksi, "SELECT * FROM master_metode_pembayaran");
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>
-                                                <td>{$row['id_jenis_pendapatan']}</td>
-                                                <td>{$row['nama_jenis_pendapatan']}</td>
+                                                <td>{$row['id_metode_pembayaran']}</td>
+                                                <td>{$row['nama_metode_pembayaran']}</td>
                                                 <td>{$row['deskripsi']}</td>
                                                 <td>
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                    <a href='delete_jenis_pendapatan.php?id_produk={$row['id_jenis_pendapatan']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data?')\">Delete</a>
+                                                    <a href='delete_metode_pembayaran.php?id_produk={$row['id_metode_pembayaran']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data?')\">Delete</a>
                                                 </td>
                                             </tr>";
                                         }
