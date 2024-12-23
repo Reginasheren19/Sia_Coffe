@@ -158,10 +158,10 @@ error_reporting(0)
             <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Master Data Produk</h1>
+                    <h1 class="mt-4">Master Data Metode Pembayaran</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Data Produk</li>
+                        <li class="breadcrumb-item active">Data Metode Pembayaran</li>
                     </ol>
                     <div class="card mb-4">
                         <div class="card-header">
@@ -176,13 +176,13 @@ error_reporting(0)
                                 </button>
                             </div>
 
-                            <!-- Tabel Data Jenis Pendapatan -->
+                            <!-- Tabel Data Metode Pendapatan -->
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Id Jenis Pendapatan</th>
-                                            <th>Nama Jenis Pendapatan</th>
+                                            <th>Id Metode Pembayaran</th>
+                                            <th>Nama Metode Pembayaran</th>
                                             <th>Deskripsi</th>
                                             <th>Action</th>
                                         </tr>
