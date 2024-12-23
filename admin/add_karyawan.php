@@ -3,9 +3,12 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include("../config/koneksi_mysql.php");
 
-// Jika data dikirimkan melalui AJAX (POST request)
+echo '<pre>';
+print_r($_POST);
+echo '</pre>';
+
+// Jika form disubmit melalui POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Mengambil data dari form
     $NIK = mysqli_real_escape_string($koneksi, $_POST['NIK']);
     $nama_karyawan = mysqli_real_escape_string($koneksi, $_POST['nama_karyawan']);
     $alamat_karyawan = mysqli_real_escape_string($koneksi, $_POST['alamat_karyawan']);
@@ -15,22 +18,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = mysqli_real_escape_string($koneksi, $_POST['email']);
     $tgl_bergabung = mysqli_real_escape_string($koneksi, $_POST['tgl_bergabung']);
 
-    // Query untuk memasukkan data ke dalam database
+    // Query untuk menyimpan data ke database
     $sql = "INSERT INTO master_karyawan (NIK, nama_karyawan, alamat_karyawan, tgl_lahir, jenis_kelamin, no_telp, email, tgl_bergabung) 
             VALUES ('$NIK', '$nama_karyawan', '$alamat_karyawan', '$tgl_lahir', '$jenis_kelamin', '$no_telp', '$email', '$tgl_bergabung')";
-    var_dump($sql);
 
-    // Eksekusi query dan cek apakah berhasil
+    // Eksekusi query
     if (mysqli_query($koneksi, $sql)) {
-        echo "Data berhasil ditambahkan!";
+        echo "<script>alert('Data berhasil ditambahkan!'); window.location.href='master_karyawan.php';</script>";
     } else {
-        echo "Error: " . mysqli_error($koneksi);
+        echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
     }
-
-    exit; // Menghentikan script setelah pengiriman data
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +38,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Master Karyawan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
@@ -64,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <th>Tanggal Bergabung</th>
                 </tr>
             </thead>
-            <tbody id="data_karyawan">
+            <tbody>
                 <?php
                 $result = mysqli_query($koneksi, "SELECT * FROM master_karyawan");
                 while ($row = mysqli_fetch_assoc($result)) {
@@ -89,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="modal fade" id="addKaryawanModal" tabindex="-1" aria-labelledby="addKaryawanModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form id="form_add_karyawan">
+            <form method="POST" action="add_karyawan.php">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addKaryawanModalLabel">Tambah Data Karyawan</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -139,26 +137,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
     </div>
 </div>
-
-<script>
-$(document).ready(function() {
-    // Submit form tambah karyawan menggunakan AJAX
-    $('#form_add_karyawan').on('submit', function(event) {
-        event.preventDefault(); // Mencegah form submit biasa
-        $.ajax({
-            url: "add_karyawan.php",
-            method: "POST",
-            data: $(this).serialize(), // Mengirimkan semua data form
-            success: function(response) {
-                alert(response); // Menampilkan pesan dari server
-                $('#form_add_karyawan')[0].reset(); // Mereset form
-                $('#addKaryawanModal').modal('hide'); // Menutup modal
-                location.reload(); // Reload halaman untuk memperbarui data
-            }
-        });
-    });
-});
-</script>
 </body>
 </html>
-
