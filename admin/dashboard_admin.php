@@ -158,7 +158,10 @@ session_start();
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Customer
                             </a>
-                            
+                            <a class="nav-link" href="master_supplier.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Data Supplier
+                            </a>
 
 
                             <div class="sb-sidenav-menu-heading">Addons</div>
