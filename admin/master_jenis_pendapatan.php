@@ -187,7 +187,7 @@ error_reporting(0)
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="data_produk">
+                                    <tbody id="data_jenis_pendapatan">
                                         <?php
                                         // Query data produk dari database
                                         $result = mysqli_query($koneksi, "SELECT * FROM master_jenis_pendapatan");
