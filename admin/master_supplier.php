@@ -209,13 +209,14 @@ error_reporting(0)
                                     <tbody id="data_supplier">
                                         <?php
                                         // Query data produk dari database
-                                        $result = mysqli_query($koneksi, "SELECT * FROM master_customer");
+                                        $result = mysqli_query($koneksi, "SELECT * FROM master_supplier");
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>
-                                                <td>{$row['id_customer']}</td>
-                                                <td>{$row['nama_customer']}</td>
-                                                <td>{$row['alamat_customer']}</td>
-                                                <td>{$row['telp_customer']}</td>
+                                                <td>{$row['id_supplier']}</td>
+                                                <td>{$row['nama_supplier']}</td>
+                                                <td>{$row['alamat_supplier']}</td>
+                                                <td>{$row['no_telp_supplier']}</td>
+                                                <td>{$row['email_supplier']}</td>
                                                 <td>{$row['saldo_piutang']}</td>
                                                 <td>
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
