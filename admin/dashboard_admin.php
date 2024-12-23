@@ -150,6 +150,10 @@ session_start();
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Jenis Pendapatan
                             </a>
+                            <a class="nav-link" href="master_metode_pembayaran.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Data Metode Pembayaran
+                            </a>
                             
 
 
