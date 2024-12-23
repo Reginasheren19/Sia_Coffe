@@ -193,19 +193,20 @@ error_reporting(0)
                                 </button>
                             </div>
 
-                            <!-- Tabel Data Customer -->
+                            <!-- Tabel Data Supplier -->
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Id Customer</th>
+                                            <th>Id Supplier</th>
                                             <th>Nama</th>
                                             <th>Alamat</th>
                                             <th>No Telepon</th>
+                                            <th>Email</th>
                                             <th>Saldo Piutang</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="data_customer">
+                                    <tbody id="data_supplier">
                                         <?php
                                         // Query data produk dari database
                                         $result = mysqli_query($koneksi, "SELECT * FROM master_customer");
