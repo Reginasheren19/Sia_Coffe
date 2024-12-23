@@ -1,11 +1,16 @@
+
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 include("../config/koneksi_mysql.php");
 
 // Jika data dikirimkan melalui form
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nik = $_POST['nik'];
+    $NIK = $_POST['NIK'];
+    $NIK = $_POST['NIK']; 
+    error_log("Received POST data: " . print_r($_POST, true));
     $nama_karyawan = $_POST['nama_karyawan'];
-    $alamat = $_POST['alamat'];
+    $alamat_karyawan = $_POST['alamat_karyawan'];
     $tgl_lahir = $_POST['tgl_lahir'];
     $jenis_kelamin = $_POST['jenis_kelamin'];
     $no_telp = $_POST['no_telp'];
@@ -13,12 +18,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tgl_bergabung = $_POST['tgl_bergabung'];
 
     $sql = "INSERT INTO master_karyawan (NIK, nama_karyawan, alamat_karyawan, tgl_lahir, jenis_kelamin, no_telp, email, tgl_bergabung) 
-            VALUES ('$nik', '$nama_karyawan', '$alamat', '$tgl_lahir', '$jenis_kelamin', '$no_telp', '$email', '$tgl_bergabung')";
+            VALUES ('$NIK', '$nama_karyawan', '$alamat_karyawan', '$tgl_lahir', '$jenis_kelamin', '$no_telp', '$email', '$tgl_bergabung')";
 
     if (mysqli_query($koneksi, $sql)) {
         echo "Data berhasil ditambahkan!";
     } else {
         echo "Error: " . mysqli_error($koneksi);
+        echo "<br>Query: " . $sql; // Debug query yang dijalankan
     }
     exit; // Stop script to prevent HTML output
 }
@@ -33,6 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
 </head>
 <body>
 <div class="container mt-4">
@@ -48,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <tr>
                     <th>NIK</th>
                     <th>Nama Karyawan</th>
-                    <th>Alamat</th>
+                    <th>Alamat Karyawan</th>
                     <th>Tanggal Lahir</th>
                     <th>Jenis Kelamin</th>
                     <th>No. Telpon</th>
@@ -81,23 +88,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="modal fade" id="addKaryawanModal" tabindex="-1" aria-labelledby="addKaryawanModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form id="form_add_karyawan">
+            <form id="form_add_karyawan" action="add_karyawan.php" method="POST">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addKaryawanModalLabel">Tambah Data Karyawan</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="nik" class="form-label">NIK</label>
-                        <input type="text" class="form-control" id="nik" name="nik" required>
+                        <label for="NIK" class="form-label">NIK</label>
+                        <input type="text" class="form-control" id="NIK" name="NIK" required>
                     </div>
                     <div class="mb-3">
                         <label for="nama_karyawan" class="form-label">Nama Karyawan</label>
                         <input type="text" class="form-control" id="nama_karyawan" name="nama_karyawan" required>
                     </div>
                     <div class="mb-3">
-                        <label for="alamat" class="form-label">Alamat</label>
-                        <textarea class="form-control" id="alamat" name="alamat" rows="3" required></textarea>
+                        <label for="alamat_karyawan" class="form-label">Alamat Karyawan</label>
+                        <textarea class="form-control" id="alamat_karyawan" name="alamat_karyawan" rows="3" required></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="tgl_lahir" class="form-label">Tanggal Lahir</label>
@@ -138,7 +145,7 @@ $(document).ready(function() {
     $('#form_add_karyawan').on('submit', function(event) {
         event.preventDefault();
         $.ajax({
-            url: "",
+            url: "add_karyawan.php",
             method: "POST",
             data: $(this).serialize(),
             success: function(data) {
