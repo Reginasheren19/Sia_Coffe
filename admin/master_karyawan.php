@@ -156,82 +156,147 @@ error_reporting(0)
                 </nav>
             </div>
             <div id="layoutSidenav_content">
-                <main>
-                    <div class="container-fluid px-4">
-                        <h1 class="mt-4">Karyawan</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Karyawan</li>
-                        </ol>
-                            <div class="mb-3 d-flex justify-content-end">
-                                <a href="add_karyawan.php" class="btn btn-success" role="button">Add Data</a>
-                            </div>
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-table me-1"></i>
-                                Employee Data Table
-                            </div>
-                            <div class="card-body">
-
-
-                                <div class="table-responsive">
-                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="height: 50vh;">
-                                        <thead>
-                                            <tr>
-                                                <th>NIK</th>
-                                                <th>Nama Karyawan</th>
-                                                <th>Alamat</th>
-                                                <th>Tanggal Lahir</th>
-                                                <th>Jenis Kelamin</th>
-                                                <th>No. Telp</th>
-                                                <th>Email</th>
-                                                <th>Tanggal Bergabung</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            // Pastikan querynya sesuai dengan tabel yang benar, misalnya 'karyawan'
-                                            while ($row = mysqli_fetch_array($sql)) {
-                                                $nik = $row['NIK']; // Sesuaikan dengan nama kolom NIK
-                                                echo "<tr>";
-                                                echo "<td>" . $row['NIK'] . "</td>"; // Menampilkan NIK
-                                                echo "<td>" . $row['nama_karyawan'] . "</td>"; // Menampilkan Nama Karyawan
-                                                echo "<td>" . $row['alamat_karyawan'] . "</td>"; // Menampilkan Alamat
-                                                echo "<td>" . $row['tgl_lahir'] . "</td>"; // Menampilkan Tanggal Lahir
-                                                echo "<td>" . $row['jenis_kelamin'] . "</td>"; // Menampilkan Jenis Kelamin
-                                                echo "<td>" . $row['no_telp'] . "</td>"; // Menampilkan Nomor Telepon
-                                                echo "<td>" . $row['email'] . "</td>"; // Menampilkan Email
-                                                echo "<td>" . $row['tgl_bergabung'] . "</td>"; // Menampilkan Tanggal Bergabung
-                                                echo "<td>
-                                                    <a href='update_karyawan.php?nik=$nik' class='btn btn-primary btn-sm'>Update</a>
-                                                    <a href='delete_karyawan.php?nik=$nik' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this employee?')\">Delete</a>
-                                                </td>";
-                                                echo "</tr>";
-                                            }
-                                            ?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </main>
-            <footer class="py-4 bg-light mt-auto">
+            <main>
                 <div class="container-fluid px-4">
-                    <div class="d-flex align-items-center justify-content-between small">
-                        <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                        <div>
-                            <a href="#">Privacy Policy</a>
-                            &middot;
-                            <a href="#">Terms & Conditions</a>
+                    <h1 class="mt-4">Master Data Karyawan</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Data Karyawan</li>
+                    </ol>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            Employee Data Table
+                        </div>
+                        <div class="card-body">
+                            <!-- Tombol Tambah Data -->
+                            <div class="mb-3 d-flex justify-content-end">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addKaryawanModal">
+                                    Add Data
+                                </button>
+                            </div>
+
+                            <!-- Tabel Data Karyawan -->
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>NIK</th>
+                                            <th>Nama Karyawan</th>
+                                            <th>Alamat</th>
+                                            <th>Tanggal Lahir</th>
+                                            <th>Jenis Kelamin</th>
+                                            <th>No. Telp</th>
+                                            <th>Email</th>
+                                            <th>Tanggal Bergabung</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="data_karyawan">
+                                        <?php
+                                        // Query data karyawan dari database
+                                        $result = mysqli_query($koneksi, "SELECT * FROM master_karyawan");
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                            echo "<tr>
+                                                <td>{$row['NIK']}</td>
+                                                <td>{$row['nama_karyawan']}</td>
+                                                <td>{$row['alamat_karyawan']}</td>
+                                                <td>{$row['tgl_lahir']}</td>
+                                                <td>{$row['jenis_kelamin']}</td>
+                                                <td>{$row['no_telp']}</td>
+                                                <td>{$row['email']}</td>
+                                                <td>{$row['tgl_bergabung']}</td>
+                                                <td>
+                                                    <a href='update_karyawan.php?nik={$row['NIK']}' class='btn btn-primary btn-sm'>Update</a>
+                                                    <a href='delete_karyawan.php?nik={$row['NIK']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this employee?')\">Delete</a>
+                                                </td>
+                                            </tr>";
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </footer>
+            </main>
+
+            <!-- Modal Tambah Data -->
+            <div class="modal fade" id="addKaryawanModal" tabindex="-1" aria-labelledby="addKaryawanModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form id="form_add_karyawan">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addKaryawanModalLabel">Tambah Data Karyawan</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="nik" class="form-label">NIK</label>
+                                    <input type="text" class="form-control" id="nik" name="nik" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="nama_karyawan" class="form-label">Nama Karyawan</label>
+                                    <input type="text" class="form-control" id="nama_karyawan" name="nama_karyawan" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="alamat" class="form-label">Alamat</label>
+                                    <textarea class="form-control" id="alamat" name="alamat" rows="3" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="tgl_lahir" class="form-label">Tanggal Lahir</label>
+                                    <input type="date" class="form-control" id="tgl_lahir" name="tgl_lahir" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
+                                    <select class="form-select" id="jenis_kelamin" name="jenis_kelamin" required>
+                                        <option value="Laki-laki">Laki-laki</option>
+                                        <option value="Perempuan">Perempuan</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="no_telp" class="form-label">Nomor Telepon</label>
+                                    <input type="text" class="form-control" id="no_telp" name="no_telp" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="tgl_bergabung" class="form-label">Tanggal Bergabung</label>
+                                    <input type="date" class="form-control" id="tgl_bergabung" name="tgl_bergabung" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
+
+            <script>
+            $(document).ready(function() {
+                // Submit form tambah karyawan
+                $('#form_add_karyawan').on('submit', function(event) {
+                    event.preventDefault();
+                    $.ajax({
+                        url: "add_karyawan.php", // URL untuk proses tambah data
+                        method: "POST",
+                        data: $(this).serialize(),
+                        success: function(data) {
+                            alert(data);
+                            $('#form_add_karyawan')[0].reset(); // Reset form
+                            $('#addKaryawanModal').modal('hide'); // Tutup modal
+                            location.reload(); // Refresh halaman
+                        }
+                    });
+                });
+            });
+            </script>
         </div>
-    </div>
+
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>
