@@ -126,7 +126,7 @@ error_reporting(0)
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Karyawan
                             </a>
-                            <a class="nav-link" href="tables.html">
+                            <a class="nav-link" href="master_jabatan.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Jabatan
                             </a>
@@ -183,7 +183,7 @@ error_reporting(0)
                                         <tr>
                                             <th>NIK</th>
                                             <th>Nama Karyawan</th>
-                                            <th>Alamat</th>
+                                            <th>Alamat Karyawan</th>
                                             <th>Tanggal Lahir</th>
                                             <th>Jenis Kelamin</th>
                                             <th>No. Telp</th>
@@ -207,7 +207,7 @@ error_reporting(0)
                                                 <td>{$row['email']}</td>
                                                 <td>{$row['tgl_bergabung']}</td>
                                                 <td>
-                                                    <a href='update_karyawan.php?nik={$row['NIK']}' class='btn btn-primary btn-sm'>Update</a>
+                                                    <button class='btn btn-primary btn-sm btn-update'>Update</button>
                                                     <a href='delete_karyawan.php?nik={$row['NIK']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this employee?')\">Delete</a>
                                                 </td>
                                             </tr>";
@@ -240,8 +240,8 @@ error_reporting(0)
                                     <input type="text" class="form-control" id="nama_karyawan" name="nama_karyawan" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="alamat" class="form-label">Alamat</label>
-                                    <textarea class="form-control" id="alamat" name="alamat" rows="3" required></textarea>
+                                    <label for="alamat_karyawan" class="form-label">Alamat Karyawan</label>
+                                    <textarea class="form-control" id="alamat_karyawan" name="alamat_karyawan" rows="3" required></textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="tgl_lahir" class="form-label">Tanggal Lahir</label>
@@ -270,6 +270,58 @@ error_reporting(0)
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                                 <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Update Data -->
+            <div class="modal fade" id="updateKaryawanModal" tabindex="-1" aria-labelledby="updateKaryawanModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form id="form_update_karyawan">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateKaryawanModalLabel">Update Data Karyawan</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" id="update_nik" name="nik">
+                                <div class="mb-3">
+                                    <label for="update_nama_karyawan" class="form-label">Nama Karyawan</label>
+                                    <input type="text" class="form-control" id="update_nama_karyawan" name="nama_karyawan" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="update_alamat_karyawan" class="form-label">Alamat Karyawan</label>
+                                    <textarea class="form-control" id="update_alamat_karyawan" name="alamat_karyawan" rows="3" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="update_tgl_lahir" class="form-label">Tanggal Lahir</label>
+                                    <input type="date" class="form-control" id="update_tgl_lahir" name="tgl_lahir" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="update_jenis_kelamin" class="form-label">Jenis Kelamin</label>
+                                    <select class="form-select" id="update_jenis_kelamin" name="jenis_kelamin" required>
+                                        <option value="Laki-laki">Laki-laki</option>
+                                        <option value="Perempuan">Perempuan</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="update_no_telp" class="form-label">Nomor Telepon</label>
+                                    <input type="text" class="form-control" id="update_no_telp" name="no_telp" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="update_email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="update_email" name="email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="update_tgl_bergabung" class="form-label">Tanggal Bergabung</label>
+                                    <input type="date" class="form-control" id="update_tgl_bergabung" name="tgl_bergabung" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
                             </div>
                         </form>
                     </div>
