@@ -134,7 +134,7 @@ error_reporting(0)
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Divisi
                             </a>
-                            <a class="nav-link" href="master_produk.php">
+                            <a class="nav-link" href="tables.html">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Produk
                             </a>
@@ -158,10 +158,10 @@ error_reporting(0)
             <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Master Data Produk</h1>
+                    <h1 class="mt-4">Master Data Jenis Pendapatan</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Data Produk</li>
+                        <li class="breadcrumb-item active">Data Jenis Pendapatan</li>
                     </ol>
                     <div class="card mb-4">
                         <div class="card-header">
@@ -176,16 +176,13 @@ error_reporting(0)
                                 </button>
                             </div>
 
-                            <!-- Tabel Data Produk -->
+                            <!-- Tabel Data Jenis Pendapatan -->
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Id Produk</th>
-                                            <th>Nama Produk</th>
-                                            <th>Kategori Produk</th>
-                                            <th>Harga Satuan</th>
-                                            <th>Satuan</th>
+                                            <th>Id Jenis Pendapatan</th>
+                                            <th>Nama Jenis Pendapatan</th>
                                             <th>Deskripsi</th>
                                             <th>Action</th>
                                         </tr>
@@ -193,18 +190,15 @@ error_reporting(0)
                                     <tbody id="data_produk">
                                         <?php
                                         // Query data produk dari database
-                                        $result = mysqli_query($koneksi, "SELECT * FROM master_produk");
+                                        $result = mysqli_query($koneksi, "SELECT * FROM master_jenis_pendapatan");
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>
-                                                <td>{$row['id_produk']}</td>
-                                                <td>{$row['nama_produk']}</td>
-                                                <td>{$row['kategori_produk']}</td>
-                                                <td>{$row['harga_satuan']}</td>
-                                                <td>{$row['satuan']}</td>
+                                                <td>{$row['id_jenis_pendapatan']}</td>
+                                                <td>{$row['nama_jenis_pendapatan']}</td>
                                                 <td>{$row['deskripsi']}</td>
                                                 <td>
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                    <a href='delete_produk.php?id_produk={$row['id_produk']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this product?')\">Delete</a>
+                                                    <a href='delete_jenis_pendapatan.php?id_produk={$row['id_jenis_pendapatan']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data?')\">Delete</a>
                                                 </td>
                                             </tr>";
                                         }
