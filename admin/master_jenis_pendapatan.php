@@ -181,11 +181,8 @@ error_reporting(0)
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Id Produk</th>
-                                            <th>Nama Produk</th>
-                                            <th>Kategori Produk</th>
-                                            <th>Harga Satuan</th>
-                                            <th>Satuan</th>
+                                            <th>Id Jenis Pendapatan</th>
+                                            <th>Nama Jenis Pendapatan</th>
                                             <th>Deskripsi</th>
                                             <th>Action</th>
                                         </tr>
