@@ -190,7 +190,7 @@ error_reporting(0)
                                     <tbody id="data_produk">
                                         <?php
                                         // Query data produk dari database
-                                        $result = mysqli_query($koneksi, "SELECT * FROM master_produk");
+                                        $result = mysqli_query($koneksi, "SELECT * FROM master_jenis_pendapatan");
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>
                                                 <td>{$row['id_jenis_pendapatan']}</td>
