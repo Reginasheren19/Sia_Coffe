@@ -220,7 +220,7 @@ error_reporting(0)
                                                 <td>{$row['saldo_piutang']}</td>
                                                 <td>
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                    <a href='delete_customer.php?id_produk={$row['id_customer']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data customer?')\">Delete</a>
+                                                    <a href='delete_supplier.php?id_supplier={$row['id_supplier']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data supplier?')\">Delete</a>
                                                 </td>
                                             </tr>";
                                         }
