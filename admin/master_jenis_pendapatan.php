@@ -134,7 +134,7 @@ error_reporting(0)
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Divisi
                             </a>
-                            <a class="nav-link" href="tables.html">
+                            <a class="nav-link" href="master_produk.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Produk
                             </a>
