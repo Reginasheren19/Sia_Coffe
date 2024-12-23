@@ -1,34 +1,36 @@
-
 <?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include("../config/koneksi_mysql.php");
 
-// Jika data dikirimkan melalui form
+// Jika data dikirimkan melalui AJAX (POST request)
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $NIK = $_POST['NIK'];
-    $NIK = $_POST['NIK']; 
-    error_log("Received POST data: " . print_r($_POST, true));
-    $nama_karyawan = $_POST['nama_karyawan'];
-    $alamat_karyawan = $_POST['alamat_karyawan'];
-    $tgl_lahir = $_POST['tgl_lahir'];
-    $jenis_kelamin = $_POST['jenis_kelamin'];
-    $no_telp = $_POST['no_telp'];
-    $email = $_POST['email'];
-    $tgl_bergabung = $_POST['tgl_bergabung'];
+    // Mengambil data dari form
+    $NIK = mysqli_real_escape_string($koneksi, $_POST['NIK']);
+    $nama_karyawan = mysqli_real_escape_string($koneksi, $_POST['nama_karyawan']);
+    $alamat_karyawan = mysqli_real_escape_string($koneksi, $_POST['alamat_karyawan']);
+    $tgl_lahir = mysqli_real_escape_string($koneksi, $_POST['tgl_lahir']);
+    $jenis_kelamin = mysqli_real_escape_string($koneksi, $_POST['jenis_kelamin']);
+    $no_telp = mysqli_real_escape_string($koneksi, $_POST['no_telp']);
+    $email = mysqli_real_escape_string($koneksi, $_POST['email']);
+    $tgl_bergabung = mysqli_real_escape_string($koneksi, $_POST['tgl_bergabung']);
 
+    // Query untuk memasukkan data ke dalam database
     $sql = "INSERT INTO master_karyawan (NIK, nama_karyawan, alamat_karyawan, tgl_lahir, jenis_kelamin, no_telp, email, tgl_bergabung) 
             VALUES ('$NIK', '$nama_karyawan', '$alamat_karyawan', '$tgl_lahir', '$jenis_kelamin', '$no_telp', '$email', '$tgl_bergabung')";
+    var_dump($sql);
 
+    // Eksekusi query dan cek apakah berhasil
     if (mysqli_query($koneksi, $sql)) {
         echo "Data berhasil ditambahkan!";
     } else {
         echo "Error: " . mysqli_error($koneksi);
-        echo "<br>Query: " . $sql; // Debug query yang dijalankan
     }
-    exit; // Stop script to prevent HTML output
+
+    exit; // Menghentikan script setelah pengiriman data
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +41,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
 </head>
 <body>
 <div class="container mt-4">
@@ -88,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="modal fade" id="addKaryawanModal" tabindex="-1" aria-labelledby="addKaryawanModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form id="form_add_karyawan" action="add_karyawan.php" method="POST">
+            <form id="form_add_karyawan">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addKaryawanModalLabel">Tambah Data Karyawan</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -141,18 +142,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <script>
 $(document).ready(function() {
-    // Submit form tambah karyawan
+    // Submit form tambah karyawan menggunakan AJAX
     $('#form_add_karyawan').on('submit', function(event) {
-        event.preventDefault();
+        event.preventDefault(); // Mencegah form submit biasa
         $.ajax({
             url: "add_karyawan.php",
             method: "POST",
-            data: $(this).serialize(),
-            success: function(data) {
-                alert(data);
-                $('#form_add_karyawan')[0].reset();
-                $('#addKaryawanModal').modal('hide');
-                location.reload(); // Reload halaman
+            data: $(this).serialize(), // Mengirimkan semua data form
+            success: function(response) {
+                alert(response); // Menampilkan pesan dari server
+                $('#form_add_karyawan')[0].reset(); // Mereset form
+                $('#addKaryawanModal').modal('hide'); // Menutup modal
+                location.reload(); // Reload halaman untuk memperbarui data
             }
         });
     });
@@ -160,3 +161,4 @@ $(document).ready(function() {
 </script>
 </body>
 </html>
+
