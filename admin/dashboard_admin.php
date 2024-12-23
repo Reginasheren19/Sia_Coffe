@@ -99,6 +99,13 @@ session_start();
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Pendapatan
                             </a>
+                            <div class="sb-sidenav-menu-heading">Expenditure Cycle</div>
+                            <a class="nav-link" href="charts.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Pengeluaran
+                            </a>
+
+
                             <div class="sb-sidenav-menu-heading">Payroll Cycle</div>
                             <a class="nav-link" href="charts.html">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
@@ -112,6 +119,16 @@ session_start();
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Rekap Presensi
                             </a>
+                            <div class="sb-sidenav-menu-heading">Report Cycle</div>
+                            <a class="nav-link" href="jurnal_umum.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Jurnal Umum
+                            </a>
+                            <a class="nav-link" href="buku_besar.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Buku Besar
+                            </a>
+
                             <div class="sb-sidenav-menu-heading">Mastering</div>
                             <a class="nav-link" href="master_karyawan.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
@@ -129,6 +146,9 @@ session_start();
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Produk
                             </a>
+                            
+
+
                             <div class="sb-sidenav-menu-heading">Addons</div>
                             <a class="nav-link" href="charts.html">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
