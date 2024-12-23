@@ -189,29 +189,32 @@ error_reporting(0)
                                 </button>
                             </div>
 
-                            <!-- Tabel Data Jenis Pendapatan -->
+                            <!-- Tabel Data Customer -->
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Id Jenis Pendapatan</th>
-                                            <th>Nama Jenis Pendapatan</th>
-                                            <th>Deskripsi</th>
-                                            <th>Action</th>
+                                            <th>Id Customer</th>
+                                            <th>Nama</th>
+                                            <th>Alamat</th>
+                                            <th>No Telepon</th>
+                                            <th>Saldo Piutang</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="data_produk">
+                                    <tbody id="data_customer">
                                         <?php
                                         // Query data produk dari database
-                                        $result = mysqli_query($koneksi, "SELECT * FROM master_jenis_pendapatan");
+                                        $result = mysqli_query($koneksi, "SELECT * FROM master_customer");
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>
-                                                <td>{$row['id_jenis_pendapatan']}</td>
-                                                <td>{$row['nama_jenis_pendapatan']}</td>
-                                                <td>{$row['deskripsi']}</td>
+                                                <td>{$row['id_customer']}</td>
+                                                <td>{$row['nama_customer']}</td>
+                                                <td>{$row['alamat_customer']}</td>
+                                                <td>{$row['telp_customer']}</td>
+                                                <td>{$row['saldo_piutang']}</td>
                                                 <td>
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                    <a href='delete_jenis_pendapatan.php?id_produk={$row['id_jenis_pendapatan']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data?')\">Delete</a>
+                                                    <a href='delete_customer.php?id_produk={$row['id_customer']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data customer?')\">Delete</a>
                                                 </td>
                                             </tr>";
                                         }
