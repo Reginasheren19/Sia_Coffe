@@ -242,7 +242,7 @@ error_reporting(0)
                 </div>
             </div>
 
-            <!-- Modal Update Data Produk -->
+            <!-- Modal Update Data Jenis Pendapatan -->
             <div class="modal fade" id="updateProdukModal" tabindex="-1" aria-labelledby="updateProdukModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -252,8 +252,8 @@ error_reporting(0)
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <!-- Hidden input for ID produk -->
-                                <input type="hidden" id="update_id_produk" name="id_produk">
+                                <!-- Hidden input for ID Jenis Pendapatan (BLOM AK UTEK UTEK)-->
+                                <input type="hidden" id="update_id_jenis_pendapatan" name="id_jenis_pendapatan">
                                 <div class="mb-3">
                                     <label for="update_nama_produk" class="form-label">Nama Produk</label>
                                     <input type="text" class="form-control" id="update_nama_produk" name="nama_produk" required>
