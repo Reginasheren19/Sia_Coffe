@@ -15,6 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $satuan = mysqli_real_escape_string($koneksi, $_POST['satuan']);
     $deskripsi = mysqli_real_escape_string($koneksi, $_POST['deskripsi']);
     // Query untuk menyimpan data ke database
+    $kategori_produk = mysqli_real_escape_string($koneksi, $_POST['kategori_produk']);
     $sql = "INSERT INTO master_produk (id_produk, nama_produk, harga_satuan, satuan, deskripsi) 
             VALUES ('$id_produk', '$nama_produk', '$harga_satuan', '$satuan', '$deskripsi' )";
 
