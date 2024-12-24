@@ -9,17 +9,17 @@ echo '</pre>';
 
 // Jika form disubmit melalui POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id_jenis_pendapatan = mysqli_real_escape_string($koneksi, $_POST['id_jenis_pendapatan']);
-    $nama_jenis_pendapatan = mysqli_real_escape_string($koneksi, $_POST['nama_jenis_pendapatan']);
+    $id_metode = mysqli_real_escape_string($koneksi, $_POST['id_metode']);
+    $nama_metode = mysqli_real_escape_string($koneksi, $_POST['nama_metode']);
     $deskripsi = mysqli_real_escape_string($koneksi, $_POST['deskripsi']);
 
     // Query untuk menyimpan data ke database
-    $sql = "INSERT INTO master_jenis_pendapatan (id_jenis_pendapatan, nama_jenis_pendapatan, deskripsi) 
-            VALUES ('$id_jenis_pendapatan', '$nama_jenis_pendapatan', '$deskripsi')";
+    $sql = "INSERT INTO master_metode_pembayaran (id_metode, nama_metode, deskripsi) 
+            VALUES ('$id_metode_pembayaran', '$nama_metode', '$deskripsi')";
 
     // Eksekusi query
     if (mysqli_query($koneksi, $sql)) {
-        echo "<script>alert('Data berhasil ditambahkan!'); window.location.href='master_jenis_pendapatan.php';</script>";
+        echo "<script>alert('Data berhasil ditambahkan!'); window.location.href='master_metode_pembayaran.php';</script>";
     } else {
         echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
     }
@@ -31,24 +31,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master Jenis Pendapatan</title>
+    <title>Master Metode Pembayaran</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 <div class="container mt-4">
-    <h1 class="mb-4">Master Jenis Pendapatan</h1>
+    <h1 class="mb-4">Master Metode Pembayaran</h1>
 
     <!-- Tombol Tambah Data -->
-    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addJenisPendapatanModal">Add Data</button>
+    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addMetodePembayaranModal">Add Data</button>
 
-    <!-- Tabel Data Karyawan -->
+    <!-- Tabel Data Metode Pembayaran -->
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Id Jenis Pendapatan</th>
-                    <th>Nama Jenis Pendapatan</th>
+                    <th>Id Metode Pembayaran</th>
+                    <th>Nama Metode Pembayaran</th>
                     <th>Deskripsi</th>
                 </tr>
             </thead>
@@ -57,8 +57,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $result = mysqli_query($koneksi, "SELECT * FROM master_produk");
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo "<tr>
-                            <td>{$row['id_jenis_pendapatan']}</td>
-                            <td>{$row['nama_jenis_pendapatan']}</td>
+                            <td>{$row['id_jenis_pembayaran']}</td>
+                            <td>{$row['nama_metode_pembayaran']}</td>
                             <td>{$row['deskripsi']}</td>
                           </tr>";
                 }
