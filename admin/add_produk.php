@@ -48,9 +48,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>ID Divisi</th>
-                    <th>Nama Divisi</th>
-                    <th>deskripsi_divisi</th>
+                    <th>Id Produk</th>
+                    <th>Nama Produk</th>
+                    <th>Kategori Produk</th>
+                    <th>Harga Satuan</th>
+                    <th>Satuan</th>
+                    <th>Deskripsi</th>
                 </tr>
             </thead>
             <tbody>
