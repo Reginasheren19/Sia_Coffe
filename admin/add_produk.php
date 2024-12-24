@@ -15,6 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $satuan = mysqli_real_escape_string($koneksi, $_POST['satuan']);
     $deskripsi = mysqli_real_escape_string($koneksi, $_POST['deskripsi']);
     // Query untuk menyimpan data ke database
+    $kategori_produk = mysqli_real_escape_string($koneksi, $_POST['kategori_produk']);
     $sql = "INSERT INTO master_produk (id_produk, nama_produk, harga_satuan, satuan, deskripsi) 
             VALUES ('$id_produk', '$nama_produk', '$harga_satuan', '$satuan', '$deskripsi' )";
 
@@ -86,10 +87,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="modal-body">
                                 <div class="mb-3">
                                     <label for="nama_produk" class="form-label">Nama Produk</label>
-                                    <input type="text" class="form-control" id="nama_produk" name="nama_produk" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="nama_produk" class="form-label"></label>
                                     <input type="text" class="form-control" id="nama_produk" name="nama_produk" required>
                                 </div>
                                 <div class="mb-3">
