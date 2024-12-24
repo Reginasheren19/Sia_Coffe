@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Eksekusi query
     if (mysqli_query($koneksi, $sql)) {
-        echo "<script>alert('Data berhasil ditambahkan!'); window.location.href='master_divisi.php';</script>";
+        echo "<script>alert('Data berhasil ditambahkan!'); window.location.href='master_produk.php';</script>";
     } else {
         echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
     }
@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Tombol Tambah Data -->
     <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addDivisiModal">Add Data</button>
 
-    <!-- Tabel Data Karyawan -->
+    <!-- Tabel Data Produk -->
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
