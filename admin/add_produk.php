@@ -89,10 +89,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <input type="text" class="form-control" id="nama_produk" name="nama_produk" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="nama_produk" class="form-label"></label>
-                                    <input type="text" class="form-control" id="nama_produk" name="nama_produk" required>
-                                </div>
-                                <div class="mb-3">
                                     <label for="kategori_produk" class="form-label">Kategori Produk</label>
                                     <select class="form-select" id="kategori_produk" name="kategori_produk" required>
                                         <option value="">Pilih Kategori</option>
