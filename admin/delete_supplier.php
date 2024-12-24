@@ -13,6 +13,6 @@ if (isset($_GET['supplier'])) {
         echo "Error deleting record: " . mysqli_error($koneksi);
     }
 } else {
-    echo "No supplier specified for deletion.";
+    echo "No employee specified for deletion.";
 }
 ?>
