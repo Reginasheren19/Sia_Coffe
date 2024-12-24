@@ -13,9 +13,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nama_produk = mysqli_real_escape_string($koneksi, $_POST['nama_produk']);
     $harga_satuan = mysqli_real_escape_string($koneksi, $_POST['harga_satuan']);
     $satuan = mysqli_real_escape_string($koneksi, $_POST['satuan']);
+    $deskripsi = mysqli_real_escape_string($koneksi, $_POST['deskripsi']);
     // Query untuk menyimpan data ke database
-    $sql = "INSERT INTO master_divisi (id_divisi, nama_divisi, deskripsi_divisi) 
-            VALUES ('$id_divisi', '$nama_divisi', '$deskripsi_divisi')";
+    $sql = "INSERT INTO master_produk (id_produk, nama_produk, harga_satuan, satuan, deskripsi) 
+            VALUES ('$id_produk', '$nama_produk', '$harga_satuan', '$satuan', '$deskripsi' )";
 
     // Eksekusi query
     if (mysqli_query($koneksi, $sql)) {
