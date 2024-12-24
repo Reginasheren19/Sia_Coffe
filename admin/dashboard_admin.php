@@ -138,7 +138,7 @@ session_start();
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Jabatan
                             </a>
-                            <a class="nav-link" href="tables.html">
+                            <a class="nav-link" href="master_divisi.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Divisi
                             </a>
