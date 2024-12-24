@@ -6,18 +6,15 @@ ini_set('display_errors', 1);
 // Include koneksi ke database
 include("../config/koneksi_mysql.php");
 
-echo '<pre>';
-print_r($_POST);
-echo '</pre>';
-
 // Jika form disubmit melalui POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Ambil data dari POST
     $nama_supplier = mysqli_real_escape_string($koneksi, $_POST['nama_supplier']);
     $alamat_supplier = mysqli_real_escape_string($koneksi, $_POST['alamat_supplier']);
     $no_telp_supplier = mysqli_real_escape_string($koneksi, $_POST['no_telp_supplier']);
     $email_supplier = mysqli_real_escape_string($koneksi, $_POST['email_supplier']);
 
-    // Query untuk menyimpan data ke database tanpa saldo_hutang
+    // Query untuk menyimpan data ke database
     $sql = "INSERT INTO master_supplier (nama_supplier, alamat_supplier, no_telp_supplier, email_supplier) 
             VALUES ('$nama_supplier', '$alamat_supplier', '$no_telp_supplier', '$email_supplier')";
 
@@ -25,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (mysqli_query($koneksi, $sql)) {
         echo "<script>alert('Data berhasil ditambahkan!'); window.location.href='master_supplier.php';</script>";
     } else {
-        echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
+        echo "<script>alert('Error: " . mysqli_error($koneksi) . "'); window.location.href='master_supplier.php';</script>";
     }
 }
 ?>
@@ -57,20 +54,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <th>No Telepon</th>
                     <th>Email</th>
                     <th>Saldo Hutang</th>
+                    <th>Action</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="data_supplier">
                 <?php
+                // Query data supplier dari database
                 $result = mysqli_query($koneksi, "SELECT * FROM master_supplier");
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo "<tr>
-                            <td>{$row['id_supplier']}</td>
-                            <td>{$row['nama_supplier']}</td>
-                            <td>{$row['alamat_supplier']}</td>
-                            <td>{$row['no_telp_supplier']}</td>
-                            <td>{$row['email_supplier']}</td>
-                            <td>{$row['saldo_hutang']}</td>
-                          </tr>";
+                        <td>{$row['id_supplier']}</td>
+                        <td>{$row['nama_supplier']}</td>
+                        <td>{$row['alamat_supplier']}</td>
+                        <td>{$row['no_telp_supplier']}</td>
+                        <td>{$row['email_supplier']}</td>
+                        <td>{$row['saldo_hutang']}</td>
+                        <td>
+                            <button class='btn btn-primary btn-sm btn-update'>Update</button>
+                            <a href='delete_supplier.php?id_supplier={$row['id_supplier']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data supplier?')\">Delete</a>
+                        </td>
+                    </tr>";
                 }
                 ?>
             </tbody>
@@ -82,7 +85,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div class="modal fade" id="addSupplierModal" tabindex="-1" aria-labelledby="addSupplierModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="POST" action="">
+            <form method="POST" action="add_supplier.php">
                 <div class="modal-header">
                     <h5 class="modal-title" id="addSupplierModalLabel">Tambah Data Supplier</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
