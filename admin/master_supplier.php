@@ -93,6 +93,11 @@ error_reporting(0)
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Pendapatan
                             </a>
+                            <div class="sb-sidenav-menu-heading">Expenditure Cycle</div>
+                            <a class="nav-link" href="charts.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Pengeluaran
+                            </a>
                             <div class="sb-sidenav-menu-heading">Payroll Cycle</div>
                             <a class="nav-link" href="charts.html">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
@@ -106,6 +111,16 @@ error_reporting(0)
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Rekap Presensi
                             </a>
+                            <div class="sb-sidenav-menu-heading">Report Cycle</div>
+                            <a class="nav-link" href="jurnal_umum.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Jurnal Umum
+                            </a>
+                            <a class="nav-link" href="buku_besar.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Buku Besar
+                            </a>
+
                             <div class="sb-sidenav-menu-heading">Mastering</div>
                             <a class="nav-link" href="master_karyawan.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
@@ -162,7 +177,7 @@ error_reporting(0)
                         <div class="card-body">
                             <!-- Tombol Tambah Data -->
                             <div class="mb-3 d-flex justify-content-end">
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addproduct">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addSupplierModal">
                                     Add Data
                                 </button>
                             </div>
@@ -178,6 +193,7 @@ error_reporting(0)
                                             <th>No Telepon</th>
                                             <th>Email</th>
                                             <th>Saldo Hutang</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody id="data_supplier">
@@ -207,14 +223,106 @@ error_reporting(0)
                 </div>
             </main>
 
+                            <!-- Modal Tambah Data -->
+                            <div class="modal fade" id="addSupplierModal" tabindex="-1" aria-labelledby="addSupplierModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form method="POST" action="add_supplier.php">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="addSupplierModalLabel">Tambah Data Supplier</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label for="nama_supplier" class="form-label">Nama Supplier</label>
+                                                    <input type="text" class="form-control" id="nama_supplier" name="nama_supplier" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="alamat_supplier" class="form-label">Alamat Supplier</label>
+                                                    <textarea class="form-control" id="alamat_supplier" name="alamat_supplier" rows="3" required></textarea>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="no_telp_supplier" class="form-label">Nomor Telepon</label>
+                                                    <input type="text" class="form-control" id="no_telp_supplier" name="no_telp_supplier" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="email_supplier" class="form-label">Email</label>
+                                                    <input type="email" class="form-control" id="email_supplier" name="email_supplier" required>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+<!-- Modal Edit Data Supplier -->
+<div class="modal fade" id="editSupplierModal" tabindex="-1" aria-labelledby="editSupplierModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="update_supplier.php">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editSupplierModalLabel">Edit Data Supplier</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="id_supplier" id="edit_idsupplier">
+                    <div class="mb-3">
+                        <label for="editnama_supplier" class="form-label">Nama Supplier</label>
+                        <input type="text" class="form-control" id="editnama_supplier" name="nama_supplier" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editalamat_supplier" class="form-label">Alamat Supplier</label>
+                        <textarea class="form-control" id="editalamat_supplier" name="alamat_supplier" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editnotelp_supplier" class="form-label">Nomor Telepon</label>
+                        <input type="text" class="form-control" id="editnotelp_supplier" name="no_telp_supplier" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editemail_supplier" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="editemail_supplier" name="email_supplier" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+            <script src="js/scripts.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+            <script src="js/datatables-simple-demo.js"></script>
+            <script>
+            // Menangani klik tombol update
+            document.querySelectorAll('.btn-update').forEach(button => {
+                button.addEventListener('click', function() {
+                    // Ambil data dari baris yang sesuai
+                    const row = this.closest('tr');
+                    const nama_supplier = row.cells[1].innerText;
+                    const alamat_supplier = row.cells[2].innerText;
+                    const no_telp_supplier = row.cells[5].innerText;
+                    const email_supplier = row.cells[6].innerText;
+
+                    // Isi modal dengan data yang diambil
+                    document.getElementById('editnama_supplier').value = nama_supplier;
+                    document.getElementById('editalamat_supplier').value = alamat_supplier;
+                    document.getElementById('editnotelp_supplier').value = no_telp_supplier;
+                    document.getElementById('editemail_supplier'). value = email_supplier;
 
 
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="js/scripts.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="assets/demo/chart-area-demo.js"></script>
-        <script src="assets/demo/chart-bar-demo.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <script src="js/datatables-simple-demo.js"></script>
+                    // Tampilkan modal
+                    var editModal = new bootstrap.Modal(document.getElementById('editSupplierModal'));
+                    editModal.show();
+                });
+            });
+
     </body>
 </html>
