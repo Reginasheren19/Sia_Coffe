@@ -95,40 +95,74 @@ ini_set('display_errors', 1);
                             </nav>
                         </div>
                         <div class="sb-sidenav-menu-heading">Revenue Cycle</div>
-                        <a class="nav-link" href="charts.html">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Pendapatan
-                        </a>
-                        <div class="sb-sidenav-menu-heading">Payroll Cycle</div>
-                        <a class="nav-link" href="charts.html">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Kelola Karyawan
-                        </a>
-                        <a class="nav-link" href="tables.html">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Penggajian
-                        </a>
-                        <a class="nav-link" href="tables.html">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i ></div>
-                            Rekap Presensi
-                        </a>
-                        <div class="sb-sidenav-menu-heading">Mastering</div>
-                        <a class="nav-link" href="master_karyawan.php">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Data Karyawan
-                        </a>
-                        <a class="nav-link" href="master_jabatan.php">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Data Jabatan
-                        </a>
-                        <a class="nav-link" href="tables.html">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Data Divisi
-                        </a>
-                        <a class="nav-link" href="tables.html">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Data Produk
-                        </a>
+                            <a class="nav-link" href="charts.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Pendapatan
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Expenditure Cycle</div>
+                            <a class="nav-link" href="charts.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Pengeluaran
+                            </a>
+
+
+                            <div class="sb-sidenav-menu-heading">Payroll Cycle</div>
+                            <a class="nav-link" href="charts.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Kelola Karyawan
+                            </a>
+                            <a class="nav-link" href="tables.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Penggajian
+                            </a>
+                            <a class="nav-link" href="tables.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Rekap Presensi
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Report Cycle</div>
+                            <a class="nav-link" href="jurnal_umum.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Jurnal Umum
+                            </a>
+                            <a class="nav-link" href="buku_besar.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Buku Besar
+                            </a>
+
+                            <div class="sb-sidenav-menu-heading">Mastering</div>
+                            <a class="nav-link" href="master_karyawan.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Data Karyawan
+                            </a>
+                            <a class="nav-link" href="master_jabatan.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Data Jabatan
+                            </a>
+                            <a class="nav-link" href="tables.html">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Data Divisi
+                            </a>
+                            <a class="nav-link" href="master_produk.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Data Produk
+                            </a>
+                            <a class="nav-link" href="master_jenis_pendapatan.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Data Jenis Pendapatan
+                            </a>
+                            <a class="nav-link" href="master_metode_pembayaran.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Data Metode Pembayaran
+                            </a>
+                            <a class="nav-link" href="master_customer.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Data Customer
+                            </a>
+                            <a class="nav-link" href="master_supplier.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Data Supplier
+                            </a>
+
                         <div class="sb-sidenav-menu-heading">Addons</div>
                         <a class="nav-link" href="charts.html">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
