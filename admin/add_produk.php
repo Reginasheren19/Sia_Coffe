@@ -41,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <h1 class="mb-4">Master Data Karyawan</h1>
 
     <!-- Tombol Tambah Data -->
-    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addDivisiModal">Add Data</button>
+    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addProdukModal">Add Data</button>
 
     <!-- Tabel Data Produk -->
     <div class="table-responsive">
