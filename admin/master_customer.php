@@ -244,44 +244,39 @@ error_reporting(0)
             </main>
 
             <!-- Modal Tambah Data -->
-            <div class="modal fade" id="addProdukModal" tabindex="-1" aria-labelledby="addProdukModalLabel" aria-hidden="true">
+            <div class="modal fade" id="addCustomerModal" tabindex="-1" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form id="form_add_produk">
+                        <form id="form_add_customer">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="addProdukModalLabel">Tambah Data Produk</h5>
+                                <h5 class="modal-title" id="addCustomerModalLabel">Tambah Data Customer</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="mb-3">
-                                    <label for="id_produk" class="form-label">ID Produk</label>
+                                    <label for="id_customer" class="form-label">Id Customer</label>
                                     <input type="text" class="form-control" id="id_produk" name="id_produk" required>
                                 </div>
+                                <div class="modal-body">
                                 <div class="mb-3">
-                                    <label for="nama_produk" class="form-label">Nama Produk</label>
-                                    <input type="text" class="form-control" id="nama_produk" name="nama_produk" required>
+                                    <label for="id_customer" class="form-label">Id Customer</label>
+                                    <input type="text" class="form-control" id="id_customer" name="id_customer" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="kategori_produk" class="form-label">Kategori Produk</label>
-                                    <select class="form-select" id="kategori_produk" name="kategori_produk" required>
-                                        <option value="">Pilih Kategori</option>
-                                        <option value="Minuman Panas">Minuman Panas</option>
-                                        <option value="Minuman Dingin">Minuman Dingin</option>
-                                        <option value="Makanan Ringan">Makanan Ringan</option>
-                                        <option value="Dessert">Dessert</option>
-                                    </select>
+                                    <label for="nama_customer" class="form-label">Nama</label>
+                                    <input type="text" class="form-control" id="nama_customer" name="nama_customer" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="harga_satuan" class="form-label">Harga Satuan (Rp)</label>
-                                    <input type="number" class="form-control" id="harga_satuan" name="harga_satuan" placeholder="Contoh: 25000" required>
+                                    <label for="alamat_customer" class="form-label">Alamat</label>
+                                    <textarea class="form-control" id="alamat_customer" name="alamat_customer" rows="3" required></textarea>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="satuan" class="form-label">Satuan</label>
-                                    <input type="text" class="form-control" id="satuan" name="satuan" placeholder="Contoh: Gelas, Piring" required>
+                                    <label for="tlp_customer" class="form-label">No Telepon</label>
+                                    <input type="text" class="form-control" id="tlp_customer" name="tlp_customer" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="deskripsi" class="form-label">Deskripsi</label>
-                                    <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" placeholder="Contoh: Minuman kopi dengan susu dan busa lembut" required></textarea>
+                                    <label for="saldo_piutang" class="form-label">Saldo Piutang</label>
+                                    <input type="text" class="form-control" id="saldo_piutang" name="saldo_piutang" required>
                                 </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -337,19 +332,20 @@ error_reporting(0)
                     </div>
                 </div>
             </div>
+
             <script>
                  $(document).ready(function() {
                     // Submit form tambah produk
-                    $('#form_add_produk').on('submit', function(event) {
+                    $('#form_add_customerk').on('submit', function(event) {
                         event.preventDefault();
                         $.ajax({
-                            url: "add_produk.php", // URL untuk proses tambah data produk
+                            url: "add_customer.php", // URL untuk proses tambah data customer
                             method: "POST",
                             data: $(this).serialize(),
                             success: function(data) {
                                 alert(data); // Menampilkan pesan sukses atau error dari server
-                                $('#form_add_produk')[0].reset(); // Reset form tambah produk
-                                $('#addProdukModal').modal('hide'); // Menutup modal tambah produk
+                                $('#form_add_customer')[0].reset(); // Reset form tambah produk
+                                $('#addCustomerModal').modal('hide'); // Menutup modal tambah produk
                                 location.reload(); // Refresh halaman untuk memuat data baru
                             }
                         });
