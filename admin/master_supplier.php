@@ -223,41 +223,41 @@ error_reporting(0)
                 </div>
             </main>
 
-                            <!-- Modal Tambah Data -->
-                            <div class="modal fade" id="addSupplierModal" tabindex="-1" aria-labelledby="addSupplierModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <form method="POST" action="add_supplier.php">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="addSupplierModalLabel">Tambah Data Supplier</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="mb-3">
-                                                    <label for="nama_supplier" class="form-label">Nama Supplier</label>
-                                                    <input type="text" class="form-control" id="nama_supplier" name="nama_supplier" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="alamat_supplier" class="form-label">Alamat Supplier</label>
-                                                    <textarea class="form-control" id="alamat_supplier" name="alamat_supplier" rows="3" required></textarea>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="no_telp_supplier" class="form-label">Nomor Telepon</label>
-                                                    <input type="text" class="form-control" id="no_telp_supplier" name="no_telp_supplier" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="email_supplier" class="form-label">Email</label>
-                                                    <input type="email" class="form-control" id="email_supplier" name="email_supplier" required>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                <button type="submit" class="btn btn-primary">Simpan</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
+<!-- Modal Tambah Data -->
+<div class="modal fade" id="addSupplierModal" tabindex="-1" aria-labelledby="addSupplierModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="add_supplier.php">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addSupplierModalLabel">Tambah Data Supplier</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nama_supplier" class="form-label">Nama Supplier</label>
+                        <input type="text" class="form-control" id="nama_supplier" name="nama_supplier" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="alamat_supplier" class="form-label">Alamat Supplier</label>
+                        <textarea class="form-control" id="alamat_supplier" name="alamat_supplier" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="no_telp_supplier" class="form-label">Nomor Telepon</label>
+                        <input type="text" class="form-control" id="no_telp_supplier" name="no_telp_supplier" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email_supplier" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email_supplier" name="email_supplier" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- Modal Edit Data Supplier -->
 <div class="modal fade" id="editSupplierModal" tabindex="-1" aria-labelledby="editSupplierModalLabel" aria-hidden="true">
@@ -269,22 +269,22 @@ error_reporting(0)
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" name="id_supplier" id="edit_idsupplier">
+                    <input type="hidden" name="id_supplier" id="editIdSupplier">
                     <div class="mb-3">
-                        <label for="editnama_supplier" class="form-label">Nama Supplier</label>
-                        <input type="text" class="form-control" id="editnama_supplier" name="nama_supplier" required>
+                        <label for="editNamaSupplier" class="form-label">Nama Supplier</label>
+                        <input type="text" class="form-control" id="editNamaSupplier" name="nama_supplier" required>
                     </div>
                     <div class="mb-3">
-                        <label for="editalamat_supplier" class="form-label">Alamat Supplier</label>
-                        <textarea class="form-control" id="editalamat_supplier" name="alamat_supplier" rows="3" required></textarea>
+                        <label for="editAlamatSupplier" class="form-label">Alamat Supplier</label>
+                        <textarea class="form-control" id="editAlamatSupplier" name="alamat_supplier" rows="3" required></textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="editnotelp_supplier" class="form-label">Nomor Telepon</label>
-                        <input type="text" class="form-control" id="editnotelp_supplier" name="no_telp_supplier" required>
+                        <label for="editNoTelpSupplier" class="form-label">Nomor Telepon</label>
+                        <input type="text" class="form-control" id="editNoTelpSupplier" name="no_telp_supplier" required>
                     </div>
                     <div class="mb-3">
-                        <label for="editemail_supplier" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="editemail_supplier" name="email_supplier" required>
+                        <label for="editEmailSupplier" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="editEmailSupplier" name="email_supplier" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -306,17 +306,18 @@ error_reporting(0)
                 button.addEventListener('click', function() {
                     // Ambil data dari baris yang sesuai
                     const row = this.closest('tr');
+                    const id_supplier = row.cells[0].innerText; // Ambil ID Supplier
                     const nama_supplier = row.cells[1].innerText;
                     const alamat_supplier = row.cells[2].innerText;
-                    const no_telp_supplier = row.cells[5].innerText;
-                    const email_supplier = row.cells[6].innerText;
+                    const no_telp_supplier = row.cells[3].innerText; // Indeks 3 untuk No Telepon
+                    const email_supplier = row.cells[4].innerText; // Indeks 4 untuk Email
 
                     // Isi modal dengan data yang diambil
-                    document.getElementById('editnama_supplier').value = nama_supplier;
-                    document.getElementById('editalamat_supplier').value = alamat_supplier;
-                    document.getElementById('editnotelp_supplier').value = no_telp_supplier;
-                    document.getElementById('editemail_supplier'). value = email_supplier;
-
+                    document.getElementById('editIdSupplier').value = id_supplier; // Set ID Supplier
+                    document.getElementById('editNamaSupplier').value = nama_supplier;
+                    document.getElementById('editAlamatSupplier').value = alamat_supplier;
+                    document.getElementById('editNoTelpSupplier').value = no_telp_supplier;
+                    document.getElementById('editEmailSupplier').value = email_supplier;
 
                     // Tampilkan modal
                     var editModal = new bootstrap.Modal(document.getElementById('editSupplierModal'));
