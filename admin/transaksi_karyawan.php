@@ -263,68 +263,13 @@ ini_set
                 </div>
             </main>
 
-            <!-- Modal Tambah Data -->
-            <div class="modal fade" id="addKaryawanModal" tabindex="-1" aria-labelledby="addKaryawanModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form method="POST" action="add_karyawan.php">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="addKaryawanModalLabel">Tambah Data Karyawan</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="NIK" class="form-label">NIK</label>
-                                    <input type="text" class="form-control" id="NIK" name="NIK" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="nama_karyawan" class="form-label">Nama Karyawan</label>
-                                    <input type="text" class="form-control" id="nama_karyawan" name="nama_karyawan" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="alamat_karyawan" class="form-label">Alamat Karyawan</label>
-                                    <textarea class="form-control" id="alamat_karyawan" name="alamat_karyawan" rows="3" required></textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="tgl_lahir" class="form-label">Tanggal Lahir</label>
-                                    <input type="date" class="form-control" id="tgl_lahir" name="tgl_lahir" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="jenis_kelamin" class="form-label">Jenis Kelamin</label>
-                                    <select class="form-select" id="jenis_kelamin" name="jenis_kelamin" required>
-                                        <option value="Laki-laki">Laki-laki</option>
-                                        <option value="Perempuan">Perempuan</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="no_telp" class="form-label">Nomor Telepon</label>
-                                    <input type="text" class="form-control" id="no_telp" name="no_telp" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email" name="email" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="tgl_bergabung" class="form-label">Tanggal Bergabung</label>
-                                    <input type="date" class="form-control" id="tgl_bergabung" name="tgl_bergabung" required>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-primary">Simpan</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
             <!-- Modal Tambah Data Transaksi Karyawan -->
-            <div class="modal fade" id="addTransaksiModal" tabindex="-1" aria-labelledby="addTransaksiModalLabel" aria-hidden="true">
+            <div class="modal fade" id="addTransaksiKaryawanModal" tabindex="-1" aria-labelledby="addTransaksiKaryawanModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <form method="POST" action="add_transaksi_karyawan.php">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="addTransaksiModalLabel">Tambah Data Transaksi Karyawan</h5>
+                                <h5 class="modal-title" id="addTransaksiKaryawanModalLabel">Tambah Data Transaksi Karyawan</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
