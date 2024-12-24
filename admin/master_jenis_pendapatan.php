@@ -1,7 +1,7 @@
 <?php
 include("../config/koneksi_mysql.php");
 
-$sql = mysqli_query($koneksi,"SELECT * FROM master_karyawan");
+$sql = mysqli_query($koneksi,"SELECT * FROM master_jenis_pendapatan");
 
 ?>
 
