@@ -9,10 +9,10 @@ echo '</pre>';
 
 // Jika form disubmit melalui POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id_divisi = mysqli_real_escape_string($koneksi, $_POST['id_divisi']);
-    $nama_divisi = mysqli_real_escape_string($koneksi, $_POST['nama_divisi']);
-    $deskripsi_divisi = mysqli_real_escape_string($koneksi, $_POST['deskripsi_divisi']);
-
+    $id_produk = mysqli_real_escape_string($koneksi, $_POST['id_produk']);
+    $nama_produk = mysqli_real_escape_string($koneksi, $_POST['nama_produk']);
+    $harga_satuan = mysqli_real_escape_string($koneksi, $_POST['harga_satuan']);
+    $satuan = mysqli_real_escape_string($koneksi, $_POST['satuan']);
     // Query untuk menyimpan data ke database
     $sql = "INSERT INTO master_divisi (id_divisi, nama_divisi, deskripsi_divisi) 
             VALUES ('$id_divisi', '$nama_divisi', '$deskripsi_divisi')";
