@@ -46,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 <div class="container mt-4">
     <h1 class="mb-4">Edit Data Karyawan</h1>
-<!-- Modal Edit Data Karyawan -->
+    <!-- Modal Edit Data Karyawan -->
     <div class="modal fade" id="editKaryawanModal" tabindex="-1" aria-labelledby="editKaryawanModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -55,35 +55,51 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <h5 class="modal-title" id="editKaryawanModalLabel">Edit Data Karyawan</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                        <div class="modal-body">
-                            <input type="hidden" name="NIK" id="editNIK">
+                    <div class="modal-body">
+                        <!-- Hidden Input for NIK -->
+                        <input type="hidden" name="NIK" id="editNIK">
+                        
+                        <!-- Nama Karyawan -->
                         <div class="mb-3">
                             <label for="editNama" class="form-label">Nama Karyawan</label>
                             <input type="text" class="form-control" id="editNama" name="nama_karyawan" required>
                         </div>
+                        
+                        <!-- Alamat Karyawan -->
                         <div class="mb-3">
                             <label for="editAlamat" class="form-label">Alamat Karyawan</label>
                             <textarea class="form-control" id="editAlamat" name="alamat_karyawan" rows="3" required></textarea>
                         </div>
+                        
+                        <!-- Tanggal Lahir -->
                         <div class="mb-3">
                             <label for="editTglLahir" class="form-label">Tanggal Lahir</label>
                             <input type="date" class="form-control" id="editTglLahir" name="tgl_lahir" required>
                         </div>
+                        
+                        <!-- Jenis Kelamin -->
                         <div class="mb-3">
                             <label for="editJenisKelamin" class="form-label">Jenis Kelamin</label>
                             <select class="form-select" id="editJenisKelamin" name="jenis_kelamin" required>
+                                <option value="">Pilih Jenis Kelamin</option>
                                 <option value="Laki-laki">Laki-laki</option>
                                 <option value="Perempuan">Perempuan</option>
                             </select>
                         </div>
+                        
+                        <!-- Nomor Telepon -->
                         <div class="mb-3">
                             <label for="editNoTelp" class="form-label">Nomor Telepon</label>
                             <input type="text" class="form-control" id="editNoTelp" name="no_telp" required>
                         </div>
+                        
+                        <!-- Email -->
                         <div class="mb-3">
                             <label for="editEmail" class="form-label">Email</label>
                             <input type="email" class="form-control" id="editEmail" name="email" required>
                         </div>
+                        
+                        <!-- Tanggal Bergabung -->
                         <div class="mb-3">
                             <label for="editTglBergabung" class="form-label">Tanggal Bergabung</label>
                             <input type="date" class="form-control" id="editTglBergabung" name="tgl_bergabung" required>
