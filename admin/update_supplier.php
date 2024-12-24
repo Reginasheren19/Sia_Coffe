@@ -1,10 +1,14 @@
 <?php
+// Aktifkan error reporting
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
+// Include koneksi ke database
 include("../config/koneksi_mysql.php");
 
-// Cek apakah NIK ada di POST
+// Jika form disubmit melalui POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Ambil data dari POST
     $id_supplier = mysqli_real_escape_string($koneksi, $_POST['id_supplier']);
     $nama_supplier = mysqli_real_escape_string($koneksi, $_POST['nama_supplier']);
     $alamat_supplier = mysqli_real_escape_string($koneksi, $_POST['alamat_supplier']);
@@ -15,8 +19,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "UPDATE master_supplier SET 
             nama_supplier='$nama_supplier', 
             alamat_supplier='$alamat_supplier', 
-            no_telp_supplier='$no_telp_suplier', 
-            email_supplier='$email_supplier', 
+            no_telp_supplier='$no_telp_supplier', 
+            email_supplier='$email_supplier' 
             WHERE id_supplier='$id_supplier'";
 
     // Eksekusi query
@@ -33,44 +37,85 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Data Supplier</title>
+    <title>Master Supplier</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 <div class="container mt-4">
-    <h1 class="mb-4">Edit Data Supplier</h1>
-<!-- Modal Edit Data Supplier -->
-<div class="modal fade" id="editSupplierModal" tabindex="-1" aria-labelledby="editSupplierModalLabel" aria-hidden="true">
+    <h1 class="mb-4">Master Data Supplier</h1>
+
+    <!-- Tombol Tambah Data -->
+    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addSupplierModal">Add Data</button>
+
+    <!-- Tabel Data Supplier -->
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Id Supplier</th>
+                    <th>Nama</th>
+                    <th>Alamat</th>
+                    <th>No Telepon</th>
+                    <th>Email</th>
+                    <th>Saldo Hutang</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="data_supplier">
+                <?php
+                // Query data supplier dari database
+                $result = mysqli_query($koneksi, "SELECT * FROM master_supplier");
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<tr>
+                        <td>{$row['id_supplier']}</td>
+                        <td>{$row['nama_supplier']}</td>
+                        <td>{$row['alamat_supplier']}</td>
+                        <td>{$row['no_telp_supplier']}</td>
+                        <td>{$row['email_supplier']}</td>
+                        <td>{$row['saldo_hutang']}</td>
+                        <td>
+                            <button class='btn btn-primary btn-sm btn-update'>Update</button>
+                            <a href='delete_supplier.php?id_supplier={$row['id_supplier']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data supplier?')\">Delete</a>
+                        </td>
+                    </tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal Tambah Data -->
+<div class="modal fade" id="addSupplierModal" tabindex="-1" aria-labelledby="addSupplierModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="POST" action="update_supplier.php">
+            <form method="POST" action="">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editSupplierModalLabel">Edit Data Supplier</h5>
+                    <h5 class="modal-title" id="addSupplierModalLabel">Tambah Data Supplier</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" name="id_supplier" id="edit_id_supplier">
                     <div class="mb-3">
-                        <label for="editNamaSupplier" class="form-label">Nama Supplier</label>
-                        <input type="text" class="form-control" id="editNamaSupplier" name="nama_supplier" required>
+                        <label for="nama_supplier" class="form-label">Nama Supplier</label>
+                        <input type="text" class="form-control" id="nama_supplier" name="nama_supplier" required>
                     </div>
                     <div class="mb-3">
-                        <label for="editAlamatSupplier" class="form-label">Alamat Supplier</label>
-                        <textarea class="form-control" id="editAlamatSupplier" name="alamat_supplier" rows="3" required></textarea>
+                        <label for="alamat_supplier" class="form-label">Alamat Supplier</label>
+                        <textarea class="form-control" id="alamat_supplier" name="alamat_supplier" rows="3" required></textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="editNoTelpSupplier" class="form-label">Nomor Telepon</label>
-                        <input type="text" class="form-control" id="editNoTelpSupplier" name="no_telp_supplier" required>
+                        <label for="no_telp_supplier" class="form-label">Nomor Telepon</label>
+                        <input type="text" class="form-control" id="no_telp_supplier" name="no_telp_supplier" required>
                     </div>
                     <div class="mb-3">
-                        <label for="editEmailSupplier" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="editEmailSupplier" name="email_supplier" required>
+                        <label for="email_supplier" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email_supplier" name="email_supplier" required>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
         </div>
