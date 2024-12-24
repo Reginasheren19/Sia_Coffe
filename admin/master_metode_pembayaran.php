@@ -287,20 +287,20 @@ error_reporting(0)
                     </div>
                 </div>
             </div>
-            
+
             <script>
                  $(document).ready(function() {
                     // Submit form tambah produk
-                    $('#form_add_produk').on('submit', function(event) {
+                    $('#form_add_metode_pembayaran').on('submit', function(event) {
                         event.preventDefault();
                         $.ajax({
-                            url: "add_produk.php", // URL untuk proses tambah data produk
+                            url: "add_metode_pembayaran.php", // URL untuk proses tambah data produk
                             method: "POST",
                             data: $(this).serialize(),
                             success: function(data) {
                                 alert(data); // Menampilkan pesan sukses atau error dari server
-                                $('#form_add_produk')[0].reset(); // Reset form tambah produk
-                                $('#addProdukModal').modal('hide'); // Menutup modal tambah produk
+                                $('#form_add_metode_pembayaran')[0].reset(); // Reset form tambah produk
+                                $('#addMetodePembayaran').modal('hide'); // Menutup modal tambah produk
                                 location.reload(); // Refresh halaman untuk memuat data baru
                             }
                         });
