@@ -270,7 +270,7 @@ error_reporting(0)
                                 </div>
                                 <div class="mb-3">
                                     <label for="deskripsi" class="form-label">Deskripsi</label>
-                                    <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" placeholder="Contoh: Minuman kopi dengan susu dan busa lembut" required></textarea>
+                                    <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" placeholder="Contoh: Minuman kopi dengan cream susu" required></textarea>
                                 </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -291,6 +291,7 @@ error_reporting(0)
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
+
                                 <!-- Hidden input for ID produk -->
                                 <input type="hidden" id="update_id_produk" name="id_produk">
                                 <div class="mb-3">
