@@ -171,7 +171,7 @@ error_reporting(0)
                         <div class="card-body">
                             <!-- Tombol Tambah Data -->
                             <div class="mb-3 d-flex justify-content-end">
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addproduct">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addJenisPendapatanModal">
                                     Add Data
                                 </button>
                             </div>
