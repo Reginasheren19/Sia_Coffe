@@ -198,7 +198,7 @@ error_reporting(0)
                                     </thead>
                                     <tbody id="data_supplier">
                                         <?php
-                                        // Query data produk dari database
+                                        // Query data supplier dari database
                                         $result = mysqli_query($koneksi, "SELECT * FROM master_supplier");
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>
@@ -223,83 +223,81 @@ error_reporting(0)
                 </div>
             </main>
 
-<!-- Modal Tambah Data -->
-<div class="modal fade" id="addSupplierModal" tabindex="-1" aria-labelledby="addSupplierModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form method="POST" action="add_supplier.php">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addSupplierModalLabel">Tambah Data Supplier</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <!-- Modal Tambah Data -->
+            <div class="modal fade" id="addSupplierModal" tabindex="-1" aria-labelledby="addSupplierModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form method="POST" action="add_supplier.php">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addSupplierModalLabel">Tambah Data Supplier</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label for="nama_supplier" class="form-label">Nama Supplier</label>
+                                    <input type="text" class="form-control" id="nama_supplier" name="nama_supplier" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="alamat_supplier" class="form-label">Alamat Supplier</label>
+                                    <textarea class="form-control" id="alamat_supplier" name="alamat_supplier" rows="3" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="no_telp_supplier" class="form-label">Nomor Telepon</label>
+                                    <input type="text" class="form-control" id="no_telp_supplier" name="no_telp_supplier" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email_supplier" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email_supplier" name="email_supplier" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="nama_supplier" class="form-label">Nama Supplier</label>
-                        <input type="text" class="form-control" id="nama_supplier" name="nama_supplier" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="alamat_supplier" class="form-label">Alamat Supplier</label>
-                        <textarea class="form-control" id="alamat_supplier" name="alamat_supplier" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="no_telp_supplier" class="form-label">Nomor Telepon</label>
-                        <input type="text" class="form-control" id="no_telp_supplier" name="no_telp_supplier" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email_supplier" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email_supplier" name="email_supplier" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+            </div>
 
-<!-- Modal Edit Data Supplier -->
-<div class="modal fade" id="editSupplierModal" tabindex="-1" aria-labelledby="editSupplierModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form method="POST" action="update_supplier.php">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editSupplierModalLabel">Edit Data Supplier</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <!-- Modal Edit Data Supplier -->
+            <div class="modal fade" id="editSupplierModal" tabindex="-1" aria-labelledby="editSupplierModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form method="POST" action="update_supplier.php">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editSupplierModalLabel">Edit Data Supplier</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" name="id_supplier" id="edit_id_supplier">
+                                <div class="mb-3">
+                                    <label for="editNamaSupplier" class="form-label">Nama Supplier</label>
+                                    <input type="text" class="form-control " id="editNamaSupplier" name="nama_supplier" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editAlamatSupplier" class="form-label">Alamat Supplier</label>
+                                    <textarea class="form-control" id="editAlamatSupplier" name="alamat_supplier" rows="3" required></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editNoTelpSupplier" class="form-label">Nomor Telepon</label>
+                                    <input type="text" class="form-control" id="editNoTelpSupplier" name="no_telp_supplier" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editEmailSupplier" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="editEmailSupplier" name="email_supplier" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <input type="hidden" name="id_supplier" id="editIdSupplier">
-                    <div class="mb-3">
-                        <label for="editNamaSupplier" class="form-label">Nama Supplier</label>
-                        <input type="text" class="form-control" id="editNamaSupplier" name="nama_supplier" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editAlamatSupplier" class="form-label">Alamat Supplier</label>
-                        <textarea class="form-control" id="editAlamatSupplier" name="alamat_supplier" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editNoTelpSupplier" class="form-label">Nomor Telepon</label>
-                        <input type="text" class="form-control" id="editNoTelpSupplier" name="no_telp_supplier" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editEmailSupplier" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="editEmailSupplier" name="email_supplier" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Update</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+            </div>
 
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
             <script src="js/scripts.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-            <script src="js/datatables-simple-demo.js"></script>
             <script>
             // Menangani klik tombol update
             document.querySelectorAll('.btn-update').forEach(button => {
@@ -313,7 +311,7 @@ error_reporting(0)
                     const email_supplier = row.cells[4].innerText; // Indeks 4 untuk Email
 
                     // Isi modal dengan data yang diambil
-                    document.getElementById('editIdSupplier').value = id_supplier; // Set ID Supplier
+                    document.getElementById('edit_id_supplier').value = id_supplier; // Set ID Supplier
                     document.getElementById('editNamaSupplier').value = nama_supplier;
                     document.getElementById('editAlamatSupplier').value = alamat_supplier;
                     document.getElementById('editNoTelpSupplier').value = no_telp_supplier;
@@ -324,6 +322,8 @@ error_reporting(0)
                     editModal.show();
                 });
             });
-
-    </body>
+            </script>
+        </div>
+    </div>
+</body>
 </html>
