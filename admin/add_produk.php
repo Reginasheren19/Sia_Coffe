@@ -58,12 +58,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </thead>
             <tbody>
                 <?php
-                $result = mysqli_query($koneksi, "SELECT * FROM master_divisi");
+                $result = mysqli_query($koneksi, "SELECT * FROM master_produk");
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo "<tr>
-                            <td>{$row['id_divisi']}</td>
-                            <td>{$row['nama_divisi']}</td>
-                            <td>{$row['deskripsi_divisi']}</td>
+                            <td>{$row['id_produk']}</td>
+                            <td>{$row['nama_produk']}</td>
+                            <td>{$row['harga_satuan']}</td>
+                            <td>{$row['satuan']}</td>
+                            <td>{$row['deskripsi']}</td>
                           </tr>";
                 }
                 ?>
