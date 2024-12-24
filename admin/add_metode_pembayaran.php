@@ -69,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 
 <!-- Modal Tambah Data -->
-<div class="modal fade" id="addMetodePembayaranModal" tabindex="-1" aria-labelledby="addMetodePembayaranPendapatan" aria-hidden="true">
+<div class="modal fade" id="addMetodePembayaranModal" tabindex="-1" aria-labelledby="addMetodePembayaranModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <form method="POST" action="add_metode_pembayaran.php">
