@@ -1,7 +1,7 @@
 <?php
 include("../config/koneksi_mysql.php");
 
-$sql = mysqli_query($koneksi,"SELECT * FROM master_metode_pembayaran");
+$sql = mysqli_query($koneksi,"SELECT * FROM master_karyawan");
 
 ?>
 
@@ -134,23 +134,10 @@ error_reporting(0)
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Divisi
                             </a>
-                            <a class="nav-link" href="tables.html">
+                            <a class="nav-link" href="master_produk.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Produk
                             </a>
-                            <a class="nav-link" href="master_jenis_pendapatan.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Data Jenis Pendapatan
-                            </a>
-                            <a class="nav-link" href="master_metode_pembayaran.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Data Metode Pembayaran
-                            </a>
-                            <a class="nav-link" href="master_customer.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Data Customer
-                            </a>
-
                             <div class="sb-sidenav-menu-heading">Addons</div>
                             <a class="nav-link" href="charts.html">
                                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
@@ -171,10 +158,10 @@ error_reporting(0)
             <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Master Data Metode Pembayaran</h1>
+                    <h1 class="mt-4">Master Data Jenis Pendapatan</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Data Metode Pembayaran</li>
+                        <li class="breadcrumb-item active">Data Jenis Pendapatan</li>
                     </ol>
                     <div class="card mb-4">
                         <div class="card-header">
@@ -184,34 +171,34 @@ error_reporting(0)
                         <div class="card-body">
                             <!-- Tombol Tambah Data -->
                             <div class="mb-3 d-flex justify-content-end">
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addproduct">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addJenisPendapatanModal">
                                     Add Data
                                 </button>
                             </div>
 
-                            <!-- Tabel Data Metode Pendapatan -->
+                            <!-- Tabel Data Jenis Pendapatan -->
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Id Metode Pembayaran</th>
-                                            <th>Nama Metode Pembayaran</th>
+                                            <th>Id Jenis Pendapatan</th>
+                                            <th>Nama Jenis Pendapatan</th>
                                             <th>Deskripsi</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="data_metode_pembayaran">
+                                    <tbody id="data_jenis_pendapatan">
                                         <?php
                                         // Query data produk dari database
-                                        $result = mysqli_query($koneksi, "SELECT * FROM master_metode_pembayaran");
+                                        $result = mysqli_query($koneksi, "SELECT * FROM master_jenis_pendapatan");
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>
-                                                <td>{$row['id_metode_pembayaran']}</td>
-                                                <td>{$row['nama_metode_pembayaran']}</td>
+                                                <td>{$row['id_jenis_pendapatan']}</td>
+                                                <td>{$row['nama_jenis_pendapatan']}</td>
                                                 <td>{$row['deskripsi']}</td>
                                                 <td>
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                    <a href='delete_metode_pembayaran.php?id_produk={$row['id_metode_pembayaran']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data?')\">Delete</a>
+                                                    <a href='delete_jenis_pendapatan.php?id_produk={$row['id_jenis_pendapatan']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data?')\">Delete</a>
                                                 </td>
                                             </tr>";
                                         }
@@ -225,44 +212,26 @@ error_reporting(0)
             </main>
 
             <!-- Modal Tambah Data -->
-            <div class="modal fade" id="addProdukModal" tabindex="-1" aria-labelledby="addProdukModalLabel" aria-hidden="true">
+            <div class="modal fade" id="addJenisPendapatanModal" tabindex="-1" aria-labelledby="addJenisPendapatanModal" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <form id="form_add_produk">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="addProdukModalLabel">Tambah Data Produk</h5>
+                                <h5 class="modal-title" id="addJenisPendapatanModal">Tambah Data Jenis Pendapatan</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="mb-3">
-                                    <label for="id_produk" class="form-label">ID Produk</label>
-                                    <input type="text" class="form-control" id="id_produk" name="id_produk" required>
+                                    <label for="id_jenis_pendapatan" class="form-label">ID Jenis Pendapatan</label>
+                                    <input type="text" class="form-control" id="id_jenis_pendapatan" name="id_jenis_pendapatan" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="nama_produk" class="form-label">Nama Produk</label>
-                                    <input type="text" class="form-control" id="nama_produk" name="nama_produk" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="kategori_produk" class="form-label">Kategori Produk</label>
-                                    <select class="form-select" id="kategori_produk" name="kategori_produk" required>
-                                        <option value="">Pilih Kategori</option>
-                                        <option value="Minuman Panas">Minuman Panas</option>
-                                        <option value="Minuman Dingin">Minuman Dingin</option>
-                                        <option value="Makanan Ringan">Makanan Ringan</option>
-                                        <option value="Dessert">Dessert</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="harga_satuan" class="form-label">Harga Satuan (Rp)</label>
-                                    <input type="number" class="form-control" id="harga_satuan" name="harga_satuan" placeholder="Contoh: 25000" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="satuan" class="form-label">Satuan</label>
-                                    <input type="text" class="form-control" id="satuan" name="satuan" placeholder="Contoh: Gelas, Piring" required>
+                                    <label for="nama_jenis_pendapatan" class="form-label">Nama Jenis Pendapatan</label>
+                                    <input type="text" class="form-control" id="nama_jenis_pendapatan" name="nama_jenis_pendapatan" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="deskripsi" class="form-label">Deskripsi</label>
-                                    <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" placeholder="Contoh: Minuman kopi dengan susu dan busa lembut" required></textarea>
+                                    <textarea class="form-control" id="deskripsi" name="deskripsi" required></textarea>
                                 </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
