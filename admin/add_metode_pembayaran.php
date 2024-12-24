@@ -57,8 +57,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $result = mysqli_query($koneksi, "SELECT * FROM master_produk");
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo "<tr>
-                            <td>{$row['id_jenis_pembayaran']}</td>
-                            <td>{$row['nama_metode_pembayaran']}</td>
+                            <td>{$row['id_metode']}</td>
+                            <td>{$row['nama_metode']}</td>
                             <td>{$row['deskripsi']}</td>
                           </tr>";
                 }
@@ -69,26 +69,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 
 <!-- Modal Tambah Data -->
-<div class="modal fade" id="addJenisPendapatan" tabindex="-1" aria-labelledby="addJenisPendapatan" aria-hidden="true">
+<div class="modal fade" id="addMetodePembayaranModal" tabindex="-1" aria-labelledby="addMetodePembayaranPendapatan" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form method="POST" action="add_jenis_pendapatan.php">
+            <form method="POST" action="add_metode_pembayaran.php">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addJenisPendapatanModalLabel">Tambah Data Jenis Pendapatan</h5>
+                    <h5 class="modal-title" id="addMetodePembayaranModalLabel">Tambah Data Jenis Pendapatan</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="id_jenis_pendapatan" class="form-label">Id Jenis Pendapatan</label>
-                        <input type="text" class="form-control" id="id_produk" name="id_jenis_pendapatan" required>
+                        <label for="id_metode" class="form-label">Id Metode Pembayaran</label>
+                        <input type="text" class="form-control" id="id_metode" name="id_metode" required>
                     </div>
                     <div class="mb-3">
-                        <label for="nama_jenis_pendapatan" class="form-label">Nama Jenis Pendapatan</label>
-                        <input type="text" class="form-control" id="nama_jenis_pendapatan" name="nama_jenis_pendapatan" required>
+                        <label for="nama_metode" class="form-label">Nama Metode Pembayaran</label>
+                        <input type="text" class="form-control" id="nama_metode" name="nama_metode" required>
                     </div>
                     <div class="mb-3">
                         <label for="deskripsi" class="form-label">Deskripsi</label>
-                        <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" placeholder="Pendapatan tunai misal" required></textarea>
+                        <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" placeholder="lallalallallal" required></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
