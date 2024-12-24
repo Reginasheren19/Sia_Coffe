@@ -166,12 +166,12 @@ error_reporting(0)
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            Product Data Table
+                            Metode Pembayaran Data Table
                         </div>
                         <div class="card-body">
                             <!-- Tombol Tambah Data -->
                             <div class="mb-3 d-flex justify-content-end">
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addJenisPendapatanModal">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addMetodePembayaranModal">
                                     Add Data
                                 </button>
                             </div>
@@ -181,8 +181,8 @@ error_reporting(0)
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Id Jenis Pendapatan</th>
-                                            <th>Nama Jenis Pendapatan</th>
+                                            <th>Id Metode</th>
+                                            <th>Nama Metode</th>
                                             <th>Deskripsi</th>
                                             <th>Action</th>
                                         </tr>
@@ -190,15 +190,15 @@ error_reporting(0)
                                     <tbody id="data_jenis_pendapatan">
                                         <?php
                                         // Query data produk dari database
-                                        $result = mysqli_query($koneksi, "SELECT * FROM master_jenis_pendapatan");
+                                        $result = mysqli_query($koneksi, "SELECT * FROM master_metode_pembayaran");
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>
-                                                <td>{$row['id_jenis_pendapatan']}</td>
-                                                <td>{$row['nama_jenis_pendapatan']}</td>
+                                                <td>{$row['id_metode']}</td>
+                                                <td>{$row['nama_metode']}</td>
                                                 <td>{$row['deskripsi']}</td>
                                                 <td>
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                    <a href='delete_jenis_pendapatan.php?id_produk={$row['id_jenis_pendapatan']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data?')\">Delete</a>
+                                                    <a href='delete_metode_pembayaran.php?id_produk={$row['id_metode_pembayaran']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data?')\">Delete</a>
                                                 </td>
                                             </tr>";
                                         }
@@ -212,22 +212,22 @@ error_reporting(0)
             </main>
 
             <!-- Modal Tambah Data -->
-            <div class="modal fade" id="addJenisPendapatanModal" tabindex="-1" aria-labelledby="addJenisPendapatanModal" aria-hidden="true">
+            <div class="modal fade" id="addMetodePembayaranModal" tabindex="-1" aria-labelledby="addMetodePembayaranModal" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form id="form_add_produk">
+                        <form id="form_add_metode_pembayaran">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="addJenisPendapatanModal">Tambah Data Jenis Pendapatan</h5>
+                                <h5 class="modal-title" id="addMetodePembayaranModal">Tambah Data Metode Pembayaran</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="mb-3">
-                                    <label for="id_jenis_pendapatan" class="form-label">ID Jenis Pendapatan</label>
-                                    <input type="text" class="form-control" id="id_jenis_pendapatan" name="id_jenis_pendapatan" required>
+                                    <label for="id_metode" class="form-label">ID Metode Pembayaran</label>
+                                    <input type="text" class="form-control" id="id_metode" name="id_metode" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="nama_jenis_pendapatan" class="form-label">Nama Jenis Pendapatan</label>
-                                    <input type="text" class="form-control" id="nama_jenis_pendapatan" name="nama_jenis_pendapatan" required>
+                                    <label for="nama_metode" class="form-label">Nama Metode Pembayaran</label>
+                                    <input type="text" class="form-control" id="nama_metode" name="nama_metode" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="deskripsi" class="form-label">Deskripsi</label>
@@ -287,6 +287,7 @@ error_reporting(0)
                     </div>
                 </div>
             </div>
+            
             <script>
                  $(document).ready(function() {
                     // Submit form tambah produk
