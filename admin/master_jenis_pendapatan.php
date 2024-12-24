@@ -212,44 +212,26 @@ error_reporting(0)
             </main>
 
             <!-- Modal Tambah Data -->
-            <div class="modal fade" id="addProdukModal" tabindex="-1" aria-labelledby="addProdukModalLabel" aria-hidden="true">
+            <div class="modal fade" id="addJenisPendapatanModal" tabindex="-1" aria-labelledby="addJenisPendapatanModal" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <form id="form_add_produk">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="addProdukModalLabel">Tambah Data Produk</h5>
+                                <h5 class="modal-title" id="addJenisPendapatanModal">Tambah Data Jenis Pendapatan</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="mb-3">
-                                    <label for="id_produk" class="form-label">ID Produk</label>
-                                    <input type="text" class="form-control" id="id_produk" name="id_produk" required>
+                                    <label for="id_jenis_pendapatan" class="form-label">ID Jenis Pendapatan</label>
+                                    <input type="text" class="form-control" id="id_jenis_pendapatan" name="id_jenis_pendapatan" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="nama_produk" class="form-label">Nama Produk</label>
-                                    <input type="text" class="form-control" id="nama_produk" name="nama_produk" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="kategori_produk" class="form-label">Kategori Produk</label>
-                                    <select class="form-select" id="kategori_produk" name="kategori_produk" required>
-                                        <option value="">Pilih Kategori</option>
-                                        <option value="Minuman Panas">Minuman Panas</option>
-                                        <option value="Minuman Dingin">Minuman Dingin</option>
-                                        <option value="Makanan Ringan">Makanan Ringan</option>
-                                        <option value="Dessert">Dessert</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="harga_satuan" class="form-label">Harga Satuan (Rp)</label>
-                                    <input type="number" class="form-control" id="harga_satuan" name="harga_satuan" placeholder="Contoh: 25000" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="satuan" class="form-label">Satuan</label>
-                                    <input type="text" class="form-control" id="satuan" name="satuan" placeholder="Contoh: Gelas, Piring" required>
+                                    <label for="nama_jenis_pendapatan" class="form-label">Nama Jenis Pendapatan</label>
+                                    <input type="text" class="form-control" id="nama_jenis_pendapatan" name="nama_jenis_pendapatan" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="deskripsi" class="form-label">Deskripsi</label>
-                                    <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" placeholder="Contoh: Minuman kopi dengan susu dan busa lembut" required></textarea>
+                                    <textarea class="form-control" id="deskripsi" name="deskripsi" required></textarea>
                                 </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
