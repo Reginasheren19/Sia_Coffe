@@ -3,6 +3,7 @@ include("../config/koneksi_mysql.php");
 
 if (isset($_GET['supplier'])) {
     $hapus_id_supplier = mysqli_real_escape_string($koneksi, $_GET['supplier']);
+    echo "ID Supplier yang akan dihapus: " . $hapus_id_supplier . "<br>"; // Debugging
 
     $sql = mysqli_query($koneksi, "DELETE FROM master_supplier WHERE id_supplier = '$hapus_id_supplier'");
 
@@ -13,6 +14,6 @@ if (isset($_GET['supplier'])) {
         echo "Error deleting record: " . mysqli_error($koneksi);
     }
 } else {
-    echo "No employee specified for deletion.";
+    echo "No supplier specified for deletion.";
 }
 ?>
