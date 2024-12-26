@@ -203,6 +203,7 @@ error_reporting(0)
                                             <th>Alamat</th>
                                             <th>No Telepon</th>
                                             <th>Saldo Piutang</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody id="data_customer">
