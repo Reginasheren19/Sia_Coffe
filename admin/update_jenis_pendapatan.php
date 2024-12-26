@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $deskripsi = mysqli_real_escape_string($koneksi, $_POST['deskripsi']);
 
     // Query untuk memperbarui data ke database
-    $sql = "UPDATE master_produk SET 
+    $sql = "UPDATE master_jenis_pembayaran SET 
             nama_jenis_pendapatan='$nama_jenis_pendapatan', 
             deskripsi='$deskripsi' 
             WHERE id_jenis_pendapatan='$id_jenis_pendapatan'";

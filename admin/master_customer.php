@@ -267,44 +267,34 @@ error_reporting(0)
                 </div>
             </div>
 
-            <!-- Modal Update Data Produk -->
-            <div class="modal fade" id="updateProdukModal" tabindex="-1" aria-labelledby="updateProdukModalLabel" aria-hidden="true">
+            <!-- Modal Edit Data Customer -->
+            <div class="modal fade" id="editCustomerModal" tabindex="-1" aria-labelledby="editCustomerModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form id="form_update_produk">
+                        <form method="POST" action="update_customer.php">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="updateProdukModalLabel">Update Data Produk Coffee Shop</h5>
+                                <h5 class="modal-title" id="editCustomerModalLabel">Edit Data Customer</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <!-- Hidden input for ID produk -->
-                                <input type="hidden" id="update_id_produk" name="id_produk">
+                                <input type="hidden" name="id_customer" id="edit_id_customer">
                                 <div class="mb-3">
-                                    <label for="update_nama_produk" class="form-label">Nama Produk</label>
-                                    <input type="text" class="form-control" id="update_nama_produk" name="nama_produk" required>
+                                    <label for="editNamaCustomer" class="form-label">Nama</label>
+                                    <input type="text" class="form-control" id="editNamaCustomer" name="nama_customer" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="update_kategori_produk" class="form-label">Kategori Produk</label>
-                                    <select class="form-select" id="update_kategori_produk" name="kategori_produk" required>
-                                        <option value="Minuman">Minuman</option>
-                                        <option value="Makanan">Makanan</option>
-                                        <option value="Snack">Snack</option>
-                                    </select>
+                                    <label for="editAlamatCustomer" class="form-label">Alamat</label>
+                                    <textarea class="form-control" id="editAlamatCustomer" name="alamat_customer" rows="3" required></textarea>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="update_harga_satuan" class="form-label">Harga Satuan</label>
-                                    <input type="number" class="form-control" id="update_harga_satuan" name="harga_satuan" required>
+                                    <label for="edirTelpCustomer" class="form-label">No Telepon</label>
+                                    <input type="text" class="form-control" id="editTelpCustomer" name="telp_customer" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="update_satuan" class="form-label">Satuan</label>
-                                    <input type="text" class="form-control" id="update_satuan" name="satuan" required>
+                                    <label for="editSaldoPiutang" class="form-label">Saldo</label>
+                                    <input type="text" class="form-control" id="editSaldoPiutang" name="saldo_piutang" required>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="update_deskripsi" class="form-label">Deskripsi</label>
-                                    <textarea class="form-control" id="update_deskripsi" name="deskripsi" rows="3" required></textarea>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
+                                <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                                 <button type="submit" class="btn btn-primary">Update</button>
                             </div>
@@ -312,35 +302,35 @@ error_reporting(0)
                     </div>
                 </div>
             </div>
-
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+            <script src="js/scripts.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+            <script src="js/datatables-simple-demo.js"></script>
             <script>
-                 $(document).ready(function() {
-                    // Submit form tambah produk
-                    $('#form_add_customerk').on('submit', function(event) {
-                        event.preventDefault();
-                        $.ajax({
-                            url: "add_customer.php", // URL untuk proses tambah data customer
-                            method: "POST",
-                            data: $(this).serialize(),
-                            success: function(data) {
-                                alert(data); // Menampilkan pesan sukses atau error dari server
-                                $('#form_add_customer')[0].reset(); // Reset form tambah produk
-                                $('#addCustomerModal').modal('hide'); // Menutup modal tambah produk
-                                location.reload(); // Refresh halaman untuk memuat data baru
-                            }
-                        });
-                    });
+            // Menangani klik tombol update
+                document.querySelectorAll('.btn-update').forEach(button => {
+                button.addEventListener('click', function() {
+                    // Ambil data dari baris yang sesuai
+                    const row = this.closest('tr');
+                    const id_customer = row.cells[0].innerText;
+                    const nama_customer = row.cells[1].innerText;
+                    const alamat_customer = row.cells[2].innerText;
+                    const telp_customer = row.cells[3].innerText;
+                    const saldo_piutang = row.cells[4].innerText;
+
+                    // Isi modal dengan data yang diambil
+                    document.getElementById('editIdCustomer').value = id_customer;
+                    document.getElementById('editNamaCustomer').value = nama_customer;
+                    document.getElementById('editAlamatCustomer').value = alamat_customer;
+                    document.getElementById('editTelpCustomer').value = telp_customer;
+                    document.getElementById('editSaldoPiutang').value = saldo_piutang;
+
+                    // Tampilkan modal
+                    var editModal = new bootstrap.Modal(document.getElementById('editCustomerModal'));
+                    editModal.show();
                 });
+            });
             </script>
         </div>
-
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="js/scripts.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="assets/demo/chart-area-demo.js"></script>
-        <script src="assets/demo/chart-bar-demo.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <script src="js/datatables-simple-demo.js"></script>
     </body>
 </html>
