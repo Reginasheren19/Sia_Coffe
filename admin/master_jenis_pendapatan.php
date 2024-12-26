@@ -239,10 +239,6 @@ error_reporting(0)
                             </div>
                             <div class="modal-body">
                                 <div class="mb-3">
-                                    <label for="id_jenis_pendapatan" class="form-label">ID Jenis Pendapatan</label>
-                                    <input type="text" class="form-control" id="id_jenis_pendapatan" name="id_jenis_pendapatan" required>
-                                </div>
-                                <div class="mb-3">
                                     <label for="nama_jenis_pendapatan" class="form-label">Nama Jenis Pendapatan</label>
                                     <input type="text" class="form-control" id="nama_jenis_pendapatan" name="nama_jenis_pendapatan" required>
                                 </div>
