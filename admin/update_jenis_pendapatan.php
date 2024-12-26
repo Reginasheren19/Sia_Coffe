@@ -69,7 +69,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <a href='delete_jenis_pendapatan.php?id_jenis_pendapatan={$row['id_jenis_pendapatan']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data?')\">Delete</a>
                         </td>
                     </tr>";
-                }
                 ?>
             </tbody>
         </table>
