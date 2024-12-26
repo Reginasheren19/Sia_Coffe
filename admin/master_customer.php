@@ -200,7 +200,7 @@ error_reporting(0)
                         <div class="card-body">
                             <!-- Tombol Tambah Data -->
                             <div class="mb-3 d-flex justify-content-end">
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addproduct">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCustomerModal">
                                     Add Data
                                 </button>
                             </div>
@@ -253,15 +253,6 @@ error_reporting(0)
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="id_customer" class="form-label">Id Customer</label>
-                                    <input type="text" class="form-control" id="id_produk" name="id_produk" required>
-                                </div>
-                                <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="id_customer" class="form-label">Id Customer</label>
-                                    <input type="text" class="form-control" id="id_customer" name="id_customer" required>
-                                </div>
                                 <div class="mb-3">
                                     <label for="nama_customer" class="form-label">Nama</label>
                                     <input type="text" class="form-control" id="nama_customer" name="nama_customer" required>

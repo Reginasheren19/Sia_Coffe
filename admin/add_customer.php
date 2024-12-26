@@ -85,10 +85,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="id_customer" class="form-label">Id Customer</label>
-                        <input type="text" class="form-control" id="id_customer" name="id_customer" required>
-                    </div>
-                    <div class="mb-3">
                         <label for="nama_customer" class="form-label">Nama</label>
                         <input type="text" class="form-control" id="nama_customer" name="nama_customer" required>
                     </div>
