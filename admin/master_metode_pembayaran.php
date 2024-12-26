@@ -240,10 +240,6 @@ error_reporting(0)
                             </div>
                             <div class="modal-body">
                                 <div class="mb-3">
-                                    <label for="id_metode" class="form-label">ID Metode Pembayaran</label>
-                                    <input type="text" class="form-control" id="id_metode" name="id_metode" required>
-                                </div>
-                                <div class="mb-3">
                                     <label for="nama_metode" class="form-label">Nama Metode Pembayaran</label>
                                     <input type="text" class="form-control" id="nama_metode" name="nama_metode" required>
                                 </div>
