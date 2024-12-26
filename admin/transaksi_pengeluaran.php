@@ -1,7 +1,7 @@
 <?php
 include("../config/koneksi_mysql.php");
 
-$sql = mysqli_query($koneksi,"SELECT * FROM master_supplier");
+$sql = mysqli_query($koneksi,"SELECT * FROM transaksi_pengeluaran");
 
 ?>
 
@@ -94,7 +94,7 @@ error_reporting(0)
                                 Pendapatan
                             </a>
                             <div class="sb-sidenav-menu-heading">Expenditure Cycle</div>
-                            <a class="nav-link" href="charts.html">
+                            <a class="nav-link" href="transaksi_pengeluaran.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Pengeluaran
                             </a>
@@ -165,165 +165,73 @@ error_reporting(0)
             <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Master Supplier</h1>
+                    <h1 class="mt-4">Transaksi Pengeluaran</h1>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Data Supplier</li>
+                        <li class="breadcrumb-item active">Data Pengeluaran</li>
                     </ol>
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            Supplier Data Table
+                            Tabel Transaksi Pengeluaran
                         </div>
                         <div class="card-body">
                             <!-- Tombol Tambah Data -->
                             <div class="mb-3 d-flex justify-content-end">
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addSupplierModal">
-                                    Add Data
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addPengeluaranModal">
+                                    Add Pengeluaran
                                 </button>
                             </div>
 
-                            <!-- Tabel Data Supplier -->
-                            <div class="table-responsive">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Id Supplier</th>
-                                            <th>Nama</th>
-                                            <th>Alamat</th>
-                                            <th>No Telepon</th>
-                                            <th>Email</th>
-                                            <th>Saldo Hutang</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="data_supplier">
-                                        <?php
-                                        // Query data supplier dari database
-                                        $result = mysqli_query($koneksi, "SELECT * FROM master_supplier");
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                            echo "<tr>
-                                                <td>{$row['id_supplier']}</td>
-                                                <td>{$row['nama_supplier']}</td>
-                                                <td>{$row['alamat_supplier']}</td>
-                                                <td>{$row['no_telp_supplier']}</td>
-                                                <td>{$row['email_supplier']}</td>
-                                                <td>{$row['saldo_hutang']}</td>
-                                                <td>
-                                                    <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                    <a href='delete_supplier.php?supplier={$row['id_supplier']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data supplier?')\">Delete</a>
-                                                </td>
-                                            </tr>";
-                                        }
-                                        ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </main>
+                 <!-- Tabel Data Transaksi Pengeluaran -->
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Id Transaksi</th>
+                <th>Kategori Pengeluaran</th>
+                <th>Nama Supplier</th>
+                <th>Nama Akun</th>
+                <th>Tanggal Pengeluaran</th>
+                <th>Total Pengeluaran</th>
+                <th>Jumlah Bayar</th>
+                <th>Hutang</th>
+            </tr>
+        </thead>
+        <tbody id="data_pengeluaran">
+            <?php
+            // Query untuk mengambil data transaksi_pengeluaran dan melakukan join dengan master_supplier dan master_akun
+            $result = mysqli_query($koneksi, "
+                SELECT tp.id_transaksi, 
+                       tp.kategori_pengeluaran, 
+                       ms.nama_supplier, 
+                       ma.nama_akun, 
+                       tp.tanggal_pengeluaran, 
+                       tp.total_pengeluaran, 
+                       tp.jumlah_bayar, 
+                       tp.hutang 
+                FROM transaksi_pengeluaran tp
+                JOIN master_supplier ms ON tp.id_supplier = ms.id_supplier
+                JOIN master_akun ma ON tp.id_akun = ma.id_akun
+            ");
 
-            <!-- Modal Tambah Data -->
-            <div class="modal fade" id="addSupplierModal" tabindex="-1" aria-labelledby="addSupplierModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form method="POST" action="add_supplier.php">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="addSupplierModalLabel">Tambah Data Supplier</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="nama_supplier" class="form-label">Nama Supplier</label>
-                                    <input type="text" class="form-control" id="nama_supplier" name="nama_supplier" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="alamat_supplier" class="form-label">Alamat Supplier</label>
-                                    <textarea class="form-control" id="alamat_supplier" name="alamat_supplier" rows="3" required></textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="no_telp_supplier" class="form-label">Nomor Telepon</label>
-                                    <input type="text" class="form-control" id="no_telp_supplier" name="no_telp_supplier" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="email_supplier" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="email_supplier" name="email_supplier" required>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-primary">Simpan</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal Edit Data Supplier -->
-            <div class="modal fade" id="editSupplierModal" tabindex="-1" aria-labelledby="editSupplierModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form method="POST" action="update_supplier.php">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="editSupplierModalLabel">Edit Data Supplier</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <input type="hidden" name="id_supplier" id="edit_id_supplier">
-                                <div class="mb-3">
-                                    <label for="editNamaSupplier" class="form-label">Nama Supplier</label>
-                                    <input type="text" class="form-control " id="editNamaSupplier" name="nama_supplier" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="editAlamatSupplier" class="form-label">Alamat Supplier</label>
-                                    <textarea class="form-control" id="editAlamatSupplier" name="alamat_supplier" rows="3" required></textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="editNoTelpSupplier" class="form-label">Nomor Telepon</label>
-                                    <input type="text" class="form-control" id="editNoTelpSupplier" name="no_telp_supplier" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="editEmailSupplier" class="form-label">Email</label>
-                                    <input type="email" class="form-control" id="editEmailSupplier" name="email_supplier" required>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-primary">Update</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-            <script src="js/scripts.js"></script>
-            <script>
-            // Menangani klik tombol update
-            document.querySelectorAll('.btn-update').forEach(button => {
-                button.addEventListener('click', function() {
-                    // Ambil data dari baris yang sesuai
-                    const row = this.closest('tr');
-                    const id_supplier = row.cells[0].innerText; // Ambil ID Supplier
-                    const nama_supplier = row.cells[1].innerText;
-                    const alamat_supplier = row.cells[2].innerText;
-                    const no_telp_supplier = row.cells[3].innerText; // Indeks 3 untuk No Telepon
-                    const email_supplier = row.cells[4].innerText; // Indeks 4 untuk Email
-
-                    // Isi modal dengan data yang diambil
-                    document.getElementById('edit_id_supplier').value = id_supplier; // Set ID Supplier
-                    document.getElementById('editNamaSupplier').value = nama_supplier;
-                    document.getElementById('editAlamatSupplier').value = alamat_supplier;
-                    document.getElementById('editNoTelpSupplier').value = no_telp_supplier;
-                    document.getElementById('editEmailSupplier').value = email_supplier;
-
-                    // Tampilkan modal
-                    var editModal = new bootstrap.Modal(document.getElementById('editSupplierModal'));
-                    editModal.show();
-                });
-            });
-            </script>
-        </div>
-    </div>
-</body>
-</html>
+            // Menampilkan data transaksi pengeluaran
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo "<tr>
+                    <td>{$row['id_transaksi']}</td>
+                    <td>{$row['kategori_pengeluaran']}</td>
+                    <td>{$row['nama_supplier']}</td>
+                    <td>{$row['nama_akun']}</td>
+                    <td>{$row['tanggal_pengeluaran']}</td>
+                    <td>" . number_format($row['total_pengeluaran'], 2) . "</td>
+                    <td>" . number_format($row['jumlah_bayar'], 2) . "</td>
+                    <td>" . number_format($row['hutang'], 2) . "</td>
+                    <td>
+                        <button class='btn btn-primary btn-sm btn-update'>Update</button>
+                        <a href='delete_transaksi.php?transaksi={$row['id_transaksi']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this transaction?')\">Delete</a>
+                    </td>
+                </tr>";
+            }
+            ?>
+        </tbody>
+    </table>
+</div>
