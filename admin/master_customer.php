@@ -150,18 +150,6 @@ error_reporting(0)
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Customer
                             </a>
-                            <a class="nav-link" href="master_jenis_pendapatan.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Data Jenis Pendapatan
-                            </a>
-                            <a class="nav-link" href="master_metode_pembayaran.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Data Metode Pembayaran
-                            </a>
-                            <a class="nav-link" href="master_customer.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Data Customer
-                            </a>
                             <a class="nav-link" href="master_supplier.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Supplier
@@ -200,7 +188,7 @@ error_reporting(0)
                         <div class="card-body">
                             <!-- Tombol Tambah Data -->
                             <div class="mb-3 d-flex justify-content-end">
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addproduct">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCustomerModal">
                                     Add Data
                                 </button>
                             </div>
@@ -215,6 +203,7 @@ error_reporting(0)
                                             <th>Alamat</th>
                                             <th>No Telepon</th>
                                             <th>Saldo Piutang</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody id="data_customer">
@@ -253,15 +242,6 @@ error_reporting(0)
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="id_customer" class="form-label">Id Customer</label>
-                                    <input type="text" class="form-control" id="id_produk" name="id_produk" required>
-                                </div>
-                                <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="id_customer" class="form-label">Id Customer</label>
-                                    <input type="text" class="form-control" id="id_customer" name="id_customer" required>
-                                </div>
                                 <div class="mb-3">
                                     <label for="nama_customer" class="form-label">Nama</label>
                                     <input type="text" class="form-control" id="nama_customer" name="nama_customer" required>

@@ -196,117 +196,91 @@ ini_set('display_errors', 1);
                         <div class="card-body">
                             <!-- Tombol Tambah Data -->
                             <div class="mb-3 d-flex justify-content-end">
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTransaksiKaryawanModal">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addAkunModal">
                                     Add Data
                                 </button>
                             </div>
 
-                            <!-- Tabel Data Transaksi Karyawan -->
+                            <!-- Tabel Data Akun -->
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>ID Transaksi Karyawan</th>
-                                            <th>Nama Karyawan</th>
-                                            <th>Nama Jabatan</th>
-                                            <th>Nama Divisi</th>
-                                            <th>Status Karyawan</th>
+                                            <th>ID Akun</th>
+                                            <th>Kode Akun</th>
+                                            <th>Nama Akun</th>
+                                            <th>Kategori</th>
+                                            <th>Jenis Saldo</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="data_transaksi_karyawan">
+                                    <tbody id="data_akun">
                                         <?php
-                                        // Query untuk mendapatkan data transaksi karyawan
-                                        $query = "SELECT 
-                                                    tk.id_transaksi_karyawan,
-                                                    mk.nama_karyawan,
-                                                    mj.nama_jabatan,
-                                                    md.nama_divisi,
-                                                    tk.status_karyawan
-                                                FROM 
-                                                    transaksi_karyawan tk
-                                                JOIN master_karyawan mk ON tk.NIK = mk.NIK
-                                                JOIN master_jabatan mj ON tk.id_jabatan = mj.id_jabatan
-                                                JOIN master_divisi md ON tk.id_divisi = md.id_divisi";
-                                        
-                                        $result = mysqli_query($koneksi, $query);
+                                        // Query data akun dari database
+                                        $result = mysqli_query($koneksi, "SELECT * FROM master_akun");
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>
-                                                <td>{$row['id_transaksi_karyawan']}</td>
-                                                <td>{$row['nama_karyawan']}</td>
-                                                <td>{$row['nama_jabatan']}</td>
-                                                <td>{$row['nama_divisi']}</td>
-                                                <td>{$row['status_karyawan']}</td>
+                                                <td>{$row['id_akun']}</td>
+                                                <td>{$row['kode_akun']}</td>
+                                                <td>{$row['nama_akun']}</td>
+                                                <td>{$row['kategori']}</td>
+                                                <td>{$row['jenis_saldo']}</td>
                                                 <td>
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                    <a href='delete_transaksi_karyawan.php?transaksi_karyawan={$row['id_transaksi_karyawan']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this transaction?')\">Delete</a>                                                </td>
+                                                    <a href='delete_akun.php?id_akun={$row['id_akun']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this account?')\">Delete</a>
+                                                </td>
                                             </tr>";
                                         }
                                         ?>
                                     </tbody>
                                 </table>
                             </div>
+
                         </div>
                     </div>
                 </div>
             </main>
 
-            <!-- Modal Tambah Data Transaksi Karyawan -->
-            <div class="modal fade" id="addTransaksiKaryawanModal" tabindex="-1" aria-labelledby="addTransaksiKaryawanModalLabel" aria-hidden="true">
+            <!-- Modal Tambah Data Akun -->
+            <div class="modal fade" id="addAkunModal" tabindex="-1" aria-labelledby="addAkunModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form method="POST" action="add_transaksi_karyawan.php">
+                        <form method="POST" action="add_akun.php">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="addTransaksiKaryawanModalLabel">Tambah Data Transaksi Karyawan</h5>
+                                <h5 class="modal-title" id="addAkunModalLabel">Tambah Data Akun</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="mb-3">
-                                    <label for="NIK" class="form-label">NIK</label>
-                                    <select class="form-select" id="NIK" name="NIK" required onchange="updateKaryawanInfo()">
-                                        <option value="">Pilih NIK</option>
-                                        <?php
-                                        // Ambil data karyawan untuk dropdown
-                                        $karyawan = mysqli_query($koneksi, "SELECT NIK, nama_karyawan FROM master_karyawan");
-                                        while ($row = mysqli_fetch_assoc($karyawan)) {
-                                            echo "<option value='{$row['NIK']}'>{$row['NIK']} - {$row['nama_karyawan']}</option>";
-                                        }
-                                        ?>
+                                    <label for="kode_akun" class="form-label">Kode Akun</label>
+                                    <input type="text" class="form-control" id="kode_akun" name="kode_akun" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="nama_akun" class="form-label">Nama Akun</label>
+                                    <input type="text" class="form-control" id="nama_akun" name="nama_akun" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="kategori" class="form-label">Kategori</label>
+                                    <select class="form-select" id="kategori" name="kategori" required>
+                                        <option value="Aset">Aset</option>
+                                        <option value="Kewajiban">Kewajiban</option>
+                                        <option value="Modal">Modal</option>
+                                        <option value="Pendapatan">Pendapatan</option>
+                                        <option value="Beban">Beban</option>
                                     </select>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="id_jabatan" class="form-label">ID Jabatan</label>
-                                    <select class="form-select" id="id_jabatan" name="id_jabatan" required onchange="updateJabatanInfo()">
-                                        <option value="">Pilih Jabatan</option>
-                                        <?php
-                                        // Ambil data jabatan untuk dropdown
-                                        $jabatan = mysqli_query($koneksi, "SELECT id_jabatan, nama_jabatan FROM master_jabatan");
-                                        while ($row = mysqli_fetch_assoc($jabatan)) {
-                                            echo "<option value='{$row['id_jabatan']}'>{$row['id_jabatan']} - {$row['nama_jabatan']}</option>";
-                                        }
-                                        ?>
+                                    <label for="jenis_saldo" class="form-label">Jenis Saldo</label>
+                                    <select class="form-select" id="jenis_saldo" name="jenis_saldo" required>
+                                        <option value="Debit">Debit</option>
+                                        <option value="Kredit">Kredit</option>
                                     </select>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="id_divisi" class="form-label">ID Divisi</label>
-                                    <select class="form-select" id="id_divisi" name="id_divisi" required onchange="updateDivisiInfo()">
-                                        <option value="">Pilih Divisi</option>
-                                        <?php
-                                        // Ambil data divisi untuk dropdown
-                                        $divisi = mysqli_query($koneksi, "SELECT id_divisi, nama_divisi FROM master_divisi");
-                                        while ($row = mysqli_fetch_assoc($divisi)) {
-                                            echo "<option value='{$row['id_divisi']}'>{$row['id_divisi']} - {$row['nama_divisi']}</option>";
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="status_karyawan" class="form-label">Status Karyawan</label>
-                                    <select class="form-select" id="status_karyawan" name="status_karyawan" required>
-                                        <option value="">Pilih Status</option>
-                                        <option value="Aktif">Aktif</option>
-                                        <option value="Cuti">Cuti</option>
-                                        <option value="Resign">Resign</option>
+                                    <label for="status" class="form-label">Status</label>
+                                    <select class="form-select" id="status" name="status" required>
+                                        <option value="1">Aktif</option>
+                                        <option value="0">Tidak Aktif</option>
                                     </select>
                                 </div>
                             </div>
@@ -319,65 +293,83 @@ ini_set('display_errors', 1);
                 </div>
             </div>
 
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-            <script src="js/scripts.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-            <script src="js/datatables-simple-demo.js"></script>
+            <!-- Modal Edit Data Akun -->
+            <div class="modal fade" id="editAkunModal" tabindex="-1" aria-labelledby="editAkunModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form method="POST" action="update_akun.php">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editAkunModalLabel">Edit Data Akun</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" name="id_akun" id="editIdAkun">
+                                <div class="mb-3">
+                                    <label for="editKodeAkun" class="form-label">Kode Akun</label>
+                                    <input type="text" class="form-control" id="editKodeAkun" name="kode_akun" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editNamaAkun" class="form-label">Nama Akun</label>
+                                    <input type="text" class="form-control" id="editNamaAkun" name="nama_akun" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editKategori" class="form-label">Kategori</label>
+                                    <select class="form-select" id="editKategori" name="kategori" required>
+                                        <option value="Aset">Aset</option>
+                                        <option value="Kewajiban">Kewajiban</option>
+                                        <option value="Modal">Modal</option>
+                                        <option value="Pendapatan">Pendapatan</option>
+                                        <option value="Beban">Beban</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editJenisSaldo" class="form-label">Jenis Saldo</label>
+                                    <select class="form-select" id="editJenisSaldo" name="jenis_saldo" required>
+                                        <option value="Debit">Debit</option>
+                                        <option value="Kredit">Kredit</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editStatus" class="form-label">Status</label>
+                                    <select class="form-select" id="editStatus" name="status" required>
+                                        <option value="1">Aktif</option>
+                                        <option value="0">Tidak Aktif</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
             <script>
-            function updateKaryawanInfo() {
-                const nik = document.getElementById('NIK').value;
-                if (nik) {
-                    fetch(`get_karyawan_info.php?NIK=${ nik}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            document.getElementById('nama_karyawan').value = data.nama_karyawan;
-                            document.getElementById('alamat_karyawan').value = data.alamat_karyawan;
-                            document.getElementById('tgl_lahir').value = data.tgl_lahir;
-                            document.getElementById('jenis_kelamin').value = data.jenis_kelamin;
-                            document.getElementById('no_telp').value = data.no_telp;
-                            document.getElementById('email').value = data.email;
-                            document.getElementById('tgl_bergabung').value = data.tgl_bergabung;
-                        })
-                        .catch(error => console.error('Error fetching karyawan info:', error));
-                } else {
-                    // Clear fields if no NIK is selected
-                    document.getElementById('nama_karyawan').value = '';
-                    document.getElementById('alamat_karyawan').value = '';
-                    document.getElementById('tgl_lahir').value = '';
-                    document.getElementById('jenis_kelamin').value = '';
-                    document.getElementById('no_telp').value = '';
-                    document.getElementById('email').value = '';
-                    document.getElementById('tgl_bergabung').value = '';
-                }
-            }
+            // Menangani klik tombol update
+            document.querySelectorAll('.btn-update').forEach(button => {
+                button.addEventListener('click', function() {
+                    // Ambil data dari baris yang sesuai
+                    const row = this.closest('tr');
+                    const id_akun = row.cells[0].innerText;
+                    const kode_akun = row.cells[1].innerText;
+                    const nama_akun = row.cells[2].innerText;
+                    const kategori = row.cells[3].innerText;
+                    const jenis_saldo = row.cells[4].innerText;
 
-            function updateJabatanInfo() {
-                const idJabatan = document.getElementById('id_jabatan').value;
-                if (idJabatan) {
-                    fetch(`get_jabatan_info.php?id_jabatan=${idJabatan}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            document.getElementById('nama_jabatan').value = data.nama_jabatan;
-                        })
-                        .catch(error => console.error('Error fetching jabatan info:', error));
-                } else {
-                    document.getElementById('nama_jabatan').value = '';
-                }
-            }
+                    // Isi modal dengan data yang diambil
+                    document.getElementById('editIdAkun').value = id_akun;
+                    document.getElementById('editKodeAkun').value = kode_akun;
+                    document.getElementById('editNamaAkun').value = nama_akun;
+                    document.getElementById('editKategori').value = kategori;
+                    document.getElementById('editJenisSaldo').value = jenis_saldo;
 
-            function updateDivisiInfo() {
-                const idDivisi = document.getElementById('id_divisi').value;
-                if (idDivisi) {
-                    fetch(`get_divisi_info.php?id_divisi=${idDivisi}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            document.getElementById('nama_divisi').value = data.nama_divisi;
-                        })
-                        .catch(error => console.error('Error fetching divisi info:', error));
-                } else {
-                    document.getElementById('nama_divisi').value = '';
-                }
-            }
+                    // Tampilkan modal
+                    var editModal = new bootstrap.Modal(document.getElementById('editAkunModal'));
+                    editModal.show();
+                });
+            });
             </script>
         </body>
     </html>

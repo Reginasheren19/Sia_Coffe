@@ -79,10 +79,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="id_jenis_pendapatan" class="form-label">Id Jenis Pendapatan</label>
-                        <input type="text" class="form-control" id="id_produk" name="id_jenis_pendapatan" required>
-                    </div>
-                    <div class="mb-3">
                         <label for="nama_jenis_pendapatan" class="form-label">Nama Jenis Pendapatan</label>
                         <input type="text" class="form-control" id="nama_jenis_pendapatan" name="nama_jenis_pendapatan" required>
                     </div>

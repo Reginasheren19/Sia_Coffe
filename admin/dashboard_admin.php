@@ -108,13 +108,13 @@ session_start();
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Kelola Karyawan
                             </a>
-                            <a class="nav-link" href="tables.html">
+                            <a class="nav-link" href="transaksi_penggajian.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Penggajian
                             </a>
-                            <a class="nav-link" href="tables.html">
+                            <a class="nav-link" href="absensi.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Rekap Presensi
+                                Presensi Karyawan
                             </a>
                             <div class="sb-sidenav-menu-heading">Report Cycle</div>
                             <a class="nav-link" href="jurnal_umum.php">
@@ -138,6 +138,10 @@ session_start();
                             <a class="nav-link" href="master_divisi.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Data Divisi
+                            </a>
+                            <a class="nav-link" href="master_akun.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Data Akun
                             </a>
                             <a class="nav-link" href="master_produk.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>

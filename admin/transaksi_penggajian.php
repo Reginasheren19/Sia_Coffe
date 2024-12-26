@@ -196,56 +196,72 @@ ini_set('display_errors', 1);
                         <div class="card-body">
                             <!-- Tombol Tambah Data -->
                             <div class="mb-3 d-flex justify-content-end">
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTransaksiKaryawanModal">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTransaksiPenggajianModal">
                                     Add Data
                                 </button>
                             </div>
-
-                            <!-- Tabel Data Transaksi Karyawan -->
+                            <!-- Tabel Data Transaksi Penggajian -->
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>ID Transaksi Karyawan</th>
+                                            <th>ID Penggajian</th>
                                             <th>Nama Karyawan</th>
-                                            <th>Nama Jabatan</th>
-                                            <th>Nama Divisi</th>
-                                            <th>Status Karyawan</th>
+                                            <th>Periode Gaji</th>
+                                            <th>Gaji Pokok</th>
+                                            <th>Tunjangan</th>
+                                            <th>Potongan</th>
+                                            <th>Gaji Lembur</th>
+                                            <th>Gaji Bersih</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="data_transaksi_karyawan">
+                                    <tbody id="data_transaksi_penggajian">
                                         <?php
-                                        // Query untuk mendapatkan data transaksi karyawan
+                                        // Query untuk mendapatkan data transaksi penggajian dengan nama karyawan
                                         $query = "SELECT 
-                                                    tk.id_transaksi_karyawan,
-                                                    mk.nama_karyawan,
-                                                    mj.nama_jabatan,
-                                                    md.nama_divisi,
-                                                    tk.status_karyawan
-                                                FROM 
-                                                    transaksi_karyawan tk
-                                                JOIN master_karyawan mk ON tk.NIK = mk.NIK
-                                                JOIN master_jabatan mj ON tk.id_jabatan = mj.id_jabatan
-                                                JOIN master_divisi md ON tk.id_divisi = md.id_divisi";
+                                        tp.id_penggajian,
+                                        mk.nama_karyawan,
+                                        tp.periode_gaji,
+                                        tp.gaji_pokok,
+                                        tp.tunjangan,
+                                        tp.potongan,
+                                        tp.gaji_lembur,
+                                        tp.gaji_bersih
+                                    FROM 
+                                        transaksi_penggajian tp
+                                    JOIN 
+                                        transaksi_karyawan tk ON tp.id_transaksi_karyawan = tk.id_transaksi_karyawan
+                                    JOIN 
+                                        master_karyawan mk ON tk.NIK = mk.NIK";
                                         
                                         $result = mysqli_query($koneksi, $query);
+
+                                        if (!$result) {
+                                            die("Query failed: " . mysqli_error($koneksi));
+                                        }
+                                        
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>
-                                                <td>{$row['id_transaksi_karyawan']}</td>
+                                                <td>{$row['id_penggajian']}</td>
                                                 <td>{$row['nama_karyawan']}</td>
-                                                <td>{$row['nama_jabatan']}</td>
-                                                <td>{$row['nama_divisi']}</td>
-                                                <td>{$row['status_karyawan']}</td>
+                                                <td>{$row['periode_gaji']}</td>
+                                                <td>{$row['gaji_pokok']}</td>
+                                                <td>{$row['tunjangan']}</td>
+                                                <td>{$row['potongan']}</td>
+                                                <td>{$row['gaji_lembur']}</td>
+                                                <td>{$row['gaji_bersih']}</td>
                                                 <td>
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                    <a href='delete_transaksi_karyawan.php?transaksi_karyawan={$row['id_transaksi_karyawan']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this transaction?')\">Delete</a>                                                </td>
+                                                    <a href='delete_transaksi_penggajian.php?penggajian={$row['id_penggajian']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this payroll transaction?')\">Delete</a>
+                                                </td>
                                             </tr>";
                                         }
                                         ?>
                                     </tbody>
                                 </table>
                             </div>
+
                         </div>
                     </div>
                 </div>

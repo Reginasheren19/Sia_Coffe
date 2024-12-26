@@ -10,21 +10,17 @@ echo '</pre>';
 // Jika form disubmit melalui POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $NIK = mysqli_real_escape_string($koneksi, $_POST['NIK']);
-    $nama_karyawan = mysqli_real_escape_string($koneksi, $_POST['nama_karyawan']);
-    $alamat_karyawan = mysqli_real_escape_string($koneksi, $_POST['alamat_karyawan']);
-    $tgl_lahir = mysqli_real_escape_string($koneksi, $_POST['tgl_lahir']);
-    $jenis_kelamin = mysqli_real_escape_string($koneksi, $_POST['jenis_kelamin']);
-    $no_telp = mysqli_real_escape_string($koneksi, $_POST['no_telp']);
-    $email = mysqli_real_escape_string($koneksi, $_POST['email']);
-    $tgl_bergabung = mysqli_real_escape_string($koneksi, $_POST['tgl_bergabung']);
+    $id_jabatan = mysqli_real_escape_string($koneksi, $_POST['id_jabatan']);
+    $id_divisi = mysqli_real_escape_string($koneksi, $_POST['id_divisi']);
+    $status_karyawan = mysqli_real_escape_string($koneksi, $_POST['status_karyawan']);
 
-    // Query untuk menyimpan data ke database
-    $sql = "INSERT INTO master_karyawan (NIK, nama_karyawan, alamat_karyawan, tgl_lahir, jenis_kelamin, no_telp, email, tgl_bergabung) 
-            VALUES ('$NIK', '$nama_karyawan', '$alamat_karyawan', '$tgl_lahir', '$jenis_kelamin', '$no_telp', '$email', '$tgl_bergabung')";
+    // Query untuk menyimpan data ke tabel transaksi_karyawan
+    $sql = "INSERT INTO transaksi_karyawan (NIK, id_jabatan, id_divisi, status_karyawan) 
+            VALUES ('$NIK', '$id_jabatan', '$id_divisi', '$status_karyawan')";
 
     // Eksekusi query
     if (mysqli_query($koneksi, $sql)) {
-        echo "<script>alert('Data berhasil ditambahkan!'); window.location.href='master_karyawan.php';</script>";
+        echo "<script>alert('Data berhasil ditambahkan!'); window.location.href='transaksi_karyawan.php';</script>";
     } else {
         echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
     }
@@ -45,9 +41,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <h1 class="mb-4">Master Data Karyawan</h1>
 
     <!-- Tombol Tambah Data -->
-    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addKaryawanModal">Add Data</button>
+    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addTransaksiKaryawanModal">Add Data</button>
 
-<!-- Tabel Data Transaksi Karyawan -->
+    <!-- Tabel Data Transaksi Karyawan -->
     <div class="table-responsive">
     <table class="table table-bordered">
         <thead>
@@ -105,18 +101,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </div>
 
 <!-- Modal Tambah Data Transaksi Karyawan -->
-<div class="modal fade" id="addTransaksiModal" tabindex="-1" aria-labelledby="addTransaksiModalLabel" aria-hidden="true">
+<div class="modal fade" id="addTransaksiKaryawanModal" tabindex="-1" aria-labelledby="addTransaksiKaryawanModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <form method="POST" action="add_transaksi_karyawan.php">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addTransaksiModalLabel">Tambah Data Transaksi Karyawan</h5>
+                    <h5 class="modal-title" id="addTransaksiKaryawanModalLabel">Tambah Data Transaksi Karyawan</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="NIK" class="form-label">NIK</label>
-                        <select class="form-select" id="NIK" name="NIK" required>
+                        <select class="form-select" id="NIK" name="NIK" required onchange="updateKaryawanInfo()">
                             <option value="">Pilih NIK</option>
                             <?php
                             // Ambil data karyawan untuk dropdown
@@ -129,7 +125,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     <div class="mb-3">
                         <label for="id_jabatan" class="form-label">ID Jabatan</label>
-                        <select class="form-select" id="id_jabatan" name="id_jabatan" required>
+                        <select class="form-select" id="id_jabatan" name="id_jabatan" required onchange="updateJabatanInfo()">
                             <option value="">Pilih Jabatan</option>
                             <?php
                             // Ambil data jabatan untuk dropdown
@@ -142,7 +138,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     <div class="mb-3">
                         <label for="id_divisi" class="form-label">ID Divisi</label>
-                        <select class="form-select" id="id_divisi" name="id_divisi" required>
+                        <select class="form-select" id="id_divisi" name="id_divisi" required onchange="updateDivisiInfo()">
                             <option value="">Pilih Divisi</option>
                             <?php
                             // Ambil data divisi untuk dropdown
