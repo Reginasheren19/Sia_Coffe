@@ -237,7 +237,7 @@ error_reporting(0)
 
 
                 <!-- Modal Tambah Data -->
-                        <div class="modal fade" id="addProdukModal" tabindex="-1" aria-labelledby="addProdukModalLabel" aria-hidden="true">
+                <div class="modal fade" id="addProdukModal" tabindex="-1" aria-labelledby="addProdukModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <form method="POST" action="add_produk.php">
@@ -276,6 +276,53 @@ error_reporting(0)
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                                 <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+                <!-- Modal Edit Data Produk -->
+                <div class="modal fade" id="editProdukModal" tabindex="-1" aria-labelledby="editProdukModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form method="POST" action="update_produk.php">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editProdukModalLabel">Edit Data Produk</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" name="id_produk" id="edit_id_produk">
+                                <div class="mb-3">
+                                    <label for="editNamaProduk" class="form-label">Nama Produk</label>
+                                    <input type="text" class="form-control" id="editNamaProduk" name="nama_produk" required>
+                                </div>
+                                <div class="mb-3">
+                                <label for="editKategoriProduk" class="form-label">Kategori Produk</label>
+                                    <select class="form-select" id="editKategoriProduk" name="kategori_produk" required>
+                                        <option value="">Pilih Kategori</option>
+                                        <option value="Minuman Panas">Minuman Panas</option>
+                                        <option value="Minuman Dingin">Minuman Dingin</option>
+                                        <option value="Makanan Ringan">Makanan Ringan</option>
+                                        <option value="Dessert">Dessert</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editHargaSatuan" class="form-label">Harga Satuan</label>
+                                    <input type="date" class="form-control" id="editHargaSatuan" name="harga_satuan" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editSatuan" class="form-label">Satuan</label>
+                                    <input type="text" class="form-control" id="editSatuan" name="satuan" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editDeskripsi" class="form-label">Deskripsi</label>
+                                    <textarea class="form-control" id="editDeskripsi" name="deskripsi" rows="3" required></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
                             </div>
                         </form>
                     </div>

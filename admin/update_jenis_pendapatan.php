@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $sql = "UPDATE master_produk SET 
             nama_jenis_pendapatan='$nama_jenis_pendapatan', 
             deskripsi='$deskripsi' 
-            WHERE id_produk='$id_jenis_pendapatan'";
+            WHERE id_jenis_pendapatan='$id_jenis_pendapatan'";
 
     // Eksekusi query
     if (mysqli_query($koneksi, $sql)) {
@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Tombol Tambah Data -->
     <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addJenisPendapatanModal">Add Data</button>
 
-    <!-- Tabel Data Supplier -->
+    <!-- Tabel Data Jenis Pendapatan -->
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <tbody id="data_jenis_pendapatan">
                 <?php
                 // Query data supplier dari database
-                $result = mysqli_query($koneksi, "SELECT * FROM master_produk");
+                $result = mysqli_query($koneksi, "SELECT * FROM master_jenis_pendapatan);
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo "<tr>
                         <td>{$row['id_jenis_pendapatan']}</td>

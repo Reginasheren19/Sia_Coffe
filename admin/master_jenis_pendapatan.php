@@ -228,33 +228,6 @@ error_reporting(0)
             </main>
 
             <!-- Modal Tambah Data -->
-            <div class="modal fade" id="addJenisPendapatanModal" tabindex="-1" aria-labelledby="addJenisPendapatanModal" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form id="form_add_jenis_pendapatan">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="addJenisPendapatanModal">Tambah Data Jenis Pendapatan</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="nama_jenis_pendapatan" class="form-label">Nama Jenis Pendapatan</label>
-                                    <input type="text" class="form-control" id="nama_jenis_pendapatan" name="nama_jenis_pendapatan" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="deskripsi" class="form-label">Deskripsi</label>
-                                    <textarea class="form-control" id="deskripsi" name="deskripsi" required></textarea>
-                                </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-primary">Simpan</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal Tambah Data -->
             <div class="modal fade" id="addJenisPendapatanModal" tabindex="-1" aria-labelledby="addJenisPendapatanModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -281,6 +254,35 @@ error_reporting(0)
                 </div>
             </div>
 
+            <!-- Modal Edit Data Jenis Pendapatan -->
+            <div class="modal fade" id="editJenisPendapatanModal" tabindex="-1" aria-labelledby="editJenisPendapatanModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form method="POST" action="update_jenis_pendapatan.php">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editJenisPendapatanModalLabel">Edit Data Jenis Pendapatank</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <input type="hidden" name="id_jenis_pendapatan" id="edit_id_jenis_pendapatan">
+                                <div class="mb-3">
+                                    <label for="editNamaJenisPendapatan" class="form-label">Nama Jenis Pendapatan</label>
+                                    <input type="text" class="form-control" id="editNamaProduk" name="nama_produk" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editDeskripsi" class="form-label">Deskripsi</label>
+                                    <textarea class="form-control" id="editDeskripsi" name="deskripsi" rows="3" required></textarea>
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
             <script src="js/scripts.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
@@ -302,7 +304,7 @@ error_reporting(0)
                     document.getElementById('editDeskripsi').value = deskripsi;
 
                     // Tampilkan modal
-                    var editModal = new bootstrap.Modal(document.getElementById('editProdukModal'));
+                    var editModal = new bootstrap.Modal(document.getElementById('editJenisPendapatanModal'));
                     editModal.show();
                 });
             });
