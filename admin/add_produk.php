@@ -45,12 +45,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Tombol Tambah Data -->
     <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addProdukModal">Add Data</button>
 
-    <!-- Tabel Data Karyawan -->
+    <!-- Tabel Data Produk -->
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <<th>Id Produk</th>
+                        <th>Id Produk</th>
                         <th>Nama Produk</th>
                         <th>Kategori Produk</th>
                         <th>Harga Satuan</th>
@@ -88,16 +88,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="id_produk" class="form-label">Id Produk</label>
-                        <input type="text" class="form-control" id="id_produk" name="id_produk" required>
-                    </div>
-                    <div class="mb-3">
                         <label for="nama_produk" class="form-label">Nama Produk</label>
                         <input type="text" class="form-control" id="nama_produk" name="nama_produk" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="kategori_produk" class="form-label">Kategori Prduk</label>
-                        <textarea class="form-control" id="kategori_produk" name="kategori_produk" rows="3" required></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="kategori_produk" class="form-label">Kategori Produk</label>
