@@ -2,7 +2,7 @@
 include("../config/koneksi_mysql.php");
 
 if (isset($_GET['produk'])) {
-    $hapus_NIK = mysqli_real_escape_string($koneksi, $_GET['produk']);
+    $hapus_id_produk = mysqli_real_escape_string($koneksi, $_GET['produk']);
 
     $sql = mysqli_query($koneksi, "DELETE FROM master_produk WHERE id_produk = '$hapus_id_produk'");
 
