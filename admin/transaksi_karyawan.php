@@ -3,8 +3,7 @@ include("../config/koneksi_mysql.php");
 
 // Mengatur error reporting
 error_reporting(E_ALL);
-ini_set
-('display_errors', 1);
+ini_set('display_errors', 1);
 ?>
 
 <!DOCTYPE html>
@@ -184,7 +183,7 @@ ini_set
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Master Data Transaksi Karyawan</h1>
+                    <h1 class="mt-4">Master Data Karyawan</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                         <li class="breadcrumb-item active">Data Karyawan</li>
@@ -208,11 +207,8 @@ ini_set
                                     <thead>
                                         <tr>
                                             <th>ID Transaksi Karyawan</th>
-                                            <th>NIK</th>
                                             <th>Nama Karyawan</th>
-                                            <th>ID Jabatan</th>
                                             <th>Nama Jabatan</th>
-                                            <th>ID Divisi</th>
                                             <th>Nama Divisi</th>
                                             <th>Status Karyawan</th>
                                             <th>Action</th>
@@ -223,11 +219,8 @@ ini_set
                                         // Query untuk mendapatkan data transaksi karyawan
                                         $query = "SELECT 
                                                     tk.id_transaksi_karyawan,
-                                                    tk.NIK,
                                                     mk.nama_karyawan,
-                                                    tk.id_jabatan,
                                                     mj.nama_jabatan,
-                                                    tk.id_divisi,
                                                     md.nama_divisi,
                                                     tk.status_karyawan
                                                 FROM 
@@ -240,21 +233,16 @@ ini_set
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>
                                                 <td>{$row['id_transaksi_karyawan']}</td>
-                                                <td>{$row['NIK']}</td>
                                                 <td>{$row['nama_karyawan']}</td>
-                                                <td>{$row['id_jabatan']}</td>
                                                 <td>{$row['nama_jabatan']}</td>
-                                                <td>{$row['id_divisi']}</td>
                                                 <td>{$row['nama_divisi']}</td>
                                                 <td>{$row['status_karyawan']}</td>
                                                 <td>
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                    <a href='delete_transaksi_karyawan.php?id_transaksi={$row['id_transaksi_karyawan']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this transaction?')\">Delete</a>
-                                                </td>
+                                                    <a href='delete_transaksi_karyawan.php?transaksi_karyawan={$row['id_transaksi_karyawan']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this transaction?')\">Delete</a>                                                </td>
                                             </tr>";
                                         }
                                         ?>
-
                                     </tbody>
                                 </table>
                             </div>
@@ -275,7 +263,7 @@ ini_set
                             <div class="modal-body">
                                 <div class="mb-3">
                                     <label for="NIK" class="form-label">NIK</label>
-                                    <select class="form-select" id="NIK" name="NIK" required>
+                                    <select class="form-select" id="NIK" name="NIK" required onchange="updateKaryawanInfo()">
                                         <option value="">Pilih NIK</option>
                                         <?php
                                         // Ambil data karyawan untuk dropdown
@@ -288,7 +276,7 @@ ini_set
                                 </div>
                                 <div class="mb-3">
                                     <label for="id_jabatan" class="form-label">ID Jabatan</label>
-                                    <select class="form-select" id="id_jabatan" name="id_jabatan" required>
+                                    <select class="form-select" id="id_jabatan" name="id_jabatan" required onchange="updateJabatanInfo()">
                                         <option value="">Pilih Jabatan</option>
                                         <?php
                                         // Ambil data jabatan untuk dropdown
@@ -301,7 +289,7 @@ ini_set
                                 </div>
                                 <div class="mb-3">
                                     <label for="id_divisi" class="form-label">ID Divisi</label>
-                                    <select class="form-select" id="id_divisi" name="id_divisi" required>
+                                    <select class="form-select" id="id_divisi" name="id_divisi" required onchange="updateDivisiInfo()">
                                         <option value="">Pilih Divisi</option>
                                         <?php
                                         // Ambil data divisi untuk dropdown
@@ -336,35 +324,60 @@ ini_set
             <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
             <script src="js/datatables-simple-demo.js"></script>
             <script>
-            // Menangani klik tombol update
-            document.querySelectorAll('.btn-update').forEach(button => {
-                button.addEventListener('click', function() {
-                    // Ambil data dari baris yang sesuai
-                    const row = this.closest('tr');
-                    const NIK = row.cells[0].innerText;
-                    const nama_karyawan = row.cells[1].innerText;
-                    const alamat_karyawan = row.cells[2].innerText;
-                    const tgl_lahir = row.cells[3].innerText;
-                    const jenis_kelamin = row.cells[4].innerText;
-                    const no_telp = row.cells[5].innerText;
-                    const email = row.cells[6].innerText;
-                    const tgl_bergabung = row.cells[7].innerText;
+            function updateKaryawanInfo() {
+                const nik = document.getElementById('NIK').value;
+                if (nik) {
+                    fetch(`get_karyawan_info.php?NIK=${ nik}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById('nama_karyawan').value = data.nama_karyawan;
+                            document.getElementById('alamat_karyawan').value = data.alamat_karyawan;
+                            document.getElementById('tgl_lahir').value = data.tgl_lahir;
+                            document.getElementById('jenis_kelamin').value = data.jenis_kelamin;
+                            document.getElementById('no_telp').value = data.no_telp;
+                            document.getElementById('email').value = data.email;
+                            document.getElementById('tgl_bergabung').value = data.tgl_bergabung;
+                        })
+                        .catch(error => console.error('Error fetching karyawan info:', error));
+                } else {
+                    // Clear fields if no NIK is selected
+                    document.getElementById('nama_karyawan').value = '';
+                    document.getElementById('alamat_karyawan').value = '';
+                    document.getElementById('tgl_lahir').value = '';
+                    document.getElementById('jenis_kelamin').value = '';
+                    document.getElementById('no_telp').value = '';
+                    document.getElementById('email').value = '';
+                    document.getElementById('tgl_bergabung').value = '';
+                }
+            }
 
-                    // Isi modal dengan data yang diambil
-                    document.getElementById('editNIK').value = NIK;
-                    document.getElementById('editNama').value = nama_karyawan;
-                    document.getElementById('editAlamat').value = alamat_karyawan;
-                    document.getElementById('editTglLahir').value = tgl_lahir;
-                    document.getElementById('editJenisKelamin').value = jenis_kelamin;
-                    document.getElementById('editNoTelp').value = no_telp;
-                    document.getElementById('editEmail'). value = email;
-                    document.getElementById('editTglBergabung').value = tgl_bergabung;
+            function updateJabatanInfo() {
+                const idJabatan = document.getElementById('id_jabatan').value;
+                if (idJabatan) {
+                    fetch(`get_jabatan_info.php?id_jabatan=${idJabatan}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById('nama_jabatan').value = data.nama_jabatan;
+                        })
+                        .catch(error => console.error('Error fetching jabatan info:', error));
+                } else {
+                    document.getElementById('nama_jabatan').value = '';
+                }
+            }
 
-                    // Tampilkan modal
-                    var editModal = new bootstrap.Modal(document.getElementById('editKaryawanModal'));
-                    editModal.show();
-                });
-            });
+            function updateDivisiInfo() {
+                const idDivisi = document.getElementById('id_divisi').value;
+                if (idDivisi) {
+                    fetch(`get_divisi_info.php?id_divisi=${idDivisi}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            document.getElementById('nama_divisi').value = data.nama_divisi;
+                        })
+                        .catch(error => console.error('Error fetching divisi info:', error));
+                } else {
+                    document.getElementById('nama_divisi').value = '';
+                }
+            }
             </script>
         </body>
     </html>
