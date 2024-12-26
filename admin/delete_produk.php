@@ -1,17 +1,18 @@
 <?php
+include("../config/koneksi_mysql.php");
 
-    include("../config/koneksi_mysql.php");
+if (isset($_GET['produk'])) {
+    $hapus_id_produk = mysqli_real_escape_string($koneksi, $_GET['produk']);
 
-    $hapus_id_karyawan = $_GET['id_karyawan'];
+    $sql = mysqli_query($koneksi, "DELETE FROM master_produk WHERE id_produk = '$hapus_id_produk'");
 
-    $sql = mysqli_query($koneksi,
-
-            "DELETE FROM master_produk WHERE id_karyawan = '$hapus_id_karyawan'");
-
-if($sql){
-
-    header("location: master_produk.php");
-
+    if ($sql) {
+        header("location: master_produk.php");
+        exit; // Pastikan untuk menghentikan eksekusi skrip setelah header
+    } else {
+        echo "Error deleting record: " . mysqli_error($koneksi);
+    }
+} else {
+    echo "No employee specified for deletion.";
 }
-
 ?>
