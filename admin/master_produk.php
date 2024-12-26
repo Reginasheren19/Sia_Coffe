@@ -235,22 +235,23 @@ error_reporting(0)
                 </div>
             </main>
 
-            <!-- Modal Tambah Data -->
-            <div class="modal fade" id="addProdukModal" tabindex="-1" aria-labelledby="addProdukModalLabel" aria-hidden="true">
+
+                <!-- Modal Tambah Data -->
+                        <div class="modal fade" id="addProdukModal" tabindex="-1" aria-labelledby="addProdukModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form id="form_add_produk">
+                        <form method="POST" action="add_produk.php">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="addProdukModalLabel">Tambah Data Produk</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="nama_produk" class="form-label">Nama Produk</label>
-                                    <input type="text" class="form-control" id="nama_produk" name="nama_produk" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="kategori_produk" class="form-label">Kategori Produk</label>
+                            <div class="mb-3">
+                                <label for="nama_produk" class="form-label">Nama Produk</label>
+                                <input type="text" class="form-control" id="nama_produk" name="nama_produk" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="kategori_produk" class="form-label">Kategori Produk</label>
                                     <select class="form-select" id="kategori_produk" name="kategori_produk" required>
                                         <option value="">Pilih Kategori</option>
                                         <option value="Minuman Panas">Minuman Panas</option>
@@ -258,19 +259,20 @@ error_reporting(0)
                                         <option value="Makanan Ringan">Makanan Ringan</option>
                                         <option value="Dessert">Dessert</option>
                                     </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="harga_satuan" class="form-label">Harga Satuan (Rp)</label>
-                                    <input type="number" class="form-control" id="harga_satuan" name="harga_satuan" placeholder="Contoh: 25000" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="satuan" class="form-label">Satuan</label>
-                                    <input type="text" class="form-control" id="satuan" name="satuan" placeholder="Contoh: Gelas, Piring" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="deskripsi" class="form-label">Deskripsi</label>
-                                    <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" placeholder="Contoh: Minuman kopi dengan cream susu" required></textarea>
-                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="harga_satuan" class="form-label">Harga Satuan (Rp)</label>
+                                <input type="number" class="form-control" id="harga_satuan" name="harga_satuan" placeholder="Contoh: 25000" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="satuan" class="form-label">Satuan</label>
+                                <input type="text" class="form-control" id="satuan" name="satuan" placeholder="Contoh: Gelas, Piring" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="deskripsi" class="form-label">Deskripsi</label>
+                            <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" placeholder="Contoh: Minuman kopi dengan cream susu" required></textarea>
+                            </div>
+                        </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                                 <button type="submit" class="btn btn-primary">Simpan</button>
@@ -280,81 +282,36 @@ error_reporting(0)
                 </div>
             </div>
 
-            <!-- Modal Update Data Produk -->
-            <div class="modal fade" id="updateProdukModal" tabindex="-1" aria-labelledby="updateProdukModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form id="form_update_produk">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="updateProdukModalLabel">Update Data Produk Coffee Shop</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+            <script src="js/scripts.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+            <script src="js/datatables-simple-demo.js"></script>
 
-                                <!-- Hidden input for ID produk -->
-                                <input type="hidden" id="update_id_produk" name="id_produk">
-                                <div class="mb-3">
-                                    <label for="update_nama_produk" class="form-label">Nama Produk</label>
-                                    <input type="text" class="form-control" id="update_nama_produk" name="nama_produk" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="update_kategori_produk" class="form-label">Kategori Produk</label>
-                                    <select class="form-select" id="update_kategori_produk" name="kategori_produk" required>
-                                        <option value="Minuman">Minuman</option>
-                                        <option value="Makanan">Makanan</option>
-                                        <option value="Snack">Snack</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="update_harga_satuan" class="form-label">Harga Satuan</label>
-                                    <input type="number" class="form-control" id="update_harga_satuan" name="harga_satuan" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="update_satuan" class="form-label">Satuan</label>
-                                    <input type="text" class="form-control" id="update_satuan" name="satuan" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="update_deskripsi" class="form-label">Deskripsi</label>
-                                    <textarea class="form-control" id="update_deskripsi" name="deskripsi" rows="3" required></textarea>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-primary">Update</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
             <script>
-                 $(document).ready(function() {
-                    
-                    // Submit form tambah produk
-                    $('#form_add_produk').on('submit', function(event) {
-                        event.preventDefault();
-                        $.ajax({
-                            url: "add_produk.php", // URL untuk proses tambah data produk
-                            method: "POST",
-                            data: $(this).serialize(),
-                            success: function(data) {
-                                alert(data); // Menampilkan pesan sukses atau error dari server
-                                $('#form_add_produk')[0].reset(); // Reset form tambah produk
-                                $('#addProdukModal').modal('hide'); // Menutup modal tambah produk
-                                location.reload(); // Refresh halaman untuk memuat data baru
-                            }
-                        });
-                    });
+            // Menangani klik tombol update
+            document.querySelectorAll('.btn-update').forEach(button => {
+                button.addEventListener('click', function() {
+                    // Ambil data dari baris yang sesuai
+                    const row = this.closest('tr');
+                    const id_produk = row.cells[0].innerText;
+                    const nama_produk = row.cells[1].innerText;
+                    const harga_satuan = row.cells[2].innerText;
+                    const satuan = row.cells[3].innerText;
+                    const deskripsi = row.cells[4].innerText;
+
+                    // Isi modal dengan data yang diambil
+                    document.getElementById('editIdJabatan').value = id_produk;
+                    document.getElementById('editNamaJabatan').value = nama_produk;
+                    document.getElementById('editGajiPokok').value = harga_satuan;
+                    document.getElementById('editTunjangan').value = satuan;
+                    document.getElementById('editUpahLembur').value = deskripsi;
+
+                    // Tampilkan modal
+                    var editModal = new bootstrap.Modal(document.getElementById('editProdukModal'));
+                    editModal.show();
                 });
+            });
             </script>
         </div>
-
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="js/scripts.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="assets/demo/chart-area-demo.js"></script>
-        <script src="assets/demo/chart-bar-demo.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <script src="js/datatables-simple-demo.js"></script>
     </body>
 </html>

@@ -1,28 +1,36 @@
 <?php
+// Aktifkan error reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Include koneksi ke database
 include("../config/koneksi_mysql.php");
 
-// Jika data dikirimkan melalui form
+// Jika form disubmit melalui POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nik = $_POST['nik'];
-    $nama_karyawan = $_POST['nama_karyawan'];
-    $alamat = $_POST['alamat'];
-    $tgl_lahir = $_POST['tgl_lahir'];
-    $jenis_kelamin = $_POST['jenis_kelamin'];
-    $no_telp = $_POST['no_telp'];
-    $email = $_POST['email'];
-    $tgl_bergabung = $_POST['tgl_bergabung'];
+    // Ambil data dari POST
+    $id_produk = mysqli_real_escape_string($koneksi, $_POST['id_produk']);
+    $nama_produk = mysqli_real_escape_string($koneksi, $_POST['nama_produk']);
+    $kategori_produk = mysqli_real_escape_string($koneksi, $_POST['kategori_produk']);
+    $harga_satuan = mysqli_real_escape_string($koneksi, $_POST['harga_satuan']);
+    $satuan = mysqli_real_escape_string($koneksi, $_POST['satuan']);
+    $deskripsi = mysqli_real_escape_string($koneksi, $_POST['deskripsi']);
 
-    $sql = "UPDATE master_karyawan 
-            SET nama_karyawan = '$nama_karyawan', alamat_karyawan = '$alamat', tgl_lahir = '$tgl_lahir', jenis_kelamin = '$jenis_kelamin', 
-                no_telp = '$no_telp', email = '$email', tgl_bergabung = '$tgl_bergabung' 
-            WHERE NIK = '$nik'";
+    // Query untuk memperbarui data ke database
+    $sql = "UPDATE master_produk SET 
+            nama_produk='$nama_supplier', 
+            kategori_produk='$kategori_produk', 
+            harga_satuan='$harga_satuan', 
+            satuan='$satuan'
+            deskripsi='$deskripsi' 
+            WHERE id_produk='$id_produk'";
 
+    // Eksekusi query
     if (mysqli_query($koneksi, $sql)) {
-        echo "Data berhasil diupdate!";
+        echo "<script>alert('Data berhasil diperbarui!'); window.location.href='master_supplier.php';</script>";
     } else {
-        echo "Error: " . mysqli_error($koneksi);
+        echo "<script>alert('Error: " . mysqli_error($koneksi) . "'); window.location.href='master_supplier.php';</script>";
     }
-    exit; // Stop script to prevent HTML output
 }
 ?>
 
@@ -31,48 +39,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master Karyawan</title>
+    <title>Master Produk</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
 </head>
 <body>
 <div class="container mt-4">
-    <h1 class="mb-4">Master Data Karyawan</h1>
+    <h1 class="mb-4">Master Data Produk</h1>
 
     <!-- Tombol Tambah Data -->
-    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addKaryawanModal">Add Data</button>
+    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addProdukModal">Add Data</button>
 
-    <!-- Tabel Data Karyawan -->
+    <!-- Tabel Data Supplier -->
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>NIK</th>
-                    <th>Nama Karyawan</th>
-                    <th>Alamat</th>
-                    <th>Tanggal Lahir</th>
-                    <th>Jenis Kelamin</th>
-                    <th>No. Telpon</th>
-                    <th>Email</th>
-                    <th>Tanggal Bergabung</th>
+                    <th>Id Produk</th>
+                    <th>Nama Produk</th>
+                    <th>Kategori</th>
+                    <th>Harga Satuan</th>
+                    <th>Satuan</th>
+                    <th>Deskripsi</th>
+                    <th>Action</th>
                 </tr>
             </thead>
-            <tbody id="data_karyawan">
+            <tbody id="data_produk">
                 <?php
-                $result = mysqli_query($koneksi, "SELECT * FROM master_karyawan");
+                // Query data supplier dari database
+                $result = mysqli_query($koneksi, "SELECT * FROM master_produk");
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo "<tr>
-                            <td>{$row['NIK']}</td>
-                            <td>{$row['nama_karyawan']}</td>
-                            <td>{$row['alamat_karyawan']}</td>
-                            <td>{$row['tgl_lahir']}</td>
-                            <td>{$row['jenis_kelamin']}</td>
-                            <td>{$row['no_telp']}</td>
-                            <td>{$row['email']}</td>
-                            <td>{$row['tgl_bergabung']}</td>
-                          </tr>";
+                        <td>{$row['id_produk']}</td>
+                        <td>{$row['nama_produk']}</td>
+                        <td>{$row['kategori']}</td>
+                        <td>{$row['harga_satuan']}</td>
+                        <td>{$row['satuan']}</td>
+                        <td>{$row['deskripsi']}</td>
+                        <td>
+                            <button class='btn btn-primary btn-sm btn-update'>Update</button>
+                            <a href='delete_supplier.php?id_supplier={$row['id_supplier']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data produk?')\">Delete</a>
+                        </td>
+                    </tr>";
                 }
                 ?>
             </tbody>
@@ -80,100 +88,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 </div>
 
-<!-- Modal Update Data -->
-<div class="modal fade" id="updateKaryawanModal" tabindex="-1" aria-labelledby="updateKaryawanModalLabel" aria-hidden="true">
+<!-- Modal Tambah Data -->
+<div class="modal fade" id="addProdukModal" tabindex="-1" aria-labelledby="addProdukModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <form id="form_update_karyawan">
+            <form method="POST" action="">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="updateKaryawanModalLabel">Update Data Karyawan</h5>
+                    <h5 class="modal-title" id="addProdukModalLabel">Tambah Data Produk</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="hidden" id="update_nik" name="nik">
                     <div class="mb-3">
-                        <label for="update_nama_karyawan" class="form-label">Nama Karyawan</label>
-                        <input type="text" class="form-control" id="update_nama_karyawan" name="nama_karyawan" required>
+                        <label for="nama_produk" class="form-label">Nama Produk</label>
+                        <input type="text" class="form-control" id="nama_produk" name="nama_produk" required>
                     </div>
                     <div class="mb-3">
-                        <label for="update_alamat" class="form-label">Alamat</label>
-                        <textarea class="form-control" id="update_alamat" name="alamat" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="update_tgl_lahir" class="form-label">Tanggal Lahir</label>
-                        <input type="date" class="form-control" id="update_tgl_lahir" name="tgl_lahir" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="update_jenis_kelamin" class="form-label">Jenis Kelamin</label>
-                        <select class="form-select" id="update_jenis_kelamin" name="jenis_kelamin" required>
-                            <option value="Laki-laki">Laki-laki</option>
-                            <option value="Perempuan">Perempuan</option>
+                        <label for="kategori_produk" class="form-label">Kategori Produk</label>
+                        <select class="form-select" id="kategori_produk" name="kategori_produk" required>
+                                <option value="">Pilih Kategori</option>
+                                <option value="Minuman Panas">Minuman Panas</option>
+                                <option value="Minuman Dingin">Minuman Dingin</option>
+                                <option value="Makanan Ringan">Makanan Ringan</option>
+                                <option value="Dessert">Dessert</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="update_no_telp" class="form-label">Nomor Telepon</label>
-                        <input type="text" class="form-control" id="update_no_telp" name="no_telp" required>
+                        <label for="harga_satuan" class="form-label">Harga Satuan (Rp)</label>
+                        <input type="number" class="form-control" id="harga_satuan" name="harga_satuan" placeholder="Contoh: 25000" required>
+                     </div>
+                    <div class="mb-3">
+                        <label for="satuan" class="form-label">Satuan</label>
+                        <input type="text" class="form-control" id="satuan" name="satuan" placeholder="Contoh: Gelas, Piring" required>
                     </div>
                     <div class="mb-3">
-                        <label for="update_email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="update_email" name="email" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="update_tgl_bergabung" class="form-label">Tanggal Bergabung</label>
-                        <input type="date" class="form-control" id="update_tgl_bergabung" name="tgl_bergabung" required>
+                        <label for="deskripsi" class="form-label">Deskripsi</label>
+                        <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" placeholder="Contoh: Minuman kopi dengan cream susu" required></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-<script>
-$(document).on('click', '.btn-update', function() {
-    // Ambil data dari baris yang sesuai
-    var row = $(this).closest('tr');
-    var nik = row.find('td:eq(0)').text();
-    var nama_karyawan = row.find('td:eq(1)').text();
-    var alamat = row.find('td:eq(2)').text();
-    var tgl_lahir = row.find('td:eq(3)').text();
-    var jenis_kelamin = row.find('td:eq(4)').text();
-    var no_telp = row.find('td:eq(5)').text();
-    var email = row.find('td:eq(6)').text();
-    var tgl_bergabung = row.find('td:eq(7)').text();
-
-    // Isi modal dengan data yang diambil
-    $('#update_nik').val(nik);
-    $('#update_nama_karyawan').val(nama_karyawan);
-    $('#update_alamat').val(alamat);
-    $('#update_tgl_lahir').val(tgl_lahir);
-    $('#update_jenis_kelamin').val(jenis_kelamin);
-    $('#update_no_telp').val(no_telp);
-    $('#update_email').val(email);
-    $('#update_tgl_bergabung').val(tgl_bergabung);
-
-    // Tampilkan modal
-    $('#updateKaryawanModal').modal('show');
-});
-
-// Submit form update karyawan
-$('#form_update_karyawan').on('submit', function(event) {
-    event.preventDefault();
-    $.ajax({
-        url: "update_karyawan.php", // URL untuk proses update data
-        method: "POST",
-        data: $(this).serialize(),
-        success: function(data) {
-            alert(data);
-            $('#form_update_karyawan')[0].reset(); // Reset form
-            $('#updateKaryawanModal').modal('hide'); // Tutup modal
-            location.reload(); // Refresh halaman
-        }
-    });
-});
-</script>
 </body>
 </html>
