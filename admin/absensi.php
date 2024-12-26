@@ -207,7 +207,7 @@ ini_set('display_errors', 1);
                                     <thead>
                                         <tr>
                                             <th>ID Absensi</th>
-                                            <th>ID Transaksi</th>
+                                            <th>Nama Karyawan</th>
                                             <th>Tanggal</th>
                                             <th>Waktu Masuk</th>
                                             <th>Waktu Keluar</th>
@@ -217,18 +217,33 @@ ini_set('display_errors', 1);
                                     </thead>
                                     <tbody id="data_absensi">
                                         <?php
-                                        // Query data absensi dari database
-                                        $result = mysqli_query($koneksi, "SELECT a.id_absensi, a.id_transaksi_karyawan, a.tanggal, a.waktu_masuk, a.waktu_keluar, a.status FROM absensi a");
+                                        // Query data absensi dengan JOIN untuk mendapatkan nama karyawan
+                                        $query = "
+                                        SELECT 
+                                            a.id_absensi, 
+                                            a.tanggal, 
+                                            a.waktu_masuk, 
+                                            a.waktu_keluar, 
+                                            a.status, 
+                                            k.nama_karyawan
+                                        FROM absensi a
+                                        JOIN transaksi_karyawan t ON a.id_transaksi_karyawan = t.id_transaksi_karyawan
+                                        JOIN master_karyawan k ON t.nik = k.nik";
+                                    
+                                    
+
+                                        $result = mysqli_query($koneksi, $query);
 
                                         // Check if the query was successful
                                         if (!$result) {
                                             die("Query failed: " . mysqli_error($koneksi));
                                         }
 
+                                        // Tampilkan data
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>
                                                 <td>{$row['id_absensi']}</td>
-                                                <td>{$row['id_transaksi_karyawan']}</td>
+                                                <td>{$row['nama_karyawan']}</td>
                                                 <td>{$row['tanggal']}</td>
                                                 <td>{$row['waktu_masuk']}</td>
                                                 <td>{$row['waktu_keluar']}</td>
@@ -243,6 +258,7 @@ ini_set('display_errors', 1);
                                     </tbody>
                                 </table>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -280,19 +296,19 @@ ini_set('display_errors', 1);
                                 <!-- Waktu Masuk -->
                                 <div class="mb-3">
                                     <label for="waktu_masuk" class="form-label">Waktu Masuk</label>
-                                    <input type="time" class="form-control" id="waktu_masuk" name="waktu_masuk" required>
+                                    <input type="time" class="form-control" id="waktu_masuk" name="waktu_masuk" required readonly>
                                 </div>
 
                                 <!-- Waktu Keluar -->
                                 <div class="mb-3">
                                     <label for="waktu_keluar" class="form-label">Waktu Keluar</label>
-                                    <input type="time" class="form-control" id="waktu_keluar" name="waktu_keluar" required>
+                                    <input type="time" class="form-control" id="waktu_keluar" name="waktu_keluar" required readonly>
                                 </div>
 
                                 <!-- Status -->
                                 <div class="mb-3">
                                     <label for="status" class="form-label">Status</label>
-                                    <select class="form-select" id="status" name="status" required>
+                                    <select class="form-select" id="status" name="status" required readonly>
                                         <option value="Hadir">Hadir</option>
                                         <option value="Izin">Izin</option>
                                         <option value="Sakit">Sakit</option>
@@ -302,10 +318,10 @@ ini_set('display_errors', 1);
                             </div>
                             <div class="modal-footer">
                                 <!-- Tombol Absen Masuk -->
-                                <button type="submit" name="absen_masuk" class="btn btn-success">Absen Masuk</button>
+                                <button type="button" class="btn btn-success" id="absenMasukBtn">Absen Masuk</button>
 
                                 <!-- Tombol Absen Keluar -->
-                                <button type="submit" name="absen_keluar" class="btn btn-warning">Absen Keluar</button>
+                                <button type="button" class="btn btn-warning" id="absenKeluarBtn">Absen Keluar</button>
 
                                 <!-- Tombol Batal -->
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -314,6 +330,7 @@ ini_set('display_errors', 1);
                     </div>
                 </div>
             </div>
+
 
 
 

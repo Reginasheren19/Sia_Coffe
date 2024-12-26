@@ -71,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <h1 class="mb-4">Master Data Karyawan</h1>
 
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#gajiModal">
-    Tambah Penggajian
+    Add Data
     </button>
     <!-- Tabel Data Karyawan -->
     <div class="table-responsive">
