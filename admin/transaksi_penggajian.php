@@ -196,7 +196,7 @@ ini_set('display_errors', 1);
                         <div class="card-body">
                             <!-- Tombol Tambah Data -->
                             <div class="mb-3 d-flex justify-content-end">
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTransaksiPenggajianModal">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#gajiModal">
                                     Add Data
                                 </button>
                             </div>
@@ -267,72 +267,42 @@ ini_set('display_errors', 1);
                 </div>
             </main>
 
-            <!-- Modal Tambah Data Transaksi Karyawan -->
-            <div class="modal fade" id="addTransaksiKaryawanModal" tabindex="-1" aria-labelledby="addTransaksiKaryawanModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form method="POST" action="add_transaksi_karyawan.php">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="addTransaksiKaryawanModalLabel">Tambah Data Transaksi Karyawan</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="NIK" class="form-label">NIK</label>
-                                    <select class="form-select" id="NIK" name="NIK" required onchange="updateKaryawanInfo()">
-                                        <option value="">Pilih NIK</option>
-                                        <?php
-                                        // Ambil data karyawan untuk dropdown
-                                        $karyawan = mysqli_query($koneksi, "SELECT NIK, nama_karyawan FROM master_karyawan");
-                                        while ($row = mysqli_fetch_assoc($karyawan)) {
-                                            echo "<option value='{$row['NIK']}'>{$row['NIK']} - {$row['nama_karyawan']}</option>";
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="id_jabatan" class="form-label">ID Jabatan</label>
-                                    <select class="form-select" id="id_jabatan" name="id_jabatan" required onchange="updateJabatanInfo()">
-                                        <option value="">Pilih Jabatan</option>
-                                        <?php
-                                        // Ambil data jabatan untuk dropdown
-                                        $jabatan = mysqli_query($koneksi, "SELECT id_jabatan, nama_jabatan FROM master_jabatan");
-                                        while ($row = mysqli_fetch_assoc($jabatan)) {
-                                            echo "<option value='{$row['id_jabatan']}'>{$row['id_jabatan']} - {$row['nama_jabatan']}</option>";
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="id_divisi" class="form-label">ID Divisi</label>
-                                    <select class="form-select" id="id_divisi" name="id_divisi" required onchange="updateDivisiInfo()">
-                                        <option value="">Pilih Divisi</option>
-                                        <?php
-                                        // Ambil data divisi untuk dropdown
-                                        $divisi = mysqli_query($koneksi, "SELECT id_divisi, nama_divisi FROM master_divisi");
-                                        while ($row = mysqli_fetch_assoc($divisi)) {
-                                            echo "<option value='{$row['id_divisi']}'>{$row['id_divisi']} - {$row['nama_divisi']}</option>";
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="status_karyawan" class="form-label">Status Karyawan</label>
-                                    <select class="form-select" id="status_karyawan" name="status_karyawan" required>
-                                        <option value="">Pilih Status</option>
-                                        <option value="Aktif">Aktif</option>
-                                        <option value="Cuti">Cuti</option>
-                                        <option value="Resign">Resign</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-primary">Simpan</button>
-                            </div>
-                        </form>
-                    </div>
+            <!-- Modal -->
+            <div class="modal fade" id="gajiModal" tabindex="-1" aria-labelledby="gajiModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="gajiModalLabel">Tambah Penggajian</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <div class="modal-body">
+                    <!-- Form untuk menambahkan penggajian -->
+                    <form action="add_transaksi_penggajian.php" method="POST">
+                    <div class="form-group">
+                        <label for="id_transaksi_karyawan">ID Transaksi Karyawan:</label>
+                        <input type="text" name="id_transaksi_karyawan" id="id_transaksi_karyawan" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="periode_gaji">Periode Gaji (Bulan/Tahun):</label>
+                        <input type="month" name="periode_gaji" id="periode_gaji" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gaji_pokok">Gaji Pokok:</label>
+                        <input type="number" name="gaji_pokok" id="gaji_pokok" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tunjangan">Tunjangan:</label>
+                        <input type="number" name="tunjangan" id="tunjangan" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="potongan">Potongan:</label>
+                        <input type="number" name="potongan" id="potongan" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">Tambah Penggajian</button>
+                    </form>
+                </div>
+                </div>
+            </div>
             </div>
 
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

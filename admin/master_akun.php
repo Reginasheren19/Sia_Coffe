@@ -100,7 +100,7 @@ ini_set('display_errors', 1);
                                 Pendapatan
                             </a>
                             <div class="sb-sidenav-menu-heading">Expenditure Cycle</div>
-                            <a class="nav-link" href="charts.html">
+                            <a class="nav-link" href="transaksi_pengeluaran.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Pengeluaran
                             </a>
@@ -176,22 +176,22 @@ ini_set('display_errors', 1);
                 </div>
                 <div class="sb-sidenav-footer">
                     <div class="small">Logged in as:</div>
-                    Start Bootstrap
+                    Admin Bootstrap
                 </div>
             </nav>
         </div>
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Master Data Karyawan</h1>
+                    <h1 class="mt-4">Master Data Akun</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Data Karyawan</li>
+                        <li class="breadcrumb-item active">Data Akun</li>
                     </ol>
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            Employee Data Table
+                            Akun Data Table
                         </div>
                         <div class="card-body">
                             <!-- Tombol Tambah Data -->
@@ -227,7 +227,7 @@ ini_set('display_errors', 1);
                                                 <td>{$row['jenis_saldo']}</td>
                                                 <td>
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                    <a href='delete_akun.php?id_akun={$row['id_akun']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this account?')\">Delete</a>
+                                                    <a href='delete_akun.php?akun={$row['id_akun']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this account?')\">Delete</a>
                                                 </td>
                                             </tr>";
                                         }
