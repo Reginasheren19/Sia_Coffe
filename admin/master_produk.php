@@ -300,11 +300,11 @@ error_reporting(0)
                     const deskripsi = row.cells[4].innerText;
 
                     // Isi modal dengan data yang diambil
-                    document.getElementById('editIdJabatan').value = id_produk;
-                    document.getElementById('editNamaJabatan').value = nama_produk;
-                    document.getElementById('editGajiPokok').value = harga_satuan;
-                    document.getElementById('editTunjangan').value = satuan;
-                    document.getElementById('editUpahLembur').value = deskripsi;
+                    document.getElementById('editIdProduk').value = id_produk;
+                    document.getElementById('editNamaProduk').value = nama_produk;
+                    document.getElementById('editHargaSatuan').value = harga_satuan;
+                    document.getElementById('editSatuan').value = satuan;
+                    document.getElementById('editDeskripsi').value = deskripsi;
 
                     // Tampilkan modal
                     var editModal = new bootstrap.Modal(document.getElementById('editProdukModal'));

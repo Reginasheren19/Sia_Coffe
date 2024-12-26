@@ -27,9 +27,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Eksekusi query
     if (mysqli_query($koneksi, $sql)) {
-        echo "<script>alert('Data berhasil diperbarui!'); window.location.href='master_supplier.php';</script>";
+        echo "<script>alert('Data berhasil diperbarui!'); window.location.href='master_produk.php';</script>";
     } else {
-        echo "<script>alert('Error: " . mysqli_error($koneksi) . "'); window.location.href='master_supplier.php';</script>";
+        echo "<script>alert('Error: " . mysqli_error($koneksi) . "'); window.location.href='master_produk.php';</script>";
     }
 }
 ?>
@@ -78,7 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <td>{$row['deskripsi']}</td>
                         <td>
                             <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                            <a href='delete_supplier.php?id_supplier={$row['id_supplier']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data produk?')\">Delete</a>
+                            <a href='delete_produk.php?id_produk={$row['id_produk']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data produk?')\">Delete</a>
                         </td>
                     </tr>";
                 }
