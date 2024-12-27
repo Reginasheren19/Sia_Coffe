@@ -104,8 +104,6 @@ ini_set('display_errors', 1);
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Pengeluaran
                             </a>
-
-
                             <div class="sb-sidenav-menu-heading">Payroll Cycle</div>
                             <a class="nav-link" href="charts.html">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
@@ -201,159 +199,145 @@ ini_set('display_errors', 1);
                             </button>
                         </div>
 
-                            <!-- Tabel Data Absensi Karyawan -->
-                            <div class="table-responsive">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>ID Absensi</th>
-                                            <th>Nama Karyawan</th>
-                                            <th>Tanggal</th>
-                                            <th>Waktu Masuk</th>
-                                            <th>Waktu Keluar</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="data_absensi">
-                                        <?php
-                                        // Query data absensi dengan JOIN untuk mendapatkan nama karyawan
-                                        $query = "
-                                        SELECT 
-                                            a.id_absensi, 
-                                            a.tanggal, 
-                                            a.waktu_masuk, 
-                                            a.waktu_keluar, 
-                                            a.status, 
-                                            k.nama_karyawan
-                                        FROM absensi a
-                                        JOIN transaksi_karyawan t ON a.id_transaksi_karyawan = t.id_transaksi_karyawan
-                                        JOIN master_karyawan k ON t.nik = k.nik";
-                                    
-                                        $result = mysqli_query($koneksi, $query);
+                    <!-- Tabel Data Absensi Karyawan -->
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>ID Absensi</th>
+                                    <th>ID Transaksi Karyawan</th>
+                                    <th>Nama Karyawan</th>
+                                    <th>Tanggal</th>
+                                    <th>Waktu Masuk</th>
+                                    <th>Waktu Keluar</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="data_absensi">
+                                <?php
+                                // Query data absensi dengan JOIN untuk mendapatkan nama karyawan
+                                $query = "
+                                SELECT 
+                                    a.id_absensi, 
+                                    a.id_transaksi_karyawan,
+                                    a.tanggal, 
+                                    a.waktu_masuk, 
+                                    a.waktu_keluar, 
+                                    a.status, 
+                                    k.nama_karyawan
+                                FROM absensi a
+                                JOIN transaksi_karyawan t ON a.id_transaksi_karyawan = t.id_transaksi_karyawan
+                                JOIN master_karyawan k ON t.nik = k.nik";
+                                
+                                $result = mysqli_query($koneksi, $query);
 
-                                        // Check if the query was successful
-                                        if (!$result) {
-                                            die("Query failed: " . mysqli_error($koneksi));
-                                        }
+                                // Check if the query was successful
+                                if (!$result) {
+                                    die("Query failed: " . mysqli_error($koneksi));
+                                }
 
-                                        // Tampilkan data
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                            echo "<tr>
-                                                <td>{$row['id_absensi']}</td>
-                                                <td>{$row['nama_karyawan']}</td>
-                                                <td>{$row['tanggal']}</td>
-                                                <td>{$row['waktu_masuk']}</td>
-                                                <td>{$row['waktu_keluar']}</td>
-                                                <td>{$row['status']}</td>
-                                                <td>
-                                                    <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                    <a href='delete_absensi.php?id={$row['id_absensi']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this attendance record?')\">Delete</a>
-                                                </td>
-                                            </tr>";
-                                        }
-                                        ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                                // Tampilkan data
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    echo "<tr>
+                                        <td>{$row['id_absensi']}</td>
+                                        <td>{$row['id_transaksi_karyawan']}</td>
+                                        <td>{$row['nama_karyawan']}</td>
+                                        <td>{$row['tanggal']}</td>
+                                        <td>{$row['waktu_masuk']}</td>
+                                        <td>{$row['waktu_keluar']}</td>
+                                        <td>{$row['status']}</td>
+                                        <td><button class='btn btn-primary btn-sm btn-update'>Update</button>
+                                        <a href='delete_absensi.php?id={$row['id_absensi']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this attendance record?')\">Delete</a>
+                                    </td>
+                                </tr>";
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Tambah Absensi -->
+    <div class="modal fade" id="addAbsensiModal" tabindex="-1" aria-labelledby="addAbsensiModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="POST" action="add_absensi.php">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addAbsensiModalLabel">Tambah Absensi Karyawan</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                </div>
-            </div>
-        </main>
-
-
-        <!-- Modal Tambah Absensi -->
-        <div class="modal fade" id="addAbsensiModal" tabindex="-1" aria-labelledby="addAbsensiModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <form method="POST" action="add_absensi.php">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="addAbsensiModalLabel">Tambah Absensi Karyawan</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-body">
+                        <!-- Pilih Karyawan -->
+                        <div class="mb-3">
+                            <label for="id_transaksi_karyawan" class="form-label">Pilih Karyawan</label>
+                            <select class="form-select" id="id_transaksi_karyawan" name="id_transaksi_karyawan" required>
+                                <option value="">Pilih Karyawan</option>
+                                <?php
+                                // Ambil data karyawan untuk dropdown
+                                $karyawan = mysqli_query($koneksi, "
+                                    SELECT tk.id_transaksi_karyawan, mk.nama_karyawan 
+                                    FROM transaksi_karyawan tk
+                                    INNER JOIN master_karyawan mk ON tk.NIK = mk.NIK
+                                ");
+                                while ($row = mysqli_fetch_assoc($karyawan)) {
+                                    echo "<option value='{$row['id_transaksi_karyawan']}'>{$row['id_transaksi_karyawan']} - {$row['nama_karyawan']}</option>";
+                                }                            
+                                ?>
+                            </select>
                         </div>
-                        <div class="modal-body">
-                            <!-- Pilih Karyawan -->
-                            <div class="mb-3">
-                                <label for="id_absensi" class="form-label">Pilih Karyawan</label>
-                                <select class="form-select" id="id_absensi" name="id_absensi" required>
-                                    <option value="">Pilih Karyawan</option>
-                                    <?php
-                                    // Ambil data karyawan untuk dropdown
-                                    $karyawan = mysqli_query($koneksi, "SELECT NIK, nama_karyawan FROM master_karyawan");
-                                    while ($row = mysqli_fetch_assoc($karyawan)) {
-                                        echo "<option value='{$row['NIK']}'>{$row['NIK']} - {$row['nama_karyawan']}</option>";
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <!-- Tombol Absen Masuk -->
-                            <button type="button" class="btn btn-success" onclick="setAbsenceTime('masuk')">Absen Masuk</button>
 
-                            <!-- Tombol Absen Keluar -->
-                            <button type="button" class="btn btn-warning" onclick="setAbsenceTime('keluar')">Absen Keluar</button>
+                        <!-- Waktu Masuk, Waktu Keluar, Tanggal, Status -->
+                        <input type="hidden" id="waktu_masuk" name="waktu_masuk">
+                        <input type="hidden" id="waktu_keluar" name="waktu_keluar">
+                        <input type="hidden" id="tanggal" name="tanggal">
+                        <input type="hidden" id="status" name="status">
+                    </div>
+                    <div class="modal-footer">
+                        <!-- Tombol Absen Masuk -->
+                        <button type="button" class="btn btn-success" onclick="setAbsenceTime('masuk')">Absen Masuk</button>
 
-                            <!-- Tombol Batal -->
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        </div>
-                    </form>
-                </div>
+                        <!-- Tombol Absen Keluar -->
+                        <button type="button" class="btn btn-warning" onclick="setAbsenceTime('keluar')">Absen Keluar</button>
+
+                        <!-- Tombol Batal -->
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    </div>
+                </form>
             </div>
         </div>
+    </div>
 
+    <script>
+        function setAbsenceTime(type) {
+            const selectedKaryawan = document.getElementById('id_transaksi_karyawan').value;
 
+            if (!selectedKaryawan) {
+                alert("Pilih karyawan terlebih dahulu.");
+                return;
+            }
 
+            const waktu = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const tanggal = new Date().toISOString().split('T')[0]; // Format YYYY-MM-DD
 
+            document.getElementById('tanggal').value = tanggal;
 
-                <!-- Modal Edit absensi -->
-                <script>
-        // Fungsi untuk mengambil tanggal saat ini
-                function getCurrentDate() {
-                    const date = new Date();
-                    const year = date.getFullYear();
-                    const month = String(date.getMonth() + 1).padStart(2, '0');
-                    const day = String(date.getDate()).padStart(2, '0');
-                    return year + '-' + month + '-' + day;
-                }
+            if (type === 'masuk') {
+                document.getElementById('waktu_masuk').value = waktu;
+                document.getElementById('status').value = 'Hadir';
+            } else if (type === 'keluar') {
+                document.getElementById('waktu_keluar').value = waktu;
+            }
 
-                // Fungsi untuk mengambil jam saat ini
-                function getCurrentTime() {
-                    const time = new Date();
-                    return time.toLocaleTimeString('en-GB', { hour12: false }).slice(0, 5); // Format HH:MM
-                }
+            document.querySelector('form').submit();
+        }
+    </script>
 
-                // Fungsi untuk set waktu absensi
-                function setAbsenceTime(type) {
-                    const selectedKaryawan = document.getElementById('id_absensi').value;
-                    if (!selectedKaryawan) {
-                        alert("Pilih karyawan terlebih dahulu.");
-                        return;
-                    }
-
-                    const waktu = getCurrentTime();
-                    const tanggal = getCurrentDate();
-
-                    if (type === 'masuk') {
-                        // Set waktu masuk otomatis ke waktu saat ini
-                        document.querySelector('input[name="waktu_masuk"]').value = waktu;
-                        document.querySelector('input[name="tanggal"]').value = tanggal;
-                    } else if (type === 'keluar') {
-                        // Set waktu keluar otomatis ke waktu saat ini
-                        document.querySelector('input[name="waktu_keluar"]').value = waktu;
-                        document.querySelector('input[name="tanggal"]').value = tanggal;
-                    }
-
-                    // Submit form untuk menyimpan data absensi
-                    document.querySelector('form').submit();
-                }
-            </script>
-
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-            <script src="js/scripts.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-            <script src="js/datatables-simple-demo.js"></script>
-        </div>
-    </body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="js/scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+    <script src="js/datatables-simple-demo.js"></script>
+</body>
 </html>
