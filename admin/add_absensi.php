@@ -1,48 +1,28 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-include("../config/koneksi_mysql.php"); // Pastikan koneksi ke database sudah benar
+include("../config/koneksi_mysql.php");
 
-// Mengecek apakah form sudah disubmit
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Mengambil data dari form
-    $id_karyawan = mysqli_real_escape_string($koneksi, $_POST['id_karyawan']);
-    $waktu_masuk = mysqli_real_escape_string($koneksi, $_POST['waktu_masuk']);
-    $waktu_keluar = mysqli_real_escape_string($koneksi, $_POST['waktu_keluar']);
-    $tanggal = date('Y-m-d'); // Menggunakan tanggal hari ini
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $id_transaksi_karyawan = $_POST['id_transaksi_karyawan'];
+    $waktu_masuk = $_POST['waktu_masuk'];
+    $waktu_keluar = $_POST['waktu_keluar'];
+    $tanggal = $_POST['tanggal'];
+    $status = $_POST['status'];
 
-    // Mengecek apakah tombol Absen Masuk atau Absen Keluar yang ditekan
-    if (isset($_POST['absen_masuk'])) {
-        // Jika tombol Absen Masuk ditekan, status = 'Hadir'
-        $status = 'Hadir';
-        
-        // Insert data absen masuk ke database
-        $sql = "INSERT INTO absensi (id_transaksi_karyawan, waktu_masuk, status, tanggal) 
-                VALUES ('$id_karyawan', '$waktu_masuk', '$status', '$tanggal')";
-    } 
-    else if (isset($_POST['absen_keluar'])) {
-        // Jika tombol Absen Keluar ditekan, status = 'Selesai'
-        $status = 'Selesai';
-        
-        // Update data absen keluar di database (hanya yang status 'Hadir' yang dapat diupdate)
-        $sql = "UPDATE absensi 
-                SET waktu_keluar = '$waktu_keluar', status = '$status' 
-                WHERE id_transaksi_karyawan = '$id_karyawan' 
-                AND tanggal = '$tanggal' 
-                AND status = 'Hadir' LIMIT 1";
-    }
+    // Pastikan data tidak kosong
+    if ($id_transaksi_karyawan && $waktu_masuk && $tanggal && $status) {
+        $query = "INSERT INTO absensi (id_transaksi_karyawan, waktu_masuk, waktu_keluar, tanggal, status)
+                  VALUES ('$id_transaksi_karyawan', '$waktu_masuk', '$waktu_keluar', '$tanggal', '$status')";
 
-    // Mengeksekusi query untuk memasukkan data absensi
-    if (mysqli_query($koneksi, $sql)) {
-        // Jika berhasil, arahkan kembali ke halaman absensi
-        echo "<script>alert('Data absensi berhasil ditambahkan!'); window.location.href='absensi.php';</script>";
+        if (mysqli_query($koneksi, $query)) {
+            echo "Data berhasil disimpan!";
+        } else {
+            echo "Error: " . mysqli_error($koneksi);
+        }
     } else {
-        // Jika ada error, tampilkan pesan error
-        echo "<script>alert('Error: " . mysqli_error($koneksi) . "'); window.location.href='absensi.php';</script>";
+        echo "Semua data harus diisi!";
     }
 }
 ?>
-
 
 
 <!DOCTYPE html>
@@ -54,47 +34,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-    // Fungsi untuk mengambil tanggal saat ini
-    function getCurrentDate() {
-        const date = new Date();
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        return year + '-' + month + '-' + day;
-    }
-
-    // Fungsi untuk mengambil jam saat ini
-    function getCurrentTime() {
-        const time = new Date();
-        return time.toLocaleTimeString('en-GB', { hour12: false }).slice(0, 5); // Format HH:MM
-    }
-
-    // Fungsi untuk set waktu absensi
+    // Function untuk menangani waktu absen masuk dan keluar
     function setAbsenceTime(type) {
-        const selectedKaryawan = document.getElementById('id_absensi').value;
-        if (!selectedKaryawan) {
-            alert("Pilih karyawan terlebih dahulu.");
-            return;
-        }
+        const modal = document.querySelector('#addAbsensiModal');
+        const waktuMasuk = modal.querySelector('#waktu_masuk');
+        const waktuKeluar = modal.querySelector('#waktu_keluar');
+        const tanggal = modal.querySelector('#tanggal');
+        const status = modal.querySelector('#status');
 
-        const waktu = getCurrentTime();
-        const tanggal = getCurrentDate();
+        const now = new Date().toLocaleTimeString('en-GB', { hour12: false });
+        const today = new Date().toISOString().split('T')[0]; // Tanggal hari ini
+        tanggal.value = today;
 
         if (type === 'masuk') {
-            // Set waktu masuk otomatis ke waktu saat ini
-            document.querySelector('input[name="waktu_masuk"]').value = waktu;
-            document.querySelector('input[name="tanggal"]').value = tanggal;
+            waktuMasuk.value = now;
+            status.value = 'Hadir';
         } else if (type === 'keluar') {
-            // Set waktu keluar otomatis ke waktu saat ini
-            document.querySelector('input[name="waktu_keluar"]').value = waktu;
-            document.querySelector('input[name="tanggal"]').value = tanggal;
+            waktuKeluar.value = now;
+            status.value = 'Hadir';
         }
 
-        // Submit form untuk menyimpan data absensi
-        document.querySelector('form').submit();
+        // Submit form setelah waktu diatur
+        modal.querySelector('form').submit();
     }
-</script>
-
+    </script>
 </head>
 <body>
 <div class="container mt-4">
@@ -109,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <thead>
                 <tr>
                     <th>ID Absensi</th>
-                    <th>ID Transaksi</th>
+                    <th>Nama Karyawan</th>
                     <th>Tanggal</th>
                     <th>Waktu Masuk</th>
                     <th>Waktu Keluar</th>
@@ -119,18 +82,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </thead>
             <tbody id="data_absensi">
                 <?php
-                // Query data absensi dari database
-                $result = mysqli_query($koneksi, "SELECT a.id_absensi, a.id_transaksi_karyawan, a.tanggal, a.waktu_masuk, a.waktu_keluar, a.status FROM absensi a");
+                // Query data absensi dengan JOIN untuk mendapatkan nama karyawan
+                $query = "
+                SELECT 
+                    a.id_absensi, 
+                    a.tanggal, 
+                    a.waktu_masuk, 
+                    a.waktu_keluar, 
+                    a.status, 
+                    k.nama_karyawan
+                FROM absensi a
+                JOIN transaksi_karyawan t ON a.id_transaksi_karyawan = t.id_transaksi_karyawan
+                JOIN master_karyawan k ON t.nik = k.nik";
+                
+                $result = mysqli_query($koneksi, $query);
 
                 // Check if the query was successful
                 if (!$result) {
                     die("Query failed: " . mysqli_error($koneksi));
                 }
 
+                // Tampilkan data
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo "<tr>
                         <td>{$row['id_absensi']}</td>
-                        <td>{$row['id_transaksi_karyawan']}</td>
+                        <td>{$row['nama_karyawan']}</td>
                         <td>{$row['tanggal']}</td>
                         <td>{$row['waktu_masuk']}</td>
                         <td>{$row['waktu_keluar']}</td>
@@ -150,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="modal fade" id="addAbsensiModal" tabindex="-1" aria-labelledby="addAbsensiModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <form method="POST" action="add_absensi.php">
+                <form method="POST" action="">
                     <div class="modal-header">
                         <h5 class="modal-title" id="addAbsensiModalLabel">Tambah Absensi Karyawan</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -158,32 +134,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="modal-body">
                         <!-- Pilih Karyawan -->
                         <div class="mb-3">
-                            <label for="id_absensi" class="form-label">Pilih Karyawan</label>
-                            <select class="form-select" id="id_absensi" name="id_absensi" required>
+                            <label for="id_transaksi_karyawan" class="form-label">Pilih Karyawan</label>
+                            <select class="form-select" id="id_transaksi_karyawan" name="id_transaksi_karyawan" required>
                                 <option value="">Pilih Karyawan</option>
                                 <?php
-                                // Ambil data karyawan untuk dropdown
-                                $karyawan = mysqli_query($koneksi, "SELECT NIK, nama_karyawan FROM master_karyawan");
+                                $karyawan = mysqli_query($koneksi, "
+                                    SELECT tk.id_transaksi_karyawan, mk.nama_karyawan 
+                                    FROM transaksi_karyawan tk
+                                    INNER JOIN master_karyawan mk ON tk.NIK = mk.NIK
+                                ");
                                 while ($row = mysqli_fetch_assoc($karyawan)) {
-                                    echo "<option value='{$row['NIK']}'>{$row['NIK']} - {$row['nama_karyawan']}</option>";
+                                    echo "<option value='{$row['id_transaksi_karyawan']}'>{$row['id_transaksi_karyawan']} - {$row['nama_karyawan']}</option>";
                                 }
                                 ?>
                             </select>
                         </div>
+                        <input type="hidden" id="waktu_masuk" name="waktu_masuk">
+                        <input type="hidden" id="waktu_keluar" name="waktu_keluar">
+                        <input type="hidden" id="tanggal" name="tanggal">
+                        <input type="hidden" id="status" name="status">
                     </div>
                     <div class="modal-footer">
-                        <!-- Tombol Absen Masuk -->
                         <button type="button" class="btn btn-success" onclick="setAbsenceTime('masuk')">Absen Masuk</button>
-
-                        <!-- Tombol Absen Keluar -->
                         <button type="button" class="btn btn-warning" onclick="setAbsenceTime('keluar')">Absen Keluar</button>
-
-                        <!-- Tombol Batal -->
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+</div>
 </body>
 </html>
