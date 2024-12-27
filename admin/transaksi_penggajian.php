@@ -213,6 +213,7 @@ ini_set('display_errors', 1);
                                             <th>Potongan</th>
                                             <th>Gaji Lembur</th>
                                             <th>Gaji Bersih</th>
+                                            <th>Nama Akun</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -227,13 +228,16 @@ ini_set('display_errors', 1);
                                         tp.tunjangan,
                                         tp.potongan,
                                         tp.gaji_lembur,
-                                        tp.gaji_bersih
+                                        tp.gaji_bersih,
+                                        ma.nama_akun
                                     FROM 
                                         transaksi_penggajian tp
                                     JOIN 
                                         transaksi_karyawan tk ON tp.id_transaksi_karyawan = tk.id_transaksi_karyawan
                                     JOIN 
-                                        master_karyawan mk ON tk.NIK = mk.NIK";
+                                        master_karyawan mk ON tk.NIK = mk.NIK
+                                    JOIN
+                                        master_akun ma ON tp.id_akun = ma.id_akun";
                                         
                                         $result = mysqli_query($koneksi, $query);
 
@@ -250,7 +254,8 @@ ini_set('display_errors', 1);
                                                 <td>{$row['tunjangan']}</td>
                                                 <td>{$row['potongan']}</td>
                                                 <td>{$row['gaji_lembur']}</td>
-                                                <td>{$row['gaji_bersih']}</td>
+                                                <td>{$row['gaji_bersih']}</td>                                                     <td>{$row['gaji_bersih']}</td>
+                                                <td>{$row['nama_akun']}</td>
                                                 <td>
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
                                                     <a href='delete_transaksi_penggajian.php?penggajian={$row['id_penggajian']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this payroll transaction?')\">Delete</a>
