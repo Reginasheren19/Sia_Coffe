@@ -17,10 +17,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Query untuk memperbarui data ke database
     $sql = "UPDATE master_akun SET 
             kode_akun='$kode_akun', 
-            nama_akunr='$nama_akun', 
+            nama_akun='$nama_akun', 
             kategori='$kategori', 
             jenis_saldo='$jenis_saldo' 
-            WHERE id_akunr='$id_akun'";
+            WHERE id_akun='$id_akun'";
 
     // Eksekusi query
     if (mysqli_query($koneksi, $sql)) {
@@ -121,7 +121,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <option value="Debit">Debit</option>
                                         <option value="Kredit">Kredit</option>
                                     </select>
-                       </div>
+                            </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>

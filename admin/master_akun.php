@@ -100,7 +100,7 @@ ini_set('display_errors', 1);
                                 Pendapatan
                             </a>
                             <div class="sb-sidenav-menu-heading">Expenditure Cycle</div>
-                            <a class="nav-link" href="transaksi_pengeluaran.php">
+                            <a class="nav-link" href="charts.html">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Pengeluaran
                             </a>
@@ -176,7 +176,7 @@ ini_set('display_errors', 1);
                 </div>
                 <div class="sb-sidenav-footer">
                     <div class="small">Logged in as:</div>
-                    Admin Bootstrap
+                    Start Bootstrap
                 </div>
             </nav>
         </div>
@@ -206,7 +206,7 @@ ini_set('display_errors', 1);
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>ID Akun</th>
+                                            <th>Id Akun</th>
                                             <th>Kode Akun</th>
                                             <th>Nama Akun</th>
                                             <th>Kategori</th>
@@ -227,7 +227,7 @@ ini_set('display_errors', 1);
                                                 <td>{$row['jenis_saldo']}</td>
                                                 <td>
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                    <a href='delete_akun.php?akun={$row['id_akun']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this account?')\">Delete</a>
+                                                    <a href='delete_akun.php?akun={$row['id_akun']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this akun?')\">Delete</a>
                                                 </td>
                                             </tr>";
                                         }
@@ -235,7 +235,6 @@ ini_set('display_errors', 1);
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -275,7 +274,7 @@ ini_set('display_errors', 1);
                                         <option value="Debit">Debit</option>
                                         <option value="Kredit">Kredit</option>
                                     </select>
-                       </div>
+                                </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -285,8 +284,6 @@ ini_set('display_errors', 1);
                     </div>
                 </div>
             </div>
-            </body>
-            </html>
 
             <!-- Modal Edit Data Akun -->
             <div class="modal fade" id="editAkunModal" tabindex="-1" aria-labelledby="editAkunModalLabel" aria-hidden="true">
@@ -305,7 +302,7 @@ ini_set('display_errors', 1);
                                 </div>
                                 <div class="mb-3">
                                     <label for="editNamaAkun" class="form-label">Nama Akun</label>
-                                    <input type="text" class="form-control" id="editNamaAkun" name="nama_akun" required>
+                                    <textarea class="form-control" id="editNamaAkun" name="nama_akun" rows="3" required></textarea>
                                 </div>
                                 <div class="mb-3">
                                     <label for="editKategori" class="form-label">Kategori</label>
@@ -324,7 +321,6 @@ ini_set('display_errors', 1);
                                         <option value="Kredit">Kredit</option>
                                     </select>
                                 </div>
-                            </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                                 <button type="submit" class="btn btn-primary">Update</button>
@@ -333,7 +329,10 @@ ini_set('display_errors', 1);
                     </div>
                 </div>
             </div>
-
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+            <script src="js/scripts.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+            <script src="js/datatables-simple-demo.js"></script>
             <script>
             // Menangani klik tombol update
             document.querySelectorAll('.btn-update').forEach(button => {
