@@ -100,7 +100,7 @@ ini_set('display_errors', 1);
                                 Pendapatan
                             </a>
                             <div class="sb-sidenav-menu-heading">Expenditure Cycle</div>
-                            <a class="nav-link" href="charts.html">
+                            <a class="nav-link" href="transaksi_pengeluaran.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Pengeluaran
                             </a>
