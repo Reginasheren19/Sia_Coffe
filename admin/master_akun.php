@@ -241,7 +241,7 @@ ini_set('display_errors', 1);
                 </div>
             </main>
 
-            <!-- Modal Tambah Data Akun -->
+            <!-- Modal Tambah Data -->
             <div class="modal fade" id="addAkunModal" tabindex="-1" aria-labelledby="addAkunModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -275,14 +275,7 @@ ini_set('display_errors', 1);
                                         <option value="Debit">Debit</option>
                                         <option value="Kredit">Kredit</option>
                                     </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="status" class="form-label">Status</label>
-                                    <select class="form-select" id="status" name="status" required>
-                                        <option value="1">Aktif</option>
-                                        <option value="0">Tidak Aktif</option>
-                                    </select>
-                                </div>
+                       </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -292,6 +285,8 @@ ini_set('display_errors', 1);
                     </div>
                 </div>
             </div>
+            </body>
+            </html>
 
             <!-- Modal Edit Data Akun -->
             <div class="modal fade" id="editAkunModal" tabindex="-1" aria-labelledby="editAkunModalLabel" aria-hidden="true">
@@ -327,13 +322,6 @@ ini_set('display_errors', 1);
                                     <select class="form-select" id="editJenisSaldo" name="jenis_saldo" required>
                                         <option value="Debit">Debit</option>
                                         <option value="Kredit">Kredit</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="editStatus" class="form-label">Status</label>
-                                    <select class="form-select" id="editStatus" name="status" required>
-                                        <option value="1">Aktif</option>
-                                        <option value="0">Tidak Aktif</option>
                                     </select>
                                 </div>
                             </div>
