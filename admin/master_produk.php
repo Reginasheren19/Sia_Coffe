@@ -221,9 +221,10 @@ error_reporting(0)
                                                 <td>{$row['harga_satuan']}</td>
                                                 <td>{$row['satuan']}</td>
                                                 <td>{$row['deskripsi']}</td>
+                                                <td>{$row['Action']}</td>
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
                                                     <a href='delete_produk.php?id_produk={$row['id_produk']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this product?')\">Delete</a>
-                                                </td>
+                                                <td>
                                             </tr>";
                                         }
                                         ?>
