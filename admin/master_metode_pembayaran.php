@@ -214,7 +214,7 @@ error_reporting(0)
                                                 <td>{$row['id_metode']}</td>
                                                 <td>{$row['nama_metode']}</td>
                                                 <td>{$row['deskripsi']}</td>
-                                                <td>
+                                                <td>{$row['Action']}
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
                                                     <a href='delete_metode_pembayaran.php?id_produk={$row['id_metode_pembayaran']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data?')\">Delete</a>
                                                 </td>

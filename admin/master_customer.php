@@ -217,7 +217,7 @@ error_reporting(0)
                                                 <td>{$row['alamat_customer']}</td>
                                                 <td>{$row['telp_customer']}</td>
                                                 <td>{$row['saldo_piutang']}</td>
-                                                <td>
+                                                <td>{$row['Action']}
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
                                                     <a href='delete_customer.php?id_customer={$row['id_customer']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data customer?')\">Delete</a>
                                                 </td>
