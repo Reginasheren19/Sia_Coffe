@@ -200,20 +200,17 @@ ini_set('display_errors', 1);
                                     Add Data
                                 </button>
                             </div>
-                            <!-- Tabel Data Transaksi Penggajian -->
+                            <!-- Tabel Data Transaksi Pemesanan -->
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>ID Penggajian</th>
-                                            <th>Nama Karyawan</th>
-                                            <th>Periode Gaji</th>
-                                            <th>Gaji Pokok</th>
-                                            <th>Tunjangan</th>
-                                            <th>Potongan</th>
-                                            <th>Gaji Lembur</th>
-                                            <th>Gaji Bersih</th>
-                                            <th>Nama Akun</th>
+                                            <th>Id Transaksi Pemesanan</th>
+                                            <th>Id Customer</th>
+                                            <th>Tanggal Transaksi</th>
+                                            <th>Total Harga</th>
+                                            <th>Id Metode</th>
+                                            <th>Kode Akun</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
