@@ -37,8 +37,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
 <div class="container mt-4">
     <h1 class="mb-4">Edit Data Jenis Pendapatan</h1>
-<!-- Modal Edit Data Jenis Pendapatan -->
-<div class="modal fade" id="editJenisPendapatanModal" tabindex="-1" aria-labelledby="editJenisPendapatanModalLabel" aria-hidden="true">
+    <!-- Modal Edit Data Jenis Pendapatan -->
+            <div class="modal fade" id="editJenisPendapatanModal" tabindex="-1" aria-labelledby="editJenisPendapatanModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <form method="POST" action="update_jenis_pendapatan.php">
