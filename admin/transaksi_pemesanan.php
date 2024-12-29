@@ -214,27 +214,25 @@ ini_set('display_errors', 1);
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="data_transaksi_penggajian">
+                                    <tbody id="data_transaksi_pemesanan">
                                         <?php
-                                        // Query untuk mendapatkan data transaksi penggajian dengan nama karyawan
+                                        <?php
+                                        // Query untuk mendapatkan data transaksi pemesanan dengan data terkait
                                         $query = "SELECT 
-                                        tp.id_penggajian,
-                                        mk.nama_karyawan,
-                                        tp.periode_gaji,
-                                        tp.gaji_pokok,
-                                        tp.tunjangan,
-                                        tp.potongan,
-                                        tp.gaji_lembur,
-                                        tp.gaji_bersih,
-                                        ma.nama_akun
-                                    FROM 
-                                        transaksi_penggajian tp
-                                    JOIN 
-                                        transaksi_karyawan tk ON tp.id_transaksi_karyawan = tk.id_transaksi_karyawan
-                                    JOIN 
-                                        master_karyawan mk ON tk.NIK = mk.NIK
-                                    JOIN
-                                        master_akun ma ON tp.id_akun = ma.id_akun";
+                                                    tp.id_transaksi_pemesanan,
+                                                    mc.nama_customer,
+                                                    tp.tanggal_transaksi,
+                                                    tp.total_harga,
+                                                    mm.nama_metode,
+                                                    ma.nama_akun
+                                                  FROM 
+                                                    transaksi_pemesanan tp
+                                                  JOIN 
+                                                    master_customer mc ON tp.id_customer = mc.id_customer
+                                                  JOIN 
+                                                    master_metode_pembayaran mm ON tp.id_metode = mm.id_metode
+                                                  JOIN
+                                                    master_akun ma ON tp.kode_akun = ma.kode_akun";
                                         
                                         $result = mysqli_query($koneksi, $query);
 
