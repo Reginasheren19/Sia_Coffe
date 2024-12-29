@@ -242,18 +242,14 @@ ini_set('display_errors', 1);
                                         
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>
-                                                <td>{$row['id_penggajian']}</td>
-                                                <td>{$row['nama_karyawan']}</td>
-                                                <td>{$row['periode_gaji']}</td>
-                                                <td>{$row['gaji_pokok']}</td>
-                                                <td>{$row['tunjangan']}</td>
-                                                <td>{$row['potongan']}</td>
-                                                <td>{$row['gaji_lembur']}</td>
-                                                <td>{$row['gaji_bersih']}</td>                                                     <td>{$row['gaji_bersih']}</td>
+                                                <td>{$row['id_transaksi_pemesanan']}</td>
+                                                <td>{$row['nama_customer']}</td>
+                                                <td>{$row['tanggal_transaksi']}</td>
+                                                <td>{$row['total_harga']}</td>
+                                                <td>{$row['nama_metode']}</td>
                                                 <td>{$row['nama_akun']}</td>
-                                                <td>
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                    <a href='delete_transaksi_penggajian.php?penggajian={$row['id_penggajian']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this payroll transaction?')\">Delete</a>
+                                                    <a href='delete_transaksi_pemesanan.php?penggajian={$row['id_transaksi_pemesanan']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this transaksi?')\">Delete</a>
                                                 </td>
                                             </tr>";
                                         }
