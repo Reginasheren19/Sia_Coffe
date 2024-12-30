@@ -249,7 +249,8 @@ ini_set('display_errors', 1);
                     <div class="alert alert-info" style="display:none;">
                         Menampilkan Data Kehadiran Pegawai Bulan: <span class="font-weight-bold"><?php echo $bulan; ?></span> Tahun: <span class="font-weight-bold"><?php echo $tahun; ?></span>
                     </div>
-                    <div id="tampildataabsen" class="table-responsive" style="display:none;">
+
+                    <div id="formAbsensi" class="table-responsive" style="display:none;">
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
@@ -265,28 +266,23 @@ ini_set('display_errors', 1);
                                 <?php
                                 // Query untuk mendapatkan data absensi karyawan
                                 $query = "SELECT 
-                                ak.id_absensi,
-                                ak.hadir,
-                                ak.sakit,
-                                ak.alpha,
-                                mk.nama_karyawan,
-                                mj.nama_jabatan
-                              FROM 
-                                absensi_karyawan ak
-                              JOIN transaksi_karyawan tk ON ak.id_transaksi_karyawan = tk.id_transaksi_karyawan
-                              JOIN master_karyawan mk ON tk.NIK = mk.NIK
-                              JOIN master_jabatan mj ON tk.id_jabatan = mj.id_jabatan
-                              WHERE ak.bulan = '$bulan' AND ak.tahun = '$tahun'";
+                                    ak.id_absensi,
+                                    ak.hadir,
+                                    ak.sakit,
+                                    ak.alpha,
+                                    mk.nama_karyawan,
+                                    mj.nama_jabatan
+                                FROM 
+                                    absensi_karyawan ak
+                                JOIN transaksi_karyawan tk ON ak.id_transaksi_karyawan = tk.id_transaksi_karyawan
+                                JOIN master_karyawan mk ON tk.NIK = mk.NIK
+                                JOIN master_jabatan mj ON tk.id_jabatan = mj.id_jabatan
+                                WHERE ak.bulan = '$bulan' AND ak.tahun = '$tahun'";
                                 
                                 $result = mysqli_query($koneksi, $query);
                                 
-                                // Debugging output query
-                                if (!$result) {
-                                    die('Error pada query: ' . mysqli_error($koneksi)); 
-                                } else {
-                                    echo 'Query berhasil dijalankan'; // Debugging
-                                }
-                
+                                if ($result) {
+                                    if (mysqli_num_rows($result) > 0) {
                                 while ($row = mysqli_fetch_assoc($result)) {
                                     echo "<tr>
                                         <td>{$row['id_absensi']}</td>
@@ -296,11 +292,23 @@ ini_set('display_errors', 1);
                                         <td>{$row['sakit']}</td>
                                         <td>{$row['alpha']}</td>
                                     </tr>";
+                                        }
+                                    } else {
+                                        // Jika tidak ada data, tampilkan pesan bahwa data tidak ditemukan
+                                        echo "<tr><td colspan='6'>Data absensi tidak ditemukan.</td></tr>";
+                                    }
+                                } else {
+                                    // Jika query gagal, tampilkan pesan error
+                                    echo "<tr><td colspan='6'>Error dalam pengambilan data: " . mysqli_error($koneksi) . "</td></tr>";
                                 }
                                 ?>
                             </tbody>
                         </table>
                     </div>
+
+
+
+
                     <!-- Form untuk menambah dan mengedit absensi -->
                     <div id="formTambahAbsensi" style="display:none;">
                         <div class="card mb-4">
@@ -373,10 +381,11 @@ ini_set('display_errors', 1);
     <script src="js/datatables-simple-demo.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        // Mengatur event handler untuk tombol 'Tampilkan Data'
         $('#tampildataabsen').click(function() {
             var bulan = $('#bulan').val();  // Mengambil nilai bulan
             var tahun = $('#tahun').val();  // Mengambil nilai tahun
+
+            console.log("Bulan:", bulan, "Tahun:", tahun); // Debugging log
 
             if (bulan && tahun) {  // Memastikan bulan dan tahun dipilih
                 $.ajax({
@@ -384,11 +393,12 @@ ini_set('display_errors', 1);
                     type: 'GET',
                     data: { bulan: bulan, tahun: tahun },  // Mengirimkan data bulan dan tahun
                     success: function(response) {
-                        // Memasukkan data ke dalam elemen tabel
+                        console.log(response); // Debugging log
                         $('#absensi_karyawan').html(response);
-                        $('#tampildataabsen').show();  // Menampilkan tabel setelah data diambil
+                        $('#formAbsensi').show();  // Menampilkan tabel setelah data diambil
                     },
-                    error: function() {
+                    error: function(xhr, status, error) {
+                        console.error(error);  // Menampilkan error dari AJAX
                         alert('Terjadi kesalahan dalam pengambilan data.');
                     }
                 });
@@ -400,7 +410,7 @@ ini_set('display_errors', 1);
     <script>
         $('#editdataabsen').click(function() {
             $('#formTambahAbsensi').toggle(); // Menampilkan form untuk menambah atau mengedit absensi
-            $('#tableContainer').hide(); // Sembunyikan tabel absensi lama
+            $('#formAbsensi').hide(); // Sembunyikan tabel absensi lama
         });
     </script>
 </body>

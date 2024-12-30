@@ -8,7 +8,6 @@ if (isset($_GET['bulan']) && isset($_GET['tahun'])) {
     // Query untuk mendapatkan data absensi
     $query = "SELECT 
         ak.id_absensi,
-        ak.transaksi_karyawan,
         ak.hadir,
         ak.sakit,
         ak.alpha,
@@ -16,22 +15,16 @@ if (isset($_GET['bulan']) && isset($_GET['tahun'])) {
         mj.nama_jabatan
     FROM 
         absensi_karyawan ak
-    JOIN 
-        transaksi_karyawan tk ON ak.id_transaksi_karyawan = tk.id_transaksi_karyawan
-    JOIN 
-        master_karyawan mk ON tk.NIK = mk.NIK
-    JOIN 
-        master_jabatan mj ON tk.id_jabatan = mj.id_jabatan
-    WHERE 
-        ak.bulan = '$bulan' AND ak.tahun = '$tahun'";
+    JOIN transaksi_karyawan tk ON ak.id_transaksi_karyawan = tk.id_transaksi_karyawan
+    JOIN master_karyawan mk ON tk.NIK = mk.NIK
+    JOIN master_jabatan mj ON tk.id_jabatan = mj.id_jabatan
+    WHERE ak.bulan = '$bulan' AND ak.tahun = '$tahun'";
 
     $result = mysqli_query($koneksi, $query);
 
-    // Check if the query was successful
+    // Output hasil query dalam format HTML
     if ($result) {
-        // Check if any rows were returned
         if (mysqli_num_rows($result) > 0) {
-            // Start table output
             while ($row = mysqli_fetch_assoc($result)) {
                 echo "<tr>
                         <td>{$row['id_absensi']}</td>
@@ -41,14 +34,14 @@ if (isset($_GET['bulan']) && isset($_GET['tahun'])) {
                         <td>{$row['sakit']}</td>
                         <td>{$row['alpha']}</td>
                     </tr>";
+                }
+            } else {
+                echo "<tr><td colspan='6'>Data absensi tidak ditemukan.</td></tr>";
             }
         } else {
-            echo "<tr><td colspan='6'>Data absensi tidak ditemukan.</td></tr>";
+            echo "<tr><td colspan='6'>Error dalam pengambilan data: " . mysqli_error($koneksi) . "</td></tr>";
         }
     } else {
-        echo "<tr><td colspan='6'>Error dalam pengambilan data: " . mysqli_error($koneksi) . "</td></tr>";
+        echo "<tr><td colspan='6'>Parameter bulan dan tahun tidak valid.</td></tr>";
     }
-} else {
-    echo "<tr><td colspan='6'>Parameter bulan dan tahun tidak valid.</td></tr>";
-}
 ?>
