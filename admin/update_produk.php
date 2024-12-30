@@ -36,59 +36,98 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Data Produk</title>
+    <title>Master Produk</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 <div class="container mt-4">
-    <h1 class="mb-4">Edit Data Produk</h1>
-    <!-- Modal Edit Data Produk -->
-    <div class="modal fade" id="editProdukModal" tabindex="-1" aria-labelledby="editProdukModalLabel" aria-hidden="true">
+    <h1 class="mb-4">Master Data Produk</h1>
+
+    <!-- Tombol Tambah Data -->
+    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addProdukModal">Add Data</button>
+
+                            <!-- Tabel Data Produk -->
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Id Produk</th>
+                                            <th>Nama Produk</th>
+                                            <th>Kategori Produk</th>
+                                            <th>Harga Satuan</th>
+                                            <th>Satuan</th>
+                                            <th>Deskripsi</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="data_produk">
+                                        <?php
+                                        // Query data produk dari database
+                                        $result = mysqli_query($koneksi, "SELECT * FROM master_produk");
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                            echo "<tr>
+                                                <td>{$row['id_produk']}</td>
+                                                <td>{$row['nama_produk']}</td>
+                                                <td>{$row['kategori_produk']}</td>
+                                                <td>{$row['harga_satuan']}</td>
+                                                <td>{$row['satuan']}</td>
+                                                <td>{$row['deskripsi']}</td>
+                                                <td>
+                                                    <button class='btn btn-primary btn-sm btn-update'>Update</button>
+                                                    <a href='delete_produk.php?produk={$row['id_produk']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this product?')\">Delete</a>
+                                                </td>
+                                            </tr>";
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Modal Tambah Data -->
+            <div class="modal fade" id="addProdukModal" tabindex="-1" aria-labelledby="addPrkModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form method="POST" action="update_produk.php">
+                        <form method="POST" action="add_produk.php">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="editProdukModalLabel">Edit Data Produk</h5>
+                                <h5 class="modal-title" id="addProdukModalLabel">Edit Data Produk</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <input type="hidden" name="id_produk" id="edit_id_produk">
-                                <div class="mb-3">
-                                    <label for="editNamaProduk" class="form-label">Nama Produk</label>
-                                    <input type="text" class="form-control" id="editNamaProduk" name="nama_produk" required>
-                                </div>
-                                <div class="mb-3">
-                                <label for="editKategoriProduk" class="form-label">Kategori Produk</label>
-                                    <select class="form-select" id="editKategoriProduk" name="kategori_produk" required>
+                            <div class="mb-3">
+                                <label for="kategori_produk" class="form-label">Kategori Produk</label>
+                                    <select class="form-select" id="kategori_produk" name="kategori_produk" required>
                                         <option value="">Pilih Kategori</option>
                                         <option value="Minuman Panas">Minuman Panas</option>
                                         <option value="Minuman Dingin">Minuman Dingin</option>
                                         <option value="Makanan Ringan">Makanan Ringan</option>
                                         <option value="Dessert">Dessert</option>
                                     </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="editHargaSatuan" class="form-label">Harga Satuan</label>
-                                    <input type="date" class="form-control" id="editHargaSatuan" name="harga_satuan" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="editSatuan" class="form-label">Satuan</label>
-                                    <input type="text" class="form-control" id="editSatuan" name="satuan" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="editDeskripsi" class="form-label">Deskripsi</label>
-                                    <textarea class="form-control" id="editDeskripsi" name="deskripsi" rows="3" required></textarea>
-                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="harga_satuan" class="form-label">Harga Satuan (Rp)</label>
+                                <input type="number" class="form-control" id="harga_satuan" name="harga_satuan" placeholder="Contoh: 25000" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="satuan" class="form-label">Satuan</label>
+                                <input type="text" class="form-control" id="satuan" name="satuan" placeholder="Contoh: Gelas, Piring" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="deskripsi" class="form-label">Deskripsi</label>
+                            <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" placeholder="Contoh: Minuman kopi dengan cream susu" required></textarea>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-primary">Update</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-</div>
-</body>
-</html>
+            </body>
+            </html>
