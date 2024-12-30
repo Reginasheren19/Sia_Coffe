@@ -7,6 +7,8 @@ echo '<pre>';
 print_r($_POST);
 echo '</pre>';
 
+
+
 // Jika form disubmit melalui POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id_customer = mysqli_real_escape_string($koneksi, $_POST['id_customer']);
