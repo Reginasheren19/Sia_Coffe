@@ -215,7 +215,7 @@ error_reporting(0)
                                                 <td>{$row['deskripsi']}</td>
                                                 <td>{$row['Action']}
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                    <a href='delete_jenis_pendapatan.php?id_produk={$row['id_jenis_pendapatan']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data?')\">Delete</a>
+                                                    <a href='delete_jenis_pendapatan.php?jenis_pendapatan={$row['id_jenis_pendapatan']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data?')\">Delete</a>
                                                 </td>
                                             </tr>";
                                         }
@@ -232,20 +232,21 @@ error_reporting(0)
             <div class="modal fade" id="addJenisPendapatanModal" tabindex="-1" aria-labelledby="addJenisPendapatanModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form method="POST" action="">
+                        <form method="POST" action="add_jenis_pendapatan.php">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="addJenisPendapatanModalLabel">Tambah Data Jenis Pendapatan</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                        <div class="modal-body">
+                            <div class="modal-body">
                                 <div class="mb-3">
                                     <label for="nama_jenis_pendapatan" class="form-label">Nama Jenis Pendapatan</label>
                                     <input type="text" class="form-control" id="nama_jenis_pendapatan" name="nama_jenis_pendapatan" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="deskripsi" class="form-label">Deskripsi</label>
-                                    <textarea class="form-control" id="deskripsi" name="deskripsi" required></textarea>
+                                    <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
                                 </div>
+                            </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                                 <button type="submit" class="btn btn-primary">Simpan</button>
@@ -256,27 +257,31 @@ error_reporting(0)
             </div>
 
             <!-- Modal Edit Data Jenis Pendapatan -->
-            <div class="modal fade" id="editJenisPendapatanModal" tabindex="-1" aria-labelledby="editJenisPendapatanModalLabel" aria-hidden="true">
+            <div class="modal fade" id="editJenisPendapatanModal" tabindex="-1" aria-labelledby="editJenisPendapatanLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <form method="POST" action="update_jenis_pendapatan.php">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="editJenisPendapatanModalLabel">Edit Data Jenis Pendapatank</h5>
+                                <h5 class="modal-title" id="editJenisPendapatanLabel">Edit Data Jenis Pendapatan</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <input type="hidden" name="id_jenis_pendapatan" id="edit_id_jenis_pendapatan">
+                                <!-- Hidden Input untuk ID Produk -->
+                                <input type="hidden" name="id_jenis_pendapatan" id="editIdJenisPendapatan">
+                                
                                 <div class="mb-3">
                                     <label for="editNamaJenisPendapatan" class="form-label">Nama Jenis Pendapatan</label>
-                                    <input type="text" class="form-control" id="editNamaProduk" name="nama_produk" required>
+                                    <input type="text" class="form-control" id="editNamaJenisPendapatan" name="nama_jenis_pendapatan" required>
                                 </div>
+
                                 <div class="mb-3">
                                     <label for="editDeskripsi" class="form-label">Deskripsi</label>
                                     <textarea class="form-control" id="editDeskripsi" name="deskripsi" rows="3" required></textarea>
                                 </div>
-                                <div class="modal-footer">
+                            </div>
+                            <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-primary">Update</button>
+                                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                             </div>
                         </form>
                     </div>
@@ -284,11 +289,11 @@ error_reporting(0)
             </div>
 
 
+
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
             <script src="js/scripts.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
             <script src="js/datatables-simple-demo.js"></script>
-
             <script>
             // Menangani klik tombol update
             document.querySelectorAll('.btn-update').forEach(button => {

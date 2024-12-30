@@ -216,7 +216,7 @@ error_reporting(0)
                                                 <td>{$row['deskripsi']}</td>
                                                 <td>{$row['Action']}
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                    <a href='delete_metode_pembayaran.php?id_produk={$row['id_metode_pembayaran']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data?')\">Delete</a>
+                                                    <a href='delete_metode_pembayaran.php?metode={$row['id_metode']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data?')\">Delete</a>
                                                 </td>
                                             </tr>";
                                         }
@@ -230,23 +230,24 @@ error_reporting(0)
             </main>
 
             <!-- Modal Tambah Data -->
-            <div class="modal fade" id="addMetodePembayaranModal" tabindex="-1" aria-labelledby="addMetodePembayaranModal" aria-hidden="true">
+            <div class="modal fade" id="addMetodePembayaranModal" tabindex="-1" aria-labelledby="addMetodePembayaranModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form id="form_add_metode_pembayaran">
+                        <form method="POST" action="add_metode_pembayaran.php">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="addMetodePembayaranModal">Tambah Data Metode Pembayaran</h5>
+                                <h5 class="modal-title" id="addMetodePembayaranModalLabel">Tambah Data Metode Pembayaran</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="mb-3">
-                                    <label for="nama_metode" class="form-label">Nama Metode Pembayaran</label>
+                                    <label for="nama_metode" class="form-label">Nama Metode</label>
                                     <input type="text" class="form-control" id="nama_metode" name="nama_metode" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="deskripsi" class="form-label">Deskripsi</label>
-                                    <textarea class="form-control" id="deskripsi" name="deskripsi" required></textarea>
+                                    <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
                                 </div>
+                            </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                                 <button type="submit" class="btn btn-primary">Simpan</button>
@@ -257,27 +258,31 @@ error_reporting(0)
             </div>
 
             <!-- Modal Edit Data Metode Pembayaran -->
-            <div class="modal fade" id="editMetodePembayaranModal" tabindex="-1" aria-labelledby="editMetodePembayaranModalLabel" aria-hidden="true">
+            <div class="modal fade" id="editMetodePembayaranModal" tabindex="-1" aria-labelledby="editMetodePembayaranLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <form method="POST" action="update_metode_pembayaran.php">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="editMetodePembayaranModalLabel">Edit Data Metode Pembayarank</h5>
+                                <h5 class="modal-title" id="editMetodePembayaranLabel">Edit Data Metode Pembayaran</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <input type="hidden" name="id_metode" id="edit_id_metode">
+                                <!-- Hidden Input untuk ID Metode -->
+                                <input type="hidden" name="id_metode" id="editIdMetodePembayaran">
+                                
                                 <div class="mb-3">
-                                    <label for="editNamaMetode" class="form-label">Nama Metode Pembayaran</label>
-                                    <input type="text" class="form-control" id="editNamaMetode" name="nama_metode" required>
+                                    <label for="editNamaMetode" class="form-label">Nama Metode</label>
+                                    <input type="text" class="form-control" id="editNamaJenisPendapatan" name="nama_jenis_pendapatan" required>
                                 </div>
+
                                 <div class="mb-3">
                                     <label for="editDeskripsi" class="form-label">Deskripsi</label>
                                     <textarea class="form-control" id="editDeskripsi" name="deskripsi" rows="3" required></textarea>
                                 </div>
-                                <div class="modal-footer">
+                            </div>
+                            <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-primary">Update</button>
+                                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                             </div>
                         </form>
                     </div>

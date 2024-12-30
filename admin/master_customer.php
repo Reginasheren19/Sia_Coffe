@@ -219,7 +219,7 @@ error_reporting(0)
                                                 <td>{$row['saldo_piutang']}</td>
                                                 <td>{$row['Action']}
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                    <a href='delete_customer.php?id_customer={$row['id_customer']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data customer?')\">Delete</a>
+                                                    <a href='delete_customer.php?customer={$row['id_customer']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data customer?')\">Delete</a>
                                                 </td>
                                             </tr>";
                                         }
@@ -236,72 +236,77 @@ error_reporting(0)
             <div class="modal fade" id="addCustomerModal" tabindex="-1" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form id="form_add_customer">
+                        <form method="POST" action="add_customer.php">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="addCustomerModalLabel">Tambah Data Customer</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div class="mb-3">
-                                    <label for="nama_customer" class="form-label">Nama</label>
-                                    <input type="text" class="form-control" id="nama_customer" name="nama_customer" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="alamat_customer" class="form-label">Alamat</label>
-                                    <textarea class="form-control" id="alamat_customer" name="alamat_customer" rows="3" required></textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="tlp_customer" class="form-label">No Telepon</label>
-                                    <input type="text" class="form-control" id="tlp_customer" name="tlp_customer" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="saldo_piutang" class="form-label">Saldo Piutang</label>
-                                    <input type="text" class="form-control" id="saldo_piutang" name="saldo_piutang" required>
-                                </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            <div class="mb-3">
+                                <label for="nama_customer" class="form-label">Nama</label>
+                                <input type="text" class="form-control" id="nama_customer" name="nama_customer" required>
                             </div>
-                        </form>
-                    </div>
+                            <div class="mb-3">
+                                <label for="alamat_customer" class="form-label">Alamat</label>
+                                <input type="text" class="form-control" id="alamat_customer" name="alamat_customer" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="no_telp" class="form-label">No Telepon</label>
+                                <input type="number" class="form-control" id="no_telp" name="no_telp"  required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="saldo_piutang" class="form-label">Saldo Piutang</label>
+                                <input type="number" class="form-control" id="saldo_piutang" name="saldo_piutang"  required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
                 </div>
             </div>
+        </div>
 
-            <!-- Modal Edit Data Customer -->
-            <div class="modal fade" id="editCustomerModal" tabindex="-1" aria-labelledby="editCustomerModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form method="POST" action="update_customer.php">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="editCustomerModalLabel">Edit Data Customer</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <!-- Modal Edit Data Produk -->
+        <div class="modal fade" id="editCustomerModal" tabindex="-1" aria-labelledby="editCustomerModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form method="POST" action="update_customer.php">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editCustomerModalLabel">Edit Data Customer</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Hidden Input untuk ID Customer -->
+                            <input type="hidden" name="id_customer" id="editIdCustomer">
+                            
+                            <div class="mb-3">
+                                <label for="editNamaCustomer" class="form-label">Nama Customer</label>
+                                <input type="text" class="form-control" id="editNamaCustomer" name="nama_customer" required>
                             </div>
-                            <div class="modal-body">
-                                <input type="hidden" name="id_customer" id="edit_id_customer">
-                                <div class="mb-3">
-                                    <label for="editNamaCustomer" class="form-label">Nama</label>
-                                    <input type="text" class="form-control" id="editNamaCustomer" name="nama_customer" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="editAlamatCustomer" class="form-label">Alamat</label>
-                                    <textarea class="form-control" id="editAlamatCustomer" name="alamat_customer" rows="3" required></textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="edirTelpCustomer" class="form-label">No Telepon</label>
-                                    <input type="text" class="form-control" id="editTelpCustomer" name="telp_customer" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="editSaldoPiutang" class="form-label">Saldo</label>
-                                    <input type="text" class="form-control" id="editSaldoPiutang" name="saldo_piutang" required>
-                                </div>
-                                <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-primary">Update</button>
+                            <div class="mb-3">
+                                <label for="editAlamatCustomer" class="form-label">Alamat</label>
+                                <textarea class="form-control" id="editAlamatCustomer" name="alamat_customer" rows="3" required></textarea>
                             </div>
-                        </form>
-                    </div>
+                            <div class="mb-3">
+                                <label for="editTelpCustomer" class="form-label">No Telepon</label>
+                                <input type="text" class="form-control" id="editTelpCustomer" name="telp_customer" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editSaldoPiutang" class="form-label">Saldo</label>
+                                <input type="text" class="form-control" id="editSaldoPiutang" name="saldo_piutang" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                        </div>
+                    </form>
                 </div>
             </div>
+        </div>
+
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
             <script src="js/scripts.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>

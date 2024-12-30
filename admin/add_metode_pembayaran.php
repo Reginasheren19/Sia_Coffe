@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Query untuk menyimpan data ke database
     $sql = "INSERT INTO master_metode_pembayaran (id_metode, nama_metode, deskripsi) 
-            VALUES ('$id_metode_pembayaran', '$nama_metode', '$deskripsi')";
+            VALUES ('$id_metode', '$nama_metode', '$deskripsi')";
 
     // Eksekusi query
     if (mysqli_query($koneksi, $sql)) {
@@ -31,25 +31,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master Metode Pembayaran</title>
+    <title>Master Customer</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 <div class="container mt-4">
-    <h1 class="mb-4">Master Metode Pembayaran</h1>
+    <h1 class="mb-4">Master Data Customer</h1>
 
     <!-- Tombol Tambah Data -->
     <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addMetodePembayaranModal">Add Data</button>
 
-    <!-- Tabel Data Metode Pembayaran -->
+    <!-- Tabel Data Metode -->
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Id Metode Pembayaran</th>
-                    <th>Nama Metode Pembayaran</th>
-                    <th>Deskripsi</th>
+                        <th>Id Metode</th>
+                        <th>Nama Metode</th>
+                        <th>Deskripsi</th>
                 </tr>
             </thead>
             <tbody>
@@ -74,18 +74,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="modal-content">
             <form method="POST" action="add_metode_pembayaran.php">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addMetodePembayaranModalLabel">Tambah Data Jenis Pendapatan</h5>
+                    <h5 class="modal-title" id="addMetodePembayaranModalLabel">Tambah Data Metode Pembayaran</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="nama_metode" class="form-label">Nama Metode Pembayaran</label>
+                        <label for="nama_metode" class="form-label">Nama Metode</label>
                         <input type="text" class="form-control" id="nama_metode" name="nama_metode" required>
                     </div>
                     <div class="mb-3">
                         <label for="deskripsi" class="form-label">Deskripsi</label>
-                        <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" placeholder="lallalallallal" required></textarea>
-                    </div>
+                        <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
+                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>

@@ -1,18 +1,27 @@
 <?php
 include("../config/koneksi_mysql.php");
 
-if (isset($_GET['metode_pembayaran'])) {
-    $hapus_id_metode = mysqli_real_escape_string($koneksi, $_GET['metode_pembayaran']);
+// Debugging $_GET
+echo "Parameter GET: ";
+print_r($_GET);
+echo "<br>";
 
-    $sql = mysqli_query($koneksi, "DELETE FROM master_metode_pembayaran WHERE id_metode = '$hapus_id_metode_pembayaran'");
+if (isset($_GET['metode']) && !empty($_GET['metode'])) { // Periksa 'id_metode'
+    // Ambil ID metode dari parameter URL dan sanitasi
+    $hapus_id_metode = mysqli_real_escape_string($koneksi, $_GET['metode']);
+    echo "ID metode yang akan dihapus: " . $hapus_id_metode . "<br>"; // Debugging
 
-    if ($sql) {
-        header("location: master_metode_pembayaran.php");
+    // Jalankan query untuk menghapus produk berdasarkan ID
+    $sql = mysqli_query($koneksi, "DELETE FROM master_metode_pembayaran WHERE id_metode = '$hapus_id_metode'");
+
+    // Cek apakah query berhasil dieksekusi
+    if ($sql && mysqli_affected_rows($koneksi) > 0) { // Pastikan ada baris yang terhapus
+        header("location: master_metode_pembayaran.php"); // Redirect ke halaman master_metode_pembayaran.php setelah berhasil
         exit; // Pastikan untuk menghentikan eksekusi skrip setelah header
     } else {
         echo "Error deleting record: " . mysqli_error($koneksi);
     }
 } else {
-    echo "No employee specified for deletion.";
+    echo "No metode specified for deletion.";
 }
 ?>

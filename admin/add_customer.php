@@ -12,12 +12,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id_customer = mysqli_real_escape_string($koneksi, $_POST['id_customer']);
     $nama_customer = mysqli_real_escape_string($koneksi, $_POST['nama_customer']);
     $alamat_customer = mysqli_real_escape_string($koneksi, $_POST['alamat_customer']);
-    $tlp_customer = mysqli_real_escape_string($koneksi, $_POST['tlp_customer']);
+    $telp_customer = mysqli_real_escape_string($koneksi, $_POST['telp_customer']);
     $saldo_piutang = mysqli_real_escape_string($koneksi, $_POST['saldo_piutang']);
 
     // Query untuk menyimpan data ke database
-    $sql = "INSERT INTO master_customer (id_customer, nama_customer, alamat_customer, tlp_customer, saldo_piutang) 
-            VALUES ('$id_customer', '$nama_customer', '$alamat_customer', '$tlp_customer', '$saldo_piutang')";
+    $sql = "INSERT INTO master_customer (id_customer, nama_customer, alamat_customer, telp_customer, saldo_piutang) 
+            VALUES ('$id_customer', '$nama_customer', '$alamat_customer', '$telp_customer', '$saldo_piutang')";
 
     // Eksekusi query
     if (mysqli_query($koneksi, $sql)) {
@@ -44,27 +44,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Tombol Tambah Data -->
     <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addCustomerModal">Add Data</button>
 
-    <!-- Tabel Data Karyawan -->
+    <!-- Tabel Data Customer -->
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Id Customer</th>
-                    <th>Nama</th>
-                    <th>Alamat</th>
-                    <th>No Telepon</th>
-                    <th>Saldo Piutang</th>
+                        <th>Id Customer</th>
+                        <th>Nama</th>
+                        <th>Alamat</th>
+                        <th>No Telepon</th>
+                        <th>Saldo Piutang</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                $result = mysqli_query($koneksi, "SELECT * FROM master_customer");
+                $result = mysqli_query($koneksi, "SELECT * FROM master_produk");
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo "<tr>
                             <td>{$row['id_customer']}</td>
                             <td>{$row['nama_customer']}</td>
                             <td>{$row['alamat_customer']}</td>
-                            <td>{$row['tlp_customer']}</td>
+                            <td>{$row['telp_customer']}</td>
                             <td>{$row['saldo_piutang']}</td>
                           </tr>";
                 }
@@ -90,15 +90,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     <div class="mb-3">
                         <label for="alamat_customer" class="form-label">Alamat</label>
-                        <textarea class="form-control" id="alamat_customer" name="alamat_customer" rows="3" required></textarea>
-                    </div>
+                        <input type="text" class="form-control" id="alamat_customer" name="alamat_customer" required>
+                     </div>
                     <div class="mb-3">
-                        <label for="tlp_customer" class="form-label">No Telepon</label>
-                        <input type="text" class="form-control" id="tlp_customer" name="tlp_customer" required>
+                        <label for="no_telp" class="form-label">No Telepon</label>
+                        <input type="number" class="form-control" id="no_telp" name="no_telp"  required>
                     </div>
                     <div class="mb-3">
                         <label for="saldo_piutang" class="form-label">Saldo Piutang</label>
-                        <input type="text" class="form-control" id="saldo_piutang" name="saldo_piutang" required>
+                        <input type="number" class="form-control" id="saldo_piutang" name="saldo_piutang"  required>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
