@@ -239,7 +239,8 @@ ini_set('display_errors', 1);
                                                 <td>{$row['status_karyawan']}</td>
                                                 <td>
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                    <a href='delete_transaksi_karyawan.php?transaksi_karyawan={$row['id_transaksi_karyawan']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this transaction?')\">Delete</a>                                                </td>
+                                                    <a href='delete_transaksi_karyawan.php?transaksi_karyawan={$row['id_transaksi_karyawan']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this transaction?')\">Delete</a>                                                
+                                                </td>
                                             </tr>";
                                         }
                                         ?>

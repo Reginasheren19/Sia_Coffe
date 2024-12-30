@@ -58,7 +58,7 @@ ini_set('display_errors', 1);
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
                         <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav -menu-nested nav">
+                            <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="layout-static.html">Static Navigation</a>
                                 <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
                             </nav>
@@ -68,6 +68,7 @@ ini_set('display_errors', 1);
                             Pages
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
+                        ```php
                         <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
@@ -95,72 +96,70 @@ ini_set('display_errors', 1);
                             </nav>
                         </div>
                         <div class="sb-sidenav-menu-heading">Revenue Cycle</div>
-                            <a class="nav-link" href="charts.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Pendapatan
-                            </a>
-                            <div class="sb-sidenav-menu-heading">Expenditure Cycle</div>
-                            <a class="nav-link" href="charts.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Pengeluaran
-                            </a>
-                            <div class="sb-sidenav-menu-heading">Payroll Cycle</div>
-                            <a class="nav-link" href="charts.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Kelola Karyawan
-                            </a>
-                            <a class="nav-link" href="tables.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Penggajian
-                            </a>
-                            <a class="nav-link" href="tables.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Rekap Presensi
-                            </a>
-                            <div class="sb-sidenav-menu-heading">Report Cycle</div>
-                            <a class="nav-link" href="jurnal_umum.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Jurnal Umum
-                            </a>
-                            <a class="nav-link" href="buku_besar.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Buku Besar
-                            </a>
-
-                            <div class="sb-sidenav-menu-heading">Mastering</div>
-                            <a class="nav-link" href="master_karyawan.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Data Karyawan
-                            </a>
-                            <a class="nav-link" href="master_jabatan.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Data Jabatan
-                            </a>
-                            <a class="nav-link" href="tables.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Data Divisi
-                            </a>
-                            <a class="nav-link" href="master_produk.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Data Produk
-                            </a>
-                            <a class="nav-link" href="master_jenis_pendapatan.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Data Jenis Pendapatan
-                            </a>
-                            <a class="nav-link" href="master_metode_pembayaran.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Data Metode Pembayaran
-                            </a>
-                            <a class="nav-link" href="master_customer.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Data Customer
-                            </a>
-                            <a class="nav-link" href="master_supplier.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Data Supplier
-                            </a>
-
+                        <a class="nav-link" href="charts.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Pendapatan
+                        </a>
+                        <div class="sb-sidenav-menu-heading">Expenditure Cycle</div>
+                        <a class="nav-link" href="charts.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Pengeluaran
+                        </a>
+                        <div class="sb-sidenav-menu-heading">Payroll Cycle</div>
+                        <a class="nav-link" href="charts.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Kelola Karyawan
+                        </a>
+                        <a class="nav-link" href="tables.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Penggajian
+                        </a>
+                        <a class="nav-link" href="tables.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Rekap Presensi
+                        </a>
+                        <div class="sb-sidenav-menu-heading">Report Cycle</div>
+                        <a class="nav-link" href="jurnal_umum.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Jurnal Umum
+                        </a>
+                        <a class="nav-link" href="buku_besar.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Buku Besar
+                        </a>
+                        <div class="sb-sidenav-menu-heading">Mastering</div>
+                        <a class="nav-link" href="master_karyawan.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Data Karyawan
+                        </a>
+                        <a class="nav-link" href="master_jabatan.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Data Jabatan
+                        </a>
+                        <a class="nav-link" href="tables.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Data Divisi
+                        </a>
+                        <a class="nav-link" href="master_produk.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Data Produk
+                        </a>
+                        <a class="nav-link" href="master_jenis_pendapatan.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div> 
+                            Data Jenis Pendapatan
+                        </a>
+                        <a class="nav-link" href="master_metode_pembayaran.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Data Metode Pembayaran
+                        </a>
+                        <a class="nav-link" href="master_customer.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Data Customer
+                        </a>
+                        <a class="nav-link" href="master_supplier.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Data Supplier
+                        </a>
                         <div class="sb-sidenav-menu-heading">Addons</div>
                         <a class="nav-link" href="charts.html">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
@@ -186,158 +185,233 @@ ini_set('display_errors', 1);
                         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                         <li class="breadcrumb-item active">Presensi Karyawan</li>
                     </ol>
+
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            Employee Data Table
+                            Filter Data Absensi
                         </div>
                         <div class="card-body">
-                        <!-- Tombol Tambah Data -->
-                        <div class="mb-3 d-flex justify-content-end">
-                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addAbsensiModal">
-                                Add Data
-                            </button>
+                            <form class="form-inline">
+                                <div class="form-group mb-3">
+                                    <label for="bulan">Bulan</label>
+                                    <select class="form-control ml-3" name="bulan" id="bulan">
+                                        <option value="">Pilih Bulan</option>
+                                        <option value="01">Januari</option>
+                                        <option value="02">Februari</option>
+                                        <option value="03">Maret</option>
+                                        <option value="04">April</option>
+                                        <option value="05">Mei</option>
+                                        <option value="06">Juni</option>
+                                        <option value="07">Juli</option>
+                                        <option value="08">Agustus</option>
+                                        <option value="09">September</option>
+                                        <option value="10">Oktober</option>
+                                        <option value="11">November</option>
+                                        <option value="12">Desember</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mb-2 ml-5">
+                                    <label for="tahun">Tahun</label>
+                                    <select class="form-control ml-3" name="tahun" id="tahun">
+                                        <option value="">Pilih Tahun</option>
+                                        <?php 
+                                        $tahun = date('Y');
+                                        for ($i = 2023; $i <= $tahun + 5; $i++) { ?>
+                                            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                                <div class="mb-3 d-flex justify-content-end">
+                                    <button type="button" id="tampildataabsen" class="btn btn-success">
+                                        Tampilkan Data
+                                    </button>
+                                    <button type="button" id="editdataabsen" class="btn btn-success ms-2">
+                                        Tambah Absensi
+                                    </button>
+                                </div>
+                            </form>
                         </div>
+                    </div>
 
-                    <!-- Tabel Data Absensi Karyawan -->
-                    <div class="table-responsive">
+                    <?php
+                    if ((isset($_GET['bulan']) && $_GET['bulan'] != '') && (isset($_GET['tahun']) && $_GET['tahun'] != '')) {
+                        $bulan = $_GET['bulan'];
+                        $tahun = $_GET['tahun'];
+                        $bulantahun = $bulan . $tahun;
+                    } else {
+                        $bulan = date('m');
+                        $tahun = date('Y');
+                        $bulantahun = $bulan . $tahun;
+                    }
+                    ?>
+
+                    <div class="alert alert-info" style="display:none;">
+                        Menampilkan Data Kehadiran Pegawai Bulan: <span class="font-weight-bold"><?php echo $bulan; ?></span> Tahun: <span class="font-weight-bold"><?php echo $tahun; ?></span>
+                    </div>
+
+                    <div id="formAbsensi" class="table-responsive" style="display:none;">
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th>ID Absensi</th>
-                                    <th>ID Transaksi Karyawan</th>
                                     <th>Nama Karyawan</th>
-                                    <th>Tanggal</th>
-                                    <th>Waktu Masuk</th>
-                                    <th>Waktu Keluar</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
+                                    <th>Nama Jabatan</th>
+                                    <th>Hadir</th>
+                                    <th>Sakit</th>
+                                    <th>Alpha</th>
                                 </tr>
                             </thead>
-                            <tbody id="data_absensi">
+                            <tbody id="absensi_karyawan">
                                 <?php
-                                // Query data absensi dengan JOIN untuk mendapatkan nama karyawan
-                                $query = "
-                                SELECT 
-                                    a.id_absensi, 
-                                    a.id_transaksi_karyawan,
-                                    a.tanggal, 
-                                    a.waktu_masuk, 
-                                    a.waktu_keluar, 
-                                    a.status, 
-                                    k.nama_karyawan
-                                FROM absensi a
-                                JOIN transaksi_karyawan t ON a.id_transaksi_karyawan = t.id_transaksi_karyawan
-                                JOIN master_karyawan k ON t.nik = k.nik";
+                                // Query untuk mendapatkan data absensi karyawan
+                                $query = "SELECT 
+                                    ak.id_absensi,
+                                    ak.hadir,
+                                    ak.sakit,
+                                    ak.alpha,
+                                    mk.nama_karyawan,
+                                    mj.nama_jabatan
+                                FROM 
+                                    absensi_karyawan ak
+                                JOIN transaksi_karyawan tk ON ak.id_transaksi_karyawan = tk.id_transaksi_karyawan
+                                JOIN master_karyawan mk ON tk.NIK = mk.NIK
+                                JOIN master_jabatan mj ON tk.id_jabatan = mj.id_jabatan
+                                WHERE ak.bulan = '$bulan' AND ak.tahun = '$tahun'";
                                 
                                 $result = mysqli_query($koneksi, $query);
-
-                                // Check if the query was successful
-                                if (!$result) {
-                                    die("Query failed: " . mysqli_error($koneksi));
-                                }
-
-                                // Tampilkan data
+                                
+                                if ($result) {
+                                    if (mysqli_num_rows($result) > 0) {
                                 while ($row = mysqli_fetch_assoc($result)) {
                                     echo "<tr>
                                         <td>{$row['id_absensi']}</td>
-                                        <td>{$row['id_transaksi_karyawan']}</td>
                                         <td>{$row['nama_karyawan']}</td>
-                                        <td>{$row['tanggal']}</td>
-                                        <td>{$row['waktu_masuk']}</td>
-                                        <td>{$row['waktu_keluar']}</td>
-                                        <td>{$row['status']}</td>
-                                        <td><button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                        <a href='delete_absensi.php?id={$row['id_absensi']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this attendance record?')\">Delete</a>
-                                    </td>
-                                </tr>";
-                            }
-                            ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <!-- Modal Tambah Absensi -->
-    <div class="modal fade" id="addAbsensiModal" tabindex="-1" aria-labelledby="addAbsensiModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form method="POST" action="add_absensi.php">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addAbsensiModalLabel">Tambah Absensi Karyawan</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <!-- Pilih Karyawan -->
-                        <div class="mb-3">
-                            <label for="id_transaksi_karyawan" class="form-label">Pilih Karyawan</label>
-                            <select class="form-select" id="id_transaksi_karyawan" name="id_transaksi_karyawan" required>
-                                <option value="">Pilih Karyawan</option>
-                                <?php
-                                // Ambil data karyawan untuk dropdown
-                                $karyawan = mysqli_query($koneksi, "
-                                    SELECT tk.id_transaksi_karyawan, mk.nama_karyawan 
-                                    FROM transaksi_karyawan tk
-                                    INNER JOIN master_karyawan mk ON tk.NIK = mk.NIK
-                                ");
-                                while ($row = mysqli_fetch_assoc($karyawan)) {
-                                    echo "<option value='{$row['id_transaksi_karyawan']}'>{$row['id_transaksi_karyawan']} - {$row['nama_karyawan']}</option>";
-                                }                            
+                                        <td>{$row['nama_jabatan']}</td>
+                                        <td>{$row['hadir']}</td>                         
+                                        <td>{$row['sakit']}</td>
+                                        <td>{$row['alpha']}</td>
+                                    </tr>";
+                                        }
+                                    } else {
+                                        // Jika tidak ada data, tampilkan pesan bahwa data tidak ditemukan
+                                        echo "<tr><td colspan='6'>Data absensi tidak ditemukan.</td></tr>";
+                                    }
+                                } else {
+                                    // Jika query gagal, tampilkan pesan error
+                                    echo "<tr><td colspan='6'>Error dalam pengambilan data: " . mysqli_error($koneksi) . "</td></tr>";
+                                }
                                 ?>
-                            </select>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+
+                    <!-- Form untuk menambah dan mengedit absensi -->
+                    <div id="formTambahAbsensi" style="display:none;">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                Tambah / Edit Absensi
+                            </div>
+                            <div class="card-body">
+                                <form id="formAbsensi" method="POST" action="edit_absensi.php">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Id Absensi</th>
+                                                <th>NIK</th>
+                                                <th>Nama Karyawan</th>
+                                                <th>Nama Jabatan</th>
+                                                <th>Hadir</th>
+                                                <th>Sakit</th>
+                                                <th>Alpha</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tableAbsensiBody">
+                                            <?php
+                                            // Query untuk mendapatkan data semua karyawan
+                                            $query = "SELECT 
+                                                        ak.id_absensi,
+                                                        mk.NIK
+                                                        mk.nama_karyawan,
+                                                        mj.nama_jabatan,
+                                                        ak.hadir,
+                                                        ak.sakit,
+                                                        ak.alpha
+                                                    FROM 
+                                                        absensi_karyawan ak
+                                                    JOIN transaksi_karyawan tk ON tk.id_transaksi_karyawan = tk.NIK
+                                                    JOIN master_karyawan mk ON tk.NIK = mk.NIK
+                                                    JOIN master_jabatan mj ON tk.id_jabatan = mj.id_jabatan";
+                                            
+                                            $result = mysqli_query($koneksi, $query);
+
+                                            // Periksa apakah query berhasil
+                                            if (!$result) {
+                                                die('Error pada query: ' . mysqli_error($koneksi));
+                                            }
+
+                                            while ($row = mysqli_fetch_assoc($result)) {
+                                                echo "<tr>
+                                                        <td>{$row['nama_karyawan']}</td>
+                                                        <td>{$row['nama_jabatan']}</td>
+                                                        <td><input type='number' name='hadir[{$row['NIK']}]' class='form-control' value='0'></td>
+                                                        <td><input type='number' name='sakit[{$row['NIK']}]' class='form-control' value='0'></td>
+                                                        <td><input type='number' name='alpha[{$row['NIK']}]' class='form-control' value='0'></td>
+                                                    </tr>";
+                                            }
+                                            ?>
+                                        </tbody>
+                                    </table>
+                                    <button type="submit" class="btn btn-primary">Simpan Absensi</button>
+                                </form>
+                            </div>
                         </div>
-
-                        <!-- Waktu Masuk, Waktu Keluar, Tanggal, Status -->
-                        <input type="hidden" id="waktu_masuk" name="waktu_masuk">
-                        <input type="hidden" id="waktu_keluar" name="waktu_keluar">
-                        <input type="hidden" id="tanggal" name="tanggal">
-                        <input type="hidden" id="status" name="status">
                     </div>
-                    <div class="modal-footer">
-                        <!-- Tombol Absen Masuk -->
-                        <button type="button" class="btn btn-success" onclick="setAbsenceTime('masuk')">Absen Masuk</button>
-
-                        <!-- Tombol Absen Keluar -->
-                        <button type="button" class="btn btn-warning" onclick="setAbsenceTime('keluar')">Absen Keluar</button>
-
-                        <!-- Tombol Batal -->
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+            </main>
         </div>
     </div>
-
-    <script>
-        function setAbsenceTime(type) {
-            const selectedKaryawan = document.getElementById('id_transaksi_karyawan').value;
-
-            if (!selectedKaryawan) {
-                alert("Pilih karyawan terlebih dahulu.");
-                return;
-            }
-
-            const waktu = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-            const tanggal = new Date().toISOString().split('T')[0]; // Format YYYY-MM-DD
-
-            document.getElementById('tanggal').value = tanggal;
-
-            if (type === 'masuk') {
-                document.getElementById('waktu_masuk').value = waktu;
-                document.getElementById('status').value = 'Hadir';
-            } else if (type === 'keluar') {
-                document.getElementById('waktu_keluar').value = waktu;
-            }
-
-            document.querySelector('form').submit();
-        }
-    </script>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/scripts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
     <script src="js/datatables-simple-demo.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $('#tampildataabsen').click(function() {
+            var bulan = $('#bulan').val();  // Mengambil nilai bulan
+            var tahun = $('#tahun').val();  // Mengambil nilai tahun
+
+            console.log("Bulan:", bulan, "Tahun:", tahun); // Debugging log
+
+            if (bulan && tahun) {  // Memastikan bulan dan tahun dipilih
+                $.ajax({
+                    url: 'get_absensi.php',  // Menyambung ke file get_absensi.php
+                    type: 'GET',
+                    data: { bulan: bulan, tahun: tahun },  // Mengirimkan data bulan dan tahun
+                    success: function(response) {
+                        console.log(response); // Debugging log
+                        $('#absensi_karyawan').html(response);
+                        $('#formAbsensi').show();  // Menampilkan tabel setelah data diambil
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);  // Menampilkan error dari AJAX
+                        alert('Terjadi kesalahan dalam pengambilan data.');
+                    }
+                });
+            } else {
+                alert('Pilih bulan dan tahun terlebih dahulu.');
+            }
+        });
+    </script>
+    <script>
+        $('#editdataabsen').click(function() {
+            $('#formTambahAbsensi').toggle(); // Menampilkan form untuk menambah atau mengedit absensi
+            $('#formAbsensi').hide(); // Sembunyikan tabel absensi lama
+        });
+    </script>
 </body>
 </html>
