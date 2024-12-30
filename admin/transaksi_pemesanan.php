@@ -196,7 +196,7 @@ ini_set('display_errors', 1);
                         <div class="card-body">
                             <!-- Tombol Tambah Data -->
                             <div class="mb-3 d-flex justify-content-end">
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#gajiModal">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTransaksiPemesananModal">
                                     Add Data
                                 </button>
                             </div>
