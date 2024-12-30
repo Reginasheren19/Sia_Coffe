@@ -267,42 +267,46 @@ error_reporting(0)
                 </div>
             </div>
         </div>
-        
-            <!-- Modal Edit Data Customer -->
-            <div class="modal fade" id="editCustomerModal" tabindex="-1" aria-labelledby="editCustomerModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <form method="POST" action="update_customer.php">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="editCustomerModalLabel">Edit Data Customer</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+        <!-- Modal Edit Data Produk -->
+        <div class="modal fade" id="editCustomerModal" tabindex="-1" aria-labelledby="editCustomerModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form method="POST" action="update_customer.php">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editCustomerModalLabel">Edit Data Customer</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Hidden Input untuk ID Customer -->
+                            <input type="hidden" name="id_customer" id="editIdCustomer">
+                            
+                            <div class="mb-3">
+                                <label for="editNamaCustomer" class="form-label">Nama Customer</label>
+                                <input type="text" class="form-control" id="editNamaCustomer" name="nama_customer" required>
                             </div>
-                            <div class="modal-body">
-                                <input type="hidden" name="id_customer" id="edit_id_customer">
-                                <div class="mb-3">
-                                    <label for="editNamaCustomer" class="form-label">Nama</label>
-                                    <input type="text" class="form-control" id="editNamaCustomer" name="nama_customer" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="editAlamatCustomer" class="form-label">Alamat</label>
-                                    <textarea class="form-control" id="editAlamatCustomer" name="alamat_customer" rows="3" required></textarea>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="editTelpCustomer" class="form-label">No Telepon</label>
-                                    <input type="text" class="form-control" id="editTelpCustomer" name="telp_customer" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="editSaldoPiutang" class="form-label">Saldo</label>
-                                    <input type="text" class="form-control" id="editSaldoPiutang" name="saldo_piutang" required>
-                                </div>
-                                <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                <button type="submit" class="btn btn-primary">Update</button>
+                            <div class="mb-3">
+                                <label for="editAlamatCustomer" class="form-label">Alamat</label>
+                                <textarea class="form-control" id="editAlamatCustomer" name="alamat_customer" rows="3" required></textarea>
                             </div>
-                        </form>
-                    </div>
+                            <div class="mb-3">
+                                <label for="editTelpCustomer" class="form-label">No Telepon</label>
+                                <input type="text" class="form-control" id="editTelpCustomer" name="telp_customer" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="editSaldoPiutang" class="form-label">Saldo</label>
+                                <input type="text" class="form-control" id="editSaldoPiutang" name="saldo_piutang" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                        </div>
+                    </form>
                 </div>
             </div>
+        </div>
+
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
             <script src="js/scripts.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
