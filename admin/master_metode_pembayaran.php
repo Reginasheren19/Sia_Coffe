@@ -230,23 +230,24 @@ error_reporting(0)
             </main>
 
             <!-- Modal Tambah Data -->
-            <div class="modal fade" id="addMetodePembayaranModal" tabindex="-1" aria-labelledby="addMetodePembayaranModal" aria-hidden="true">
+            <div class="modal fade" id="addMetodePembayaranModal" tabindex="-1" aria-labelledby="addMetodePembayaranModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form id="form_add_metode_pembayaran">
+                        <form method="POST" action="add_metode_pembayaran.php">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="addMetodePembayaranModal">Tambah Data Metode Pembayaran</h5>
+                                <h5 class="modal-title" id="addMetodePembayaranModalLabel">Tambah Data Metode Pembayaran</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <div class="mb-3">
-                                    <label for="nama_metode" class="form-label">Nama Metode Pembayaran</label>
+                                    <label for="nama_metode" class="form-label">Nama Metode</label>
                                     <input type="text" class="form-control" id="nama_metode" name="nama_metode" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="deskripsi" class="form-label">Deskripsi</label>
-                                    <textarea class="form-control" id="deskripsi" name="deskripsi" required></textarea>
+                                    <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
                                 </div>
+                            </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                                 <button type="submit" class="btn btn-primary">Simpan</button>
