@@ -183,34 +183,35 @@ ini_set('display_errors', 1);
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Master Data Pemesanan</h1>
+                    <h1 class="mt-4">Detail Pemesanan</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Data Pemesanan</li>
+                        <li class="breadcrumb-item active">Detail Pemesanan</li>
                     </ol>
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            Employee Data Table
+                             Detail Pemesanan
                         </div>
                         <div class="card-body">
                             <!-- Tombol Tambah Data -->
                             <div class="mb-3 d-flex justify-content-end">
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTransaksiPemesananModal">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addDetailPemesananModal">
                                     Add Data
                                 </button>
                             </div>
-                            <!-- Tabel Data Transaksi Pemesanan -->
+                            <!-- Tabel Data Detail Pemesanan -->
                             <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
-                                            <th>Id Transaksi Pemesanan</th>
-                                            <th>Id Customer</th>
-                                            <th>Tanggal Transaksi</th>
-                                            <th>Total Harga</th>
-                                            <th>Id Metode</th>
-                                            <th>Kode Akun</th>
+                                            <th>Id Detail Pemesanan</th>
+                                            <th>Id Id Transakasi Pemesanan</th>
+                                            <th>Id Produk</th>
+                                            <th>Jumlah</th>
+                                            <th>Harga Satuan</th>
+                                            <th>Diskon</th>
+                                            <th>Subtotal</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
