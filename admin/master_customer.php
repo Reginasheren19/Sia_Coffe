@@ -236,7 +236,7 @@ error_reporting(0)
             <div class="modal fade" id="addCustomerModal" tabindex="-1" aria-labelledby="addCustomerModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form id="form_add_customer">
+                        <form id="form_add_customer" method="POST" action="add_customer.php">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="addCustomerModalLabel">Tambah Data Customer</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
