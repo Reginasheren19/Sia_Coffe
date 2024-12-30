@@ -31,30 +31,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master Jenis Pendapatan</title>
+    <title>Master Customer</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 <div class="container mt-4">
-    <h1 class="mb-4">Master Jenis Pendapatan</h1>
+    <h1 class="mb-4">Master Data Jenis Pendapatan</h1>
 
     <!-- Tombol Tambah Data -->
     <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addJenisPendapatanModal">Add Data</button>
 
-    <!-- Tabel Data Karyawan -->
+    <!-- Tabel Data Jenis Pendapatan -->
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Id Jenis Pendapatan</th>
-                    <th>Nama Jenis Pendapatan</th>
-                    <th>Deskripsi</th>
+                        <th>Id Jenis Pendapatan</th>
+                        <th>Nama Jenis Pendapatan</th>
+                        <th>Deskripsi</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                $result = mysqli_query($koneksi, "SELECT * FROM master_produk");
+                $result = mysqli_query($koneksi, "SELECT * FROM master_jenis_pendapatan");
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo "<tr>
                             <td>{$row['id_jenis_pendapatan']}</td>
@@ -84,8 +84,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     <div class="mb-3">
                         <label for="deskripsi" class="form-label">Deskripsi</label>
-                        <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" placeholder="Pendapatan tunai misal" required></textarea>
-                    </div>
+                        <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
+                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>

@@ -6,9 +6,9 @@ echo "Parameter GET: ";
 print_r($_GET);
 echo "<br>";
 
-if (isset($_GET['metode_pembayaran']) && !empty($_GET['metode_pembayaran'])) { // Periksa 'id_metode'
+if (isset($_GET['metode']) && !empty($_GET['metode'])) { // Periksa 'id_metode'
     // Ambil ID metode dari parameter URL dan sanitasi
-    $hapus_id_metode = mysqli_real_escape_string($koneksi, $_GET['metode_pembayaran']);
+    $hapus_id_metode = mysqli_real_escape_string($koneksi, $_GET['metode']);
     echo "ID metode yang akan dihapus: " . $hapus_id_metode . "<br>"; // Debugging
 
     // Jalankan query untuk menghapus produk berdasarkan ID

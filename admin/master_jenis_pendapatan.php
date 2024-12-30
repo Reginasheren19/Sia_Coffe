@@ -215,7 +215,7 @@ error_reporting(0)
                                                 <td>{$row['deskripsi']}</td>
                                                 <td>{$row['Action']}
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                    <a href='delete_jenis_pendapatan.php?id_produk={$row['id_jenis_pendapatan']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data?')\">Delete</a>
+                                                    <a href='delete_jenis_pendapatan.php?jenis_pendapatan={$row['id_jenis_pendapatan']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data?')\">Delete</a>
                                                 </td>
                                             </tr>";
                                         }
@@ -232,20 +232,21 @@ error_reporting(0)
             <div class="modal fade" id="addJenisPendapatanModal" tabindex="-1" aria-labelledby="addJenisPendapatanModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
-                        <form method="POST" action="">
+                        <form method="POST" action="add_jenis_pendapatan.php">
                             <div class="modal-header">
                                 <h5 class="modal-title" id="addJenisPendapatanModalLabel">Tambah Data Jenis Pendapatan</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                        <div class="modal-body">
+                            <div class="modal-body">
                                 <div class="mb-3">
                                     <label for="nama_jenis_pendapatan" class="form-label">Nama Jenis Pendapatan</label>
                                     <input type="text" class="form-control" id="nama_jenis_pendapatan" name="nama_jenis_pendapatan" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="deskripsi" class="form-label">Deskripsi</label>
-                                    <textarea class="form-control" id="deskripsi" name="deskripsi" required></textarea>
+                                    <input type="text" class="form-control" id="deskripsi" name="deskripsi" required>
                                 </div>
+                            </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                                 <button type="submit" class="btn btn-primary">Simpan</button>
