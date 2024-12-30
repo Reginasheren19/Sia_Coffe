@@ -40,9 +40,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <h1 class="mb-4">Master Data Customer</h1>
 
     <!-- Tombol Tambah Data -->
-    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addCustomerModal">Add Data</button>
+    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addMetodePembayaranModal">Add Data</button>
 
-    <!-- Tabel Data Customer -->
+    <!-- Tabel Data Metode -->
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
