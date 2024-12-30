@@ -216,7 +216,6 @@ ini_set('display_errors', 1);
                                     </thead>
                                     <tbody id="data_transaksi_pemesanan">
                                         <?php
-                                        <?php
                                         // Query untuk mendapatkan data transaksi pemesanan dengan data terkait
                                         $query = "SELECT 
                                                     tp.id_transaksi_pemesanan,
