@@ -100,7 +100,7 @@ session_start();
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Pemesanan
                             </a>
-                            <a class="nav-link" href="charts.html">
+                            <a class="nav-link" href="detail_pemesanan.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Detail Pemesanan
                             </a>
