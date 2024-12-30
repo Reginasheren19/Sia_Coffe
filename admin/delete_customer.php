@@ -6,9 +6,9 @@ echo "Parameter GET: ";
 print_r($_GET);
 echo "<br>";
 
-if (isset($_GET['id_customer']) && !empty($_GET['id_customer'])) { // Periksa 'id_customer'
+if (isset($_GET['customer']) && !empty($_GET['customer'])) { // Periksa 'id_customer'
     // Ambil ID produk dari parameter URL dan sanitasi
-    $hapus_id_customer = mysqli_real_escape_string($koneksi, $_GET['id_customer']);
+    $hapus_id_customer = mysqli_real_escape_string($koneksi, $_GET['customer']);
     echo "ID Customer yang akan dihapus: " . $hapus_id_customer . "<br>"; // Debugging
 
     // Jalankan query untuk menghapus produk berdasarkan ID
