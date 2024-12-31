@@ -15,7 +15,8 @@ $query_transaksi = "
         tk.id_transaksi_karyawan, 
         IFNULL(ak.hadir, 0) AS hadir, 
         IFNULL(ak.sakit, 0) AS sakit, 
-        IFNULL(ak.alpha, 0) AS alpha
+        IFNULL(ak.alpha, 0) AS alpha,
+        IFNULL(ak.jam_lembur, 0) AS jam_lembur
     FROM 
         transaksi_karyawan tk
     JOIN 
@@ -290,6 +291,7 @@ $result_transaksi = mysqli_query($koneksi, $query_transaksi);
                                         <th>Hadir</th>
                                         <th>Sakit</th>
                                         <th>Alpha</th>
+                                        <th>Jam Lembur</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -305,6 +307,9 @@ $result_transaksi = mysqli_query($koneksi, $query_transaksi);
                                             </td>
                                             <td>
                                                 <input type="number" name="alpha[<?php echo $karyawan['id_transaksi_karyawan']; ?>]" value="<?php echo $karyawan['alpha']; ?>" min="0">
+                                            </td>
+                                            <td>
+                                                <input type="number" name="jam_lembur[<?php echo $karyawan['id_transaksi_karyawan']; ?>]" value="<?php echo $karyawan['alpha']; ?>" min="0">
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>

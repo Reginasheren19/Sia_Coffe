@@ -7,6 +7,8 @@ $tahun = $_POST['tahun'];
 $hadir = $_POST['hadir'];
 $sakit = $_POST['sakit'];
 $alpha = $_POST['alpha'];
+$jam_lembur = $_POST['jam_lembur'];
+
 
 // Cek dan simpan data absensi
 foreach ($hadir as $id_transaksi_karyawan => $value) {
@@ -16,11 +18,11 @@ foreach ($hadir as $id_transaksi_karyawan => $value) {
 
     if (mysqli_num_rows($result_check) > 0) {
         // Update data absensi
-        $query_update = "UPDATE absensi_karyawan SET hadir = '$value', sakit = '{$sakit[$id_transaksi_karyawan]}', alpha = '{$alpha[$id_transaksi_karyawan]}' WHERE bulan = '$bulan' AND tahun = '$tahun' AND id_transaksi_karyawan = '$id_transaksi_karyawan'";
+        $query_update = "UPDATE absensi_karyawan SET hadir = '$value', sakit = '{$sakit[$id_transaksi_karyawan]}', alpha = '{$alpha[$id_transaksi_karyawan]}', jam_lembur = '{$jam_lembur[$id_transaksi_karyawan]}' WHERE bulan = '$bulan' AND tahun = '$tahun' AND id_transaksi_karyawan = '$id_transaksi_karyawan'";
         mysqli_query($koneksi, $query_update);
     } else {
         // Insert data absensi baru
-        $query_insert = "INSERT INTO absensi_karyawan (bulan, tahun, id_transaksi_karyawan, hadir, sakit, alpha) VALUES ('$bulan', '$tahun', '$id_transaksi_karyawan', '$value', '{$sakit[$id_transaksi_karyawan]}', '{$alpha[$id_transaksi_karyawan]}')";
+        $query_insert = "INSERT INTO absensi_karyawan (bulan, tahun, id_transaksi_karyawan, hadir, sakit, alpha, jam_lembur) VALUES ('$bulan', '$tahun', '$id_transaksi_karyawan', '$value', '{$sakit[$id_transaksi_karyawan]}', '{$alpha[$id_transaksi_karyawan]}', '{$jam_lembur[$id_transaksi_karyawan]}')";
         mysqli_query($koneksi, $query_insert);
     }
 }

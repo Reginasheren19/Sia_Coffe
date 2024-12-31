@@ -12,6 +12,7 @@ $query = "SELECT
     ak.hadir,
     ak.sakit,
     ak.alpha,
+    ak.jam_lembur,
     mk.nama_karyawan,
     mj.nama_jabatan
 FROM 
@@ -281,10 +282,11 @@ $result = mysqli_query($koneksi, $query);
                                 <tr>
                                     <th>ID Absensi</th>
                                     <th>Nama Karyawan</th>
-                                    <th>Nama Jabatan</th>
+                                    <th>Jabatan</th>
                                     <th>Hadir</th>
                                     <th>Sakit</th>
                                     <th>Alpha</th>
+                                    <th>Jam Lembur</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -297,6 +299,7 @@ $result = mysqli_query($koneksi, $query);
                                             <td><?php echo $row['hadir']; ?></td>
                                             <td><?php echo $row['sakit']; ?></td>
                                             <td><?php echo $row['alpha']; ?></td>
+                                            <td><?php echo $row['jam_lembur']; ?></td>
                                         </tr>
                                     <?php endforeach; ?>
                                 <?php else: ?>
