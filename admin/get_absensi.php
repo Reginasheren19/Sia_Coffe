@@ -25,6 +25,7 @@ if (isset($_GET['bulan']) && isset($_GET['tahun'])) {
     // Output hasil query dalam format HTML
     if ($result) {
         if (mysqli_num_rows($result) > 0) {
+            // Jika ada data
             while ($row = mysqli_fetch_assoc($result)) {
                 echo "<tr>
                         <td>{$row['id_absensi']}</td>
@@ -34,14 +35,17 @@ if (isset($_GET['bulan']) && isset($_GET['tahun'])) {
                         <td>{$row['sakit']}</td>
                         <td>{$row['alpha']}</td>
                     </tr>";
-                }
-            } else {
-                echo "<tr><td colspan='6'>Data absensi tidak ditemukan.</td></tr>";
             }
         } else {
-            echo "<tr><td colspan='6'>Error dalam pengambilan data: " . mysqli_error($koneksi) . "</td></tr>";
+            // Jika tidak ada data
+            echo "<tr><td colspan='6'>Data absensi tidak ditemukan.</td></tr>";
         }
     } else {
-        echo "<tr><td colspan='6'>Parameter bulan dan tahun tidak valid.</td></tr>";
+        // Jika query gagal
+        echo "<tr><td colspan='6'>Error dalam pengambilan data: " . mysqli_error($koneksi) . "</td></tr>";
     }
+} else {
+    // Jika parameter bulan atau tahun tidak ada
+    echo "<tr><td colspan='6'>Parameter bulan dan tahun tidak valid.</td></tr>";
+}
 ?>

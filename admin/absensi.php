@@ -1,9 +1,45 @@
 <?php
 include("../config/koneksi_mysql.php");
 
-// Mengatur error reporting
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// Inisialisasi variabel $data
+$data = null;
+
+$bulan = isset($_GET['bulan']) ? $_GET['bulan'] : '';
+$tahun = isset($_GET['tahun']) ? $_GET['tahun'] : '';
+
+// Jika bulan dan tahun sudah dipilih, tampilkan data absensi
+if ($bulan && $tahun) {
+    // Query untuk mendapatkan data absensi berdasarkan bulan dan tahun
+    $query = "SELECT 
+        ak.id_absensi,
+        ak.hadir,
+        ak.sakit,
+        ak.alpha,
+        mk.nama_karyawan,
+        mj.nama_jabatan
+    FROM 
+        absensi_karyawan ak
+    JOIN transaksi_karyawan tk ON ak.id_transaksi_karyawan = tk.id_transaksi_karyawan
+    JOIN master_karyawan mk ON tk.NIK = mk.NIK
+    JOIN master_jabatan mj ON tk.id_jabatan = mj.id_jabatan
+    WHERE ak.bulan = '$bulan' AND ak.tahun = '$tahun'";
+
+    $result = mysqli_query($koneksi, $query);
+
+    // Output hasil query dalam format HTML
+    if ($result) {
+        if (mysqli_num_rows($result) > 0) {
+            $data = [];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $data[] = $row;
+            }
+        } else {
+            $data = null;
+        }
+    } else {
+        $data = null;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -178,80 +214,70 @@ ini_set('display_errors', 1);
             </nav>
         </div>
         <div id="layoutSidenav_content">
-            <main>
-                <div class="container-fluid px-4">
-                    <h1 class="mt-4">Presensi Karyawan</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Presensi Karyawan</li>
-                    </ol>
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">Presensi Karyawan</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Presensi Karyawan</li>
+                </ol>
 
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-table me-1"></i>
-                            Filter Data Absensi
-                        </div>
-                        <div class="card-body">
-                            <form class="form-inline">
-                                <div class="form-group mb-3">
-                                    <label for="bulan">Bulan</label>
-                                    <select class="form-control ml-3" name="bulan" id="bulan">
-                                        <option value="">Pilih Bulan</option>
-                                        <option value="01">Januari</option>
-                                        <option value="02">Februari</option>
-                                        <option value="03">Maret</option>
-                                        <option value="04">April</option>
-                                        <option value="05">Mei</option>
-                                        <option value="06">Juni</option>
-                                        <option value="07">Juli</option>
-                                        <option value="08">Agustus</option>
-                                        <option value="09">September</option>
-                                        <option value="10">Oktober</option>
-                                        <option value="11">November</option>
-                                        <option value="12">Desember</option>
-                                    </select>
-                                </div>
-                                <div class="form-group mb-2 ml-5">
-                                    <label for="tahun">Tahun</label>
-                                    <select class="form-control ml-3" name="tahun" id="tahun">
-                                        <option value="">Pilih Tahun</option>
-                                        <?php 
-                                        $tahun = date('Y');
-                                        for ($i = 2023; $i <= $tahun + 5; $i++) { ?>
-                                            <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
-                                        <?php } ?>
-                                    </select>
-                                </div>
-                                <div class="mb-3 d-flex justify-content-end">
-                                    <button type="button" id="tampildataabsen" class="btn btn-success">
-                                        Tampilkan Data
-                                    </button>
-                                    <button type="button" id="editdataabsen" class="btn btn-success ms-2">
-                                        Tambah Absensi
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
+                <!-- Form untuk memilih bulan dan tahun -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i> Filter Data Absensi
+                    </div>
+                    <div class="card-body">
+                        <form class="form-inline">
+                            <div class="form-group mb-3">
+                                <label for="bulan">Bulan</label>
+                                <select class="form-control ml-3" name="bulan" id="bulan">
+                                    <option value="">Pilih Bulan</option>
+                                    <option value="01" <?php echo ($bulan == '01') ? 'selected' : ''; ?>>Januari</option>
+                                    <option value="02" <?php echo ($bulan == '02') ? 'selected' : ''; ?>>Februari</option>
+                                    <option value="03" <?php echo ($bulan == '03') ? 'selected' : ''; ?>>Maret</option>
+                                    <option value="04" <?php echo ($bulan == '04') ? 'selected' : ''; ?>>April</option>
+                                    <option value="05" <?php echo ($bulan == '05') ? 'selected' : ''; ?>>Mei</option>
+                                    <option value="06" <?php echo ($bulan == '06') ? 'selected' : ''; ?>>Juni</option>
+                                    <option value="07" <?php echo ($bulan == '07') ? 'selected' : ''; ?>>Juli</option>
+                                    <option value="08" <?php echo ($bulan == '08') ? 'selected' : ''; ?>>Agustus</option>
+                                    <option value="09" <?php echo ($bulan == '09') ? 'selected' : ''; ?>>September</option>
+                                    <option value="10" <?php echo ($bulan == '10') ? 'selected' : ''; ?>>Oktober</option>
+                                    <option value="11" <?php echo ($bulan == '11') ? 'selected' : ''; ?>>November</option>
+                                    <option value="12" <?php echo ($bulan == '12') ? 'selected' : ''; ?>>Desember</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-2 ml-5">
+                                <label for="tahun">Tahun</label>
+                                <select class="form-control ml-3" name="tahun" id="tahun">
+                                    <option value="">Pilih Tahun</option>
+                                    <?php 
+                                    $tahun_sekarang = date('Y');
+                                    for ($i = 2023; $i <= $tahun_sekarang + 5; $i++) { ?>
+                                        <option value="<?php echo $i; ?>" <?php echo ($tahun == $i) ? 'selected' : ''; ?>><?php echo $i; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                            <div class="mb-3 d-flex justify-content-end">
+                                <button type="submit" class="btn btn-success">
+                                    Tampilkan Data
+                                </button>
+                                <button type="submit" class="btn btn-success ms-2">
+                                    Tambah Absensi
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- Menampilkan data absensi -->
+                <?php if ($data !== null): ?>
+                    <div class="alert alert-info">
+                        Menampilkan Data Kehadiran Pegawai Bulan: <strong><?php echo $bulan; ?></strong> Tahun: <strong><?php echo $tahun; ?></strong>
                     </div>
 
-                    <?php
-                    if ((isset($_GET['bulan']) && $_GET['bulan'] != '') && (isset($_GET['tahun']) && $_GET['tahun'] != '')) {
-                        $bulan = $_GET['bulan'];
-                        $tahun = $_GET['tahun'];
-                        $bulantahun = $bulan . $tahun;
-                    } else {
-                        $bulan = date('m');
-                        $tahun = date('Y');
-                        $bulantahun = $bulan . $tahun;
-                    }
-                    ?>
-
-                    <div class="alert alert-info" style="display:none;">
-                        Menampilkan Data Kehadiran Pegawai Bulan: <span class="font-weight-bold"><?php echo $bulan; ?></span> Tahun: <span class="font-weight-bold"><?php echo $tahun; ?></span>
-                    </div>
-
-                    <div id="formAbsensi" class="table-responsive" style="display:none;">
-                        <table class="table table-bordered">
+                    <div class="table-responsive">
+                        <h3>Data Kehadiran Pegawai Bulan: <strong><?php echo $bulan; ?></strong> Tahun: <strong><?php echo $tahun; ?></strong></h3>
+                        <table class="table table-bordered" id="table-absensi">
                             <thead>
                                 <tr>
                                     <th>ID Absensi</th>
@@ -262,118 +288,27 @@ ini_set('display_errors', 1);
                                     <th>Alpha</th>
                                 </tr>
                             </thead>
-                            <tbody id="absensi_karyawan">
-                                <?php
-                                // Query untuk mendapatkan data absensi karyawan
-                                $query = "SELECT 
-                                    ak.id_absensi,
-                                    ak.hadir,
-                                    ak.sakit,
-                                    ak.alpha,
-                                    mk.nama_karyawan,
-                                    mj.nama_jabatan
-                                FROM 
-                                    absensi_karyawan ak
-                                JOIN transaksi_karyawan tk ON ak.id_transaksi_karyawan = tk.id_transaksi_karyawan
-                                JOIN master_karyawan mk ON tk.NIK = mk.NIK
-                                JOIN master_jabatan mj ON tk.id_jabatan = mj.id_jabatan
-                                WHERE ak.bulan = '$bulan' AND ak.tahun = '$tahun'";
-                                
-                                $result = mysqli_query($koneksi, $query);
-                                
-                                if ($result) {
-                                    if (mysqli_num_rows($result) > 0) {
-                                while ($row = mysqli_fetch_assoc($result)) {
-                                    echo "<tr>
-                                        <td>{$row['id_absensi']}</td>
-                                        <td>{$row['nama_karyawan']}</td>
-                                        <td>{$row['nama_jabatan']}</td>
-                                        <td>{$row['hadir']}</td>                         
-                                        <td>{$row['sakit']}</td>
-                                        <td>{$row['alpha']}</td>
-                                    </tr>";
-                                        }
-                                    } else {
-                                        // Jika tidak ada data, tampilkan pesan bahwa data tidak ditemukan
-                                        echo "<tr><td colspan='6'>Data absensi tidak ditemukan.</td></tr>";
-                                    }
-                                } else {
-                                    // Jika query gagal, tampilkan pesan error
-                                    echo "<tr><td colspan='6'>Error dalam pengambilan data: " . mysqli_error($koneksi) . "</td></tr>";
-                                }
-                                ?>
+                            <tbody>
+                                <?php if ($data): ?>
+                                    <?php foreach ($data as $row): ?>
+                                        <tr>
+                                            <td><?php echo $row['id_absensi']; ?></td>
+                                            <td><?php echo $row['nama_karyawan']; ?></td>
+                                            <td><?php echo $row['nama_jabatan']; ?></td>
+                                            <td><?php echo $row['hadir']; ?></td>
+                                            <td><?php echo $row['sakit']; ?></td>
+                                            <td><?php echo $row['alpha']; ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr><td colspan="6">Data absensi tidak ditemukan.</td></tr>
+                                <?php endif; ?>
                             </tbody>
                         </table>
                     </div>
-
-
-
-
-                    <!-- Form untuk menambah dan mengedit absensi -->
-                    <div id="formTambahAbsensi" style="display:none;">
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-table me-1"></i>
-                                Tambah / Edit Absensi
-                            </div>
-                            <div class="card-body">
-                                <form id="formAbsensi" method="POST" action="edit_absensi.php">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Id Absensi</th>
-                                                <th>NIK</th>
-                                                <th>Nama Karyawan</th>
-                                                <th>Nama Jabatan</th>
-                                                <th>Hadir</th>
-                                                <th>Sakit</th>
-                                                <th>Alpha</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="tableAbsensiBody">
-                                            <?php
-                                            // Query untuk mendapatkan data semua karyawan
-                                            $query = "SELECT 
-                                                        ak.id_absensi,
-                                                        mk.NIK
-                                                        mk.nama_karyawan,
-                                                        mj.nama_jabatan,
-                                                        ak.hadir,
-                                                        ak.sakit,
-                                                        ak.alpha
-                                                    FROM 
-                                                        absensi_karyawan ak
-                                                    JOIN transaksi_karyawan tk ON tk.id_transaksi_karyawan = tk.NIK
-                                                    JOIN master_karyawan mk ON tk.NIK = mk.NIK
-                                                    JOIN master_jabatan mj ON tk.id_jabatan = mj.id_jabatan";
-                                            
-                                            $result = mysqli_query($koneksi, $query);
-
-                                            // Periksa apakah query berhasil
-                                            if (!$result) {
-                                                die('Error pada query: ' . mysqli_error($koneksi));
-                                            }
-
-                                            while ($row = mysqli_fetch_assoc($result)) {
-                                                echo "<tr>
-                                                        <td>{$row['nama_karyawan']}</td>
-                                                        <td>{$row['nama_jabatan']}</td>
-                                                        <td><input type='number' name='hadir[{$row['NIK']}]' class='form-control' value='0'></td>
-                                                        <td><input type='number' name='sakit[{$row['NIK']}]' class='form-control' value='0'></td>
-                                                        <td><input type='number' name='alpha[{$row['NIK']}]' class='form-control' value='0'></td>
-                                                    </tr>";
-                                            }
-                                            ?>
-                                        </tbody>
-                                    </table>
-                                    <button type="submit" class="btn btn-primary">Simpan Absensi</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </main>
-        </div>
+                <?php endif; ?>
+            </div>
+        </main>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/scripts.js"></script>
@@ -381,37 +316,50 @@ ini_set('display_errors', 1);
     <script src="js/datatables-simple-demo.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $('#tampildataabsen').click(function() {
-            var bulan = $('#bulan').val();  // Mengambil nilai bulan
-            var tahun = $('#tahun').val();  // Mengambil nilai tahun
+        $(document).ready(function() {
+            $('#tampildataabsen').on('click', function() {
+                var bulan = $('#bulan').val();
+                var tahun = $('#tahun').val();
 
-            console.log("Bulan:", bulan, "Tahun:", tahun); // Debugging log
+                if (bulan && tahun) {
+                    $('#data-absensi').show();
+                    $('#bulan-text').text(bulan);
+                    $('#tahun-text').text(tahun);
 
-            if (bulan && tahun) {  // Memastikan bulan dan tahun dipilih
-                $.ajax({
-                    url: 'get_absensi.php',  // Menyambung ke file get_absensi.php
-                    type: 'GET',
-                    data: { bulan: bulan, tahun: tahun },  // Mengirimkan data bulan dan tahun
-                    success: function(response) {
-                        console.log(response); // Debugging log
-                        $('#absensi_karyawan').html(response);
-                        $('#formAbsensi').show();  // Menampilkan tabel setelah data diambil
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(error);  // Menampilkan error dari AJAX
-                        alert('Terjadi kesalahan dalam pengambilan data.');
-                    }
-                });
-            } else {
-                alert('Pilih bulan dan tahun terlebih dahulu.');
-            }
+                    // Ajax untuk mengambil data absensi
+                    $.ajax({
+                        url: 'get_absensi.php',
+                        type: 'GET',
+                        data: {bulan: bulan, tahun: tahun}, // Pastikan bulan dan tahun dikirim dengan benar
+                        success: function(response) {
+                            var data = JSON.parse(response);
+                            var tbody = $('#table-absensi tbody');
+                            tbody.empty(); // Bersihkan tabel sebelumnya
+
+                            // Tambahkan data ke dalam tabel
+                            if (data.error) {
+                                alert(data.error); // Tampilkan pesan error jika tidak ada data
+                            } else {
+                                data.forEach(function(item) {
+                                    var row = '<tr>' +
+                                                '<td>' + item.id_absensi + '</td>' +
+                                                '<td>' + item.nama_karyawan + '</td>' +
+                                                '<td>' + item.nama_jabatan + '</td>' +
+                                                '<td>' + item.hadir + '</td>' +
+                                                '<td>' + item.sakit + '</td>' +
+                                                '<td>' + item.alpha + '</td>' +
+                                            '</tr>';
+                                    tbody.append(row);
+                                });
+                            }
+                        }
+                    });
+                } else {
+                    alert('Silakan pilih bulan dan tahun.');
+                }
+            });
         });
-    </script>
-    <script>
-        $('#editdataabsen').click(function() {
-            $('#formTambahAbsensi').toggle(); // Menampilkan form untuk menambah atau mengedit absensi
-            $('#formAbsensi').hide(); // Sembunyikan tabel absensi lama
-        });
+
     </script>
 </body>
 </html>
