@@ -1,9 +1,13 @@
 <?php
 include("../config/koneksi_mysql.php");
 
-// Mengatur error reporting
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// Inisialisasi variabel $data
+$data = null;
+
+$bulangaji = isset($_GET['bulangaji']) ? $_GET['bulangaji'] : '';
+$tahungaji = isset($_GET['tahungaji']) ? $_GET['tahungaji'] : '';
+$karyawan = isset($_GET['karyawan']) ? $_GET['karyawan'] : '';
+
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +62,7 @@ ini_set('display_errors', 1);
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
                         <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav -menu-nested nav">
+                            <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="layout-static.html">Static Navigation</a>
                                 <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
                             </nav>
@@ -95,74 +99,70 @@ ini_set('display_errors', 1);
                             </nav>
                         </div>
                         <div class="sb-sidenav-menu-heading">Revenue Cycle</div>
-                            <a class="nav-link" href="charts.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Pendapatan
-                            </a>
-                            <div class="sb-sidenav-menu-heading">Expenditure Cycle</div>
-                            <a class="nav-link" href="charts.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Pengeluaran
-                            </a>
-
-
-                            <div class="sb-sidenav-menu-heading">Payroll Cycle</div>
-                            <a class="nav-link" href="charts.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Kelola Karyawan
-                            </a>
-                            <a class="nav-link" href="tables.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Penggajian
-                            </a>
-                            <a class="nav-link" href="tables.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Rekap Presensi
-                            </a>
-                            <div class="sb-sidenav-menu-heading">Report Cycle</div>
-                            <a class="nav-link" href="jurnal_umum.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Jurnal Umum
-                            </a>
-                            <a class="nav-link" href="buku_besar.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Buku Besar
-                            </a>
-
-                            <div class="sb-sidenav-menu-heading">Mastering</div>
-                            <a class="nav-link" href="master_karyawan.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Data Karyawan
-                            </a>
-                            <a class="nav-link" href="master_jabatan.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Data Jabatan
-                            </a>
-                            <a class="nav-link" href="tables.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Data Divisi
-                            </a>
-                            <a class="nav-link" href="master_produk.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Data Produk
-                            </a>
-                            <a class="nav-link" href="master_jenis_pendapatan.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Data Jenis Pendapatan
-                            </a>
-                            <a class="nav-link" href="master_metode_pembayaran.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Data Metode Pembayaran
-                            </a>
-                            <a class="nav-link" href="master_customer.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Data Customer
-                            </a>
-                            <a class="nav-link" href="master_supplier.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Data Supplier
-                            </a>
-
+                        <a class="nav-link" href="charts.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Pendapatan
+                        </a>
+                        <div class="sb-sidenav-menu-heading">Expenditure Cycle</div>
+                        <a class="nav-link" href="charts.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Pengeluaran
+                        </a>
+                        <div class="sb-sidenav-menu-heading">Payroll Cycle</div>
+                        <a class="nav-link" href="charts.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Kelola Karyawan
+                        </a>
+                        <a class="nav-link" href="tables.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Penggajian
+                        </a>
+                        <a class="nav-link" href="tables.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Rekap Presensi
+                        </a>
+                        <div class="sb-sidenav-menu-heading">Report Cycle</div>
+                        <a class="nav-link" href="jurnal_umum.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Jurnal Umum
+                        </a>
+                        <a class="nav-link" href="buku_besar.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Buku Besar
+                        </a>
+                        <div class="sb-sidenav-menu-heading">Mastering</div>
+                        <a class="nav-link" href="master_karyawan.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Data Karyawan
+                        </a>
+                        <a class="nav-link" href="master_jabatan.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Data Jabatan
+                        </a>
+                        <a class="nav-link" href="tables.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Data Divisi
+                        </a>
+                        <a class="nav-link" href="master_produk.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Data Produk
+                        </a>
+                        <a class="nav-link" href="master_jenis_pendapatan.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div> 
+                            Data Jenis Pendapatan
+                        </a>
+                        <a class="nav-link" href="master_metode_pembayaran.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Data Metode Pembayaran
+                        </a>
+                        <a class="nav-link" href="master_customer.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Data Customer
+                        </a>
+                        <a class="nav-link" href="master_supplier.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Data Supplier
+                        </a>
                         <div class="sb-sidenav-menu-heading">Addons</div>
                         <a class="nav-link" href="charts.html">
                             <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
@@ -181,194 +181,88 @@ ini_set('display_errors', 1);
             </nav>
         </div>
         <div id="layoutSidenav_content">
-            <main>
-                <div class="container-fluid px-4">
-                    <h1 class="mt-4">Master Data Karyawan</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Data Karyawan</li>
-                    </ol>
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-table me-1"></i>
-                            Employee Data Table
-                        </div>
-                        <div class="card-body">
-                            <!-- Tombol Tambah Data -->
+        <main>
+            <div class="container-fluid px-4">
+                <h1 class="mt-4">Presensi Karyawan</h1>
+                <ol class="breadcrumb mb-4">
+                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Presensi Karyawan</li>
+                </ol>
+
+                <!-- Form untuk memilih bulan dan tahun -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i> Filter Data Absensi
+                    </div>
+                    <div class="card-body">
+                        <form class="form-inline">
+                            <div class="form-group mb-2 ml-5">
+                                <label for="karyawan">Karyawan</label>
+                                <select class="form-control ml-3" name="karyawan" id="karyawan">
+                                    <option value="">Pilih Karyawan</option>
+                                    <?php
+                                    // Query untuk mendapatkan data karyawan dari master karyawan
+                                    $query = "SELECT mk.nik, mk.nama 
+                                    FROM transaksi_karyawan tk 
+                                    JOIN master_karyawan mk ON tk.id_transaksi_karyawan = mk.id_transaksi_karyawan
+                                    GROUP BY mk.nik, mk.nama";                          
+                                    $result = mysqli_query($conn, $query);
+                                    // Loop data karyawan untuk ditampilkan sebagai dropdown
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        $selected = (isset($karyawan) && $karyawan == $row['nik']) ? 'selected' : '';
+                                        echo "<option value='{$row['nik']}' $selected>{$row['nik']} - {$row['nama']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="bulan">Bulan</label>
+                                <select class="form-control ml-3" name="bulangaji" id="bulangaji">
+                                    <option value="">Pilih Bulan</option>
+                                    <option value="01" <?php echo ($bulangaji === '01') ? 'selected' : ''; ?>>Januari</option>
+                                    <option value="02" <?php echo ($bulangaji === '02') ? 'selected' : ''; ?>>Februari</option>
+                                    <option value="03" <?php echo ($bulangaji === '03') ? 'selected' : ''; ?>>Maret</option>
+                                    <option value="04" <?php echo ($bulangaji === '04') ? 'selected' : ''; ?>>April</option>
+                                    <option value="05" <?php echo ($bulangaji === '05') ? 'selected' : ''; ?>>Mei</option>
+                                    <option value="06" <?php echo ($bulangaji === '06') ? 'selected' : ''; ?>>Juni</option>
+                                    <option value="07" <?php echo ($bulangaji === '07') ? 'selected' : ''; ?>>Juli</option>
+                                    <option value="08" <?php echo ($bulangaji === '08') ? 'selected' : ''; ?>>Agustus</option>
+                                    <option value="09" <?php echo ($bulangaji === '09') ? 'selected' : ''; ?>>September</option>
+                                    <option value="10" <?php echo ($bulangaji === '10') ? 'selected' : ''; ?>>Oktober</option>
+                                    <option value="11" <?php echo ($bulangaji === '11') ? 'selected' : ''; ?>>November</option>
+                                    <option value="12" <?php echo ($bulangaji === '12') ? 'selected' : ''; ?>>Desember</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-2 ml-5">
+                                <label for="tahun">Tahun</label>
+                                <select class="form-control ml-3" name="tahungaji" id="tahungaji">
+                                    <option value="">Pilih Tahun</option>
+                                    <?php 
+                                    $tahun_sekarang = date('Y');
+                                    for ($i = 2023; $i <= $tahun_sekarang + 5; $i++) { ?>
+                                        <option value="<?php echo $i; ?>" <?php echo ($tahungaji === $i) ? 'selected' : ''; ?>><?php echo $i; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
                             <div class="mb-3 d-flex justify-content-end">
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#gajiModal">
-                                    Add Data
+                                <button type="submit" class="btn btn-success" formaction="get_absensi.php?bulangaji=<?php echo $bulangaji; ?>&tahungaji=<?php echo $tahungaji; ?>">
+                                    Tampilkan Data
+                                </button>
+                                <button type="submit" class="btn btn-success ms-2" formaction="add_absensi.php?bulangaji=<?php echo $bulangaji; ?>&tahungaji=<?php echo $tahungaji; ?>">
+                                    Tambah Absensi
                                 </button>
                             </div>
-                            <!-- Tabel Data Transaksi Penggajian -->
-                            <div class="table-responsive">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>ID Penggajian</th>
-                                            <th>Nama Karyawan</th>
-                                            <th>Periode Gaji</th>
-                                            <th>Gaji Pokok</th>
-                                            <th>Tunjangan</th>
-                                            <th>Potongan</th>
-                                            <th>Gaji Lembur</th>
-                                            <th>Gaji Bersih</th>
-                                            <th>Nama Akun</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="data_transaksi_penggajian">
-                                        <?php
-                                        // Query untuk mendapatkan data transaksi penggajian dengan nama karyawan
-                                        $query = "SELECT 
-                                        tp.id_penggajian,
-                                        mk.nama_karyawan,
-                                        tp.periode_gaji,
-                                        tp.gaji_pokok,
-                                        tp.tunjangan,
-                                        tp.potongan,
-                                        tp.gaji_lembur,
-                                        tp.gaji_bersih,
-                                        ma.nama_akun
-                                    FROM 
-                                        transaksi_penggajian tp
-                                    JOIN 
-                                        transaksi_karyawan tk ON tp.id_transaksi_karyawan = tk.id_transaksi_karyawan
-                                    JOIN 
-                                        master_karyawan mk ON tk.NIK = mk.NIK
-                                    JOIN
-                                        master_akun ma ON tp.id_akun = ma.id_akun";
-                                        
-                                        $result = mysqli_query($koneksi, $query);
-
-                                        if (!$result) {
-                                            die("Query failed: " . mysqli_error($koneksi));
-                                        }
-                                        
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                            echo "<tr>
-                                                <td>{$row['id_penggajian']}</td>
-                                                <td>{$row['nama_karyawan']}</td>
-                                                <td>{$row['periode_gaji']}</td>
-                                                <td>{$row['gaji_pokok']}</td>
-                                                <td>{$row['tunjangan']}</td>
-                                                <td>{$row['potongan']}</td>
-                                                <td>{$row['gaji_lembur']}</td>
-                                                <td>{$row['gaji_bersih']}</td>                                                     <td>{$row['gaji_bersih']}</td>
-                                                <td>{$row['nama_akun']}</td>
-                                                <td>
-                                                    <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                    <a href='delete_transaksi_penggajian.php?penggajian={$row['id_penggajian']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this payroll transaction?')\">Delete</a>
-                                                </td>
-                                            </tr>";
-                                        }
-                                        ?>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                        </div>
+                        </form>
                     </div>
-                </div>
-            </main>
-
-            <!-- Modal -->
-            <div class="modal fade" id="gajiModal" tabindex="-1" aria-labelledby="gajiModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="gajiModalLabel">Tambah Penggajian</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Form untuk menambahkan penggajian -->
-                    <form action="add_transaksi_penggajian.php" method="POST">
-                    <div class="form-group">
-                        <label for="id_transaksi_karyawan">ID Transaksi Karyawan:</label>
-                        <input type="text" name="id_transaksi_karyawan" id="id_transaksi_karyawan" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="periode_gaji">Periode Gaji (Bulan/Tahun):</label>
-                        <input type="month" name="periode_gaji" id="periode_gaji" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="gaji_pokok">Gaji Pokok:</label>
-                        <input type="number" name="gaji_pokok" id="gaji_pokok" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="tunjangan">Tunjangan:</label>
-                        <input type="number" name="tunjangan" id="tunjangan" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="potongan">Potongan:</label>
-                        <input type="number" name="potongan" id="potongan" class="form-control" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary mt-3">Tambah Penggajian</button>
-                    </form>
-                </div>
                 </div>
             </div>
-            </div>
+        </main>
+    </div>
 
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-            <script src="js/scripts.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-            <script src="js/datatables-simple-demo.js"></script>
-            <script>
-            function updateKaryawanInfo() {
-                const nik = document.getElementById('NIK').value;
-                if (nik) {
-                    fetch(`get_karyawan_info.php?NIK=${ nik}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            document.getElementById('nama_karyawan').value = data.nama_karyawan;
-                            document.getElementById('alamat_karyawan').value = data.alamat_karyawan;
-                            document.getElementById('tgl_lahir').value = data.tgl_lahir;
-                            document.getElementById('jenis_kelamin').value = data.jenis_kelamin;
-                            document.getElementById('no_telp').value = data.no_telp;
-                            document.getElementById('email').value = data.email;
-                            document.getElementById('tgl_bergabung').value = data.tgl_bergabung;
-                        })
-                        .catch(error => console.error('Error fetching karyawan info:', error));
-                } else {
-                    // Clear fields if no NIK is selected
-                    document.getElementById('nama_karyawan').value = '';
-                    document.getElementById('alamat_karyawan').value = '';
-                    document.getElementById('tgl_lahir').value = '';
-                    document.getElementById('jenis_kelamin').value = '';
-                    document.getElementById('no_telp').value = '';
-                    document.getElementById('email').value = '';
-                    document.getElementById('tgl_bergabung').value = '';
-                }
-            }
-
-            function updateJabatanInfo() {
-                const idJabatan = document.getElementById('id_jabatan').value;
-                if (idJabatan) {
-                    fetch(`get_jabatan_info.php?id_jabatan=${idJabatan}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            document.getElementById('nama_jabatan').value = data.nama_jabatan;
-                        })
-                        .catch(error => console.error('Error fetching jabatan info:', error));
-                } else {
-                    document.getElementById('nama_jabatan').value = '';
-                }
-            }
-
-            function updateDivisiInfo() {
-                const idDivisi = document.getElementById('id_divisi').value;
-                if (idDivisi) {
-                    fetch(`get_divisi_info.php?id_divisi=${idDivisi}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            document.getElementById('nama_divisi').value = data.nama_divisi;
-                        })
-                        .catch(error => console.error('Error fetching divisi info:', error));
-                } else {
-                    document.getElementById('nama_divisi').value = '';
-                }
-            }
-            </script>
-        </body>
-    </html>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="js/scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+    <script src="js/datatables-simple-demo.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</body>
+</html>

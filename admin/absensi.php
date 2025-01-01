@@ -224,7 +224,8 @@ $tahun = isset($_GET['tahun']) ? $_GET['tahun'] : '';
                                     <?php } ?>
                                 </select>
                             </div>
-                            <div class="mb-3 d-flex justify-content-end">
+                            <div class="mb-3
+                             d-flex justify-content-end">
                                 <button type="submit" class="btn btn-success" formaction="get_absensi.php?bulan=<?php echo $bulan; ?>&tahun=<?php echo $tahun; ?>">
                                     Tampilkan Data
                                 </button>
