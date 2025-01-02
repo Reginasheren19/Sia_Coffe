@@ -178,7 +178,7 @@ error_reporting(0)
                             <!-- Tombol Tambah Data -->
                             <div class="mb-3 d-flex justify-content-end">
                                 <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTransaksiPengeluaranModal">
-                                    Add Pengeluaran
+                                    Add Pendapatan
                                 </button>
                             </div>
 
