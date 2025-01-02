@@ -207,7 +207,7 @@ error_reporting(0)
                 <th>Action</th>
             </tr>
         </thead>
-        <tbody id="data_pengeluaran">
+        <tbody id="data_pendapatan">
             <?php
             // Query untuk mengambil data transaksi_pengeluaran dan join master_supplier serta master_akun
             $result = mysqli_query($koneksi, "
