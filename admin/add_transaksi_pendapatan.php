@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ");
 
 
-            // Tampilkan data transaksi
+            // Tampilkan data transaksi Pendapatan
             while ($row = mysqli_fetch_assoc($result)) {
                 echo "<tr>
                     <td>{$row['id_transaksi']}</td>
