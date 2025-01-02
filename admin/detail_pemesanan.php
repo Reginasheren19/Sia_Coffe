@@ -206,7 +206,7 @@ ini_set('display_errors', 1);
                                     <thead>
                                         <tr>
                                             <th>Id Detail Pemesanan</th>
-                                            <th>Id Id Transakasi Pemesanan</th>
+                                            <th>Id Transakasi Pemesanan</th>
                                             <th>Id Produk</th>
                                             <th>Jumlah</th>
                                             <th>Harga Satuan</th>
