@@ -233,7 +233,7 @@ ini_set('display_errors', 1);
                                                   JOIN
                                                     master_akun ma ON tp.kode_akun = ma.kode_akun";
                                         
-                                        $result = mysqli_query($koneksi, $query);
+                                        // $result = mysqli_query($koneksi, $query);
 
                                         if (!$result) {
                                             die("Query failed: " . mysqli_error($koneksi));
