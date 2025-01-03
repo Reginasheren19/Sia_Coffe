@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $total_pendapatan = (int)$_POST['total_pendapatan'];
     $id_metode = mysqli_real_escape_string($koneksi, $_POST['id_metode']);
     $id_akun = mysqli_real_escape_string($koneksi, $_POST['id_akun']);
-    $id_jenis_pendapatan = mysqli_real_escape_string($koneksi, $_POST['id_jenis_pendapatn']);
+    $id_jenis_pendapatan = mysqli_real_escape_string($koneksi, $_POST['id_jenis_pendapatan']);
     $NIK = mysqli_real_escape_string($koneksi, $_POST['NIK']);
     $nama_karyawan = mysqli_real_escape_string($koneksi, $_POST['nama_karyawan']);
     $status_transaksi = mysqli_real_escape_string($koneksi, $_POST['status_transaksi']);
