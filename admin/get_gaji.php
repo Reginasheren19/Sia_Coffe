@@ -2,45 +2,44 @@
 include("../config/koneksi_mysql.php");
 
 // Inisialisasi variabel
-$bulan = isset($_GET['bulan']) ? $_GET['bulan'] : '';
-$tahun = isset($_GET['tahun']) ? $_GET['tahun'] : '';
-$data_karyawan = [];
+$bulan_gaji = isset($_GET['bulan_gaji']) ? $_GET['bulan_gaji'] : '';
+$tahun_gaji = isset($_GET['tahun_gaji']) ? $_GET['tahun_gaji'] : '';
+$data_gaji = [];
 
 // Query untuk mendapatkan data transaksi karyawan yang terdaftar, lengkap dengan jabatan dan absensi
-$query_transaksi = "
-    SELECT 
-        mk.NIK, 
-        mk.nama_karyawan, 
-        mj.nama_jabatan, 
-        tk.id_transaksi_karyawan, 
-        IFNULL(ak.hadir, 0) AS hadir, 
-        IFNULL(ak.sakit, 0) AS sakit, 
-        IFNULL(ak.alpha, 0) AS alpha,
-        IFNULL(ak.jam_lembur, 0) AS jam_lembur
-    FROM 
-        transaksi_karyawan tk
-    JOIN 
-        master_karyawan mk ON tk.NIK = mk.NIK
-    JOIN 
-        master_jabatan mj ON tk.id_jabatan = mj.id_jabatan
-    LEFT JOIN 
-        absensi_karyawan ak ON tk.id_transaksi_karyawan = ak.id_transaksi_karyawan 
-        AND ak.bulan = '$bulan' AND ak.tahun = '$tahun'";
-        
-$result_transaksi = mysqli_query($koneksi, $query_transaksi);
+$query = "SELECT 
+    tp.id_penggajian,
+    tp.gaji_pokok,
+    tp.tunjangan,
+    tp.potongan,
+    tp.gaji_lembur,
+    tp.bonus,
+    tp.gaji_bersih,
+    mk.nama_karyawan,
+    mj.nama_jabatan,
+    md.nama_divisi
+FROM 
+    transaksi_penggajian tp
+JOIN transaksi_karyawan tk ON tp.id_transaksi_karyawan = tk.id_transaksi_karyawan
+JOIN master_karyawan mk ON tk.NIK = mk.NIK
+JOIN master_jabatan mj ON tk.id_jabatan = mj.id_jabatan
+JOIN master_divisi md ON tk.id_divisi = md.id_divisi
+WHERE tp.bulan_gaji = '$bulan_gaji' AND tp.tahun_gaji = '$tahun_gaji'";
+
+$result = mysqli_query($koneksi, $query);
 
     // Output hasil query dalam format HTML
-    if ($result_transaksi) {
-        if (mysqli_num_rows($result_transaksi) > 0) {
-            $data_karyawan = [];
-            while ($row = mysqli_fetch_assoc($result_transaksi)) {
-                $data_karyawan[] = $row;
+    if ($result) {
+        if (mysqli_num_rows($result) > 0) {
+            $data_gaji = [];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $data_gaji[] = $row;
             }
         } else {
-            $data_karyawan = [];
+            $dataa_gaji = [];
         }
     } else {
-        $data_karyawan = null;
+        $data_gaji = null;
     }
 
 ?>
@@ -218,110 +217,112 @@ $result_transaksi = mysqli_query($koneksi, $query_transaksi);
         <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">Presensi Karyawan</h1>
+                <h1 class="mt-4">Penggajian Karyawan</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Presensi Karyawan</li>
+                    <li class="breadcrumb-item active">Penggajian Karyawan</li>
                 </ol>
+
                 <!-- Form untuk memilih bulan dan tahun -->
                 <div class="card mb-4">
                     <div class="card-header">
-                        <i class="fas fa-table me-1"></i> Filter Data Absensi
+                        <i class="fas fa-table me-1"></i> Data Gaji Karyawan
                     </div>
                     <div class="card-body">
                         <form class="form-inline">
                             <div class="form-group mb-3">
-                                <label for="bulan">Bulan</label>
-                                <select class="form-control ml-3" name="bulan" id="bulan">
+                                <label for="bulan_gaji">Bulan</label>
+                                <select class="form-control ml-3" name="bulan_gaji" id="bulan_gaji">
                                     <option value="">Pilih Bulan</option>
-                                    <option value="01" <?php echo ($bulan == '01') ? 'selected' : ''; ?>>Januari</option>
-                                    <option value="02" <?php echo ($bulan == '02') ? 'selected' : ''; ?>>Februari</option>
-                                    <option value="03" <?php echo ($bulan == '03') ? 'selected' : ''; ?>>Maret</option>
-                                    <option value="04" <?php echo ($bulan == '04') ? 'selected' : ''; ?>>April</option>
-                                    <option value="05" <?php echo ($bulan == '05') ? 'selected' : ''; ?>>Mei</option>
-                                    <option value="06" <?php echo ($bulan == '06') ? 'selected' : ''; ?>>Juni</option>
-                                    <option value="07" <?php echo ($bulan == '07') ? 'selected' : ''; ?>>Juli</option>
-                                    <option value="08" <?php echo ($bulan == '08') ? 'selected' : ''; ?>>Agustus</option>
-                                    <option value="09" <?php echo ($bulan == '09') ? 'selected' : ''; ?>>September</option>
-                                    <option value="10" <?php echo ($bulan == '10') ? 'selected' : ''; ?>>Oktober</option>
-                                    <option value="11" <?php echo ($bulan == '11') ? 'selected' : ''; ?>>November</option>
-                                    <option value="12" <?php echo ($bulan == '12') ? 'selected' : ''; ?>>Desember</option>
+                                    <option value="01" <?php echo ($bulan_gaji == '01') ? 'selected' : ''; ?>>Januari</option>
+                                    <option value="02" <?php echo ($bulan_gaji == '02') ? 'selected' : ''; ?>>Februari</option>
+                                    <option value="03" <?php echo ($bulan_gaji == '03') ? 'selected' : ''; ?>>Maret</option>
+                                    <option value="04" <?php echo ($bulan_gaji == '04') ? 'selected' : ''; ?>>April</option>
+                                    <option value="05" <?php echo ($bulan_gaji == '05') ? 'selected' : ''; ?>>Mei</option>
+                                    <option value="06" <?php echo ($bulan_gaji == '06') ? 'selected' : ''; ?>>Juni</option>
+                                    <option value="07" <?php echo ($bulan_gaji == '07') ? 'selected' : ''; ?>>Juli</option>
+                                    <option value="08" <?php echo ($bulan_gaji == '08') ? 'selected' : ''; ?>>Agustus</option>
+                                    <option value="09" <?php echo ($bulan_gaji == '09') ? 'selected' : ''; ?>>September</option>
+                                    <option value="10" <?php echo ($bulan_gaji == '10') ? 'selected' : ''; ?>>Oktober</option>
+                                    <option value="11" <?php echo ($bulan_gaji == '11') ? 'selected' : ''; ?>>November</option>
+                                    <option value="12" <?php echo ($bulan_gaji == '12') ? 'selected' : ''; ?>>Desember</option>
                                 </select>
                             </div>
                             <div class="form-group mb-2 ml-5">
-                                <label for="tahun">Tahun</label>
-                                <select class="form-control ml-3" name="tahun" id="tahun">
+                                <label for="tahun_gaji">Tahun</label>
+                                <select class="form-control ml-3" name="tahun_gaji" id="tahun_gaji">
                                     <option value="">Pilih Tahun</option>
                                     <?php 
                                     $tahun_sekarang = date('Y');
                                     for ($i = 2023; $i <= $tahun_sekarang + 5; $i++) { ?>
-                                        <option value="<?php echo $i; ?>" <?php echo ($tahun == $i) ? 'selected' : ''; ?>><?php echo $i; ?></option>
+                                        <option value="<?php echo $i; ?>" <?php echo ($tahun_gaji == $i) ? 'selected' : ''; ?>><?php echo $i; ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
-                            <div class="mb-3 d-flex justify-content-end">
+                            <div class="mb-3d-flex justify-content-end">
                                 <button type="submit" class="btn btn-success">
                                     Tampilkan Data
                                 </button>
-                                <button type="submit" class="btn btn-success ms-2" formaction="add_absensi.php?bulan=<?php echo $bulan; ?>&tahun=<?php echo $tahun; ?>">
-                                    Tambah Absensi
+                                <button type="submit" class="btn btn-success ms-2" formaction="add_gaji.php?bulan_gaji=<?php echo $bulan_gaji; ?>&tahun_gaji=<?php echo $tahun_gaji; ?>">
+                                    Generate Gaji
                                 </button>
                             </div>
                         </form>
                     </div>
                 </div>
-
-                <div class="alert alert-info">
-                        Menambah Data Kehadiran Karyawan Bulan: <strong><?php echo $bulan; ?></strong> Tahun: <strong><?php echo $tahun; ?></strong>
-                </div>
-                <!-- Form untuk tambah absensi -->
-                <div class="card mb-4">
+                <!-- Menampilkan data absensi -->
+                <?php if ($data_gaji !== null): ?>
+                    <div class="alert alert-info">
+                        Menampilkan Data Penggajian Karyawan Bulan: <strong><?php echo $bulan_gaji; ?></strong> Tahun: <strong><?php echo $tahun_gaji; ?></strong>
+                    </div>
+                    <div class="card mb-4">
                     <div class="card-header">
-                        <i class="fas fa-table me-1"></i> Tambah Absensi
+                        <i class="fas fa-table me-1"></i> Filter Data Gaji
                     </div>
                     <div class="card-body">
-                        <form action="simpan_absensi.php" method="POST">
-                            <input type="hidden" name="bulan" value="<?php echo $bulan; ?>">
-                            <input type="hidden" name="tahun" value="<?php echo $tahun; ?>">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Nama Karyawan</th>
-                                        <th>Jabatan</th>
-                                        <th>Hadir</th>
-                                        <th>Sakit</th>
-                                        <th>Alpha</th>
-                                        <th>Jam Lembur</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($data_karyawan as $karyawan): ?>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="table-gaji">
+                            <thead>
+                                <tr>
+                                    <th>ID Gaji</th>
+                                    <th>Nama Karyawan</th>
+                                    <th>Jabatan</th>
+                                    <th>Divisi</th>
+                                    <th>Gaji Pokok</th>
+                                    <th>Tunjangan</th>
+                                    <th>Potongan</th>
+                                    <th>Lembur</th>
+                                    <th>Bonus</th>
+                                    <th>Gaji Bersih</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if ($data_gaji): ?>
+                                    <?php foreach ($data_gaji as $row): ?>
                                         <tr>
-                                            <td><?php echo $karyawan['nama_karyawan']; ?></td>
-                                            <td><?php echo $karyawan['nama_jabatan']; ?></td>
-                                            <td>
-                                                <input type="number" name="hadir[<?php echo $karyawan['id_transaksi_karyawan']; ?>]" value="<?php echo $karyawan['hadir']; ?>" min="0">
-                                            </td>
-                                            <td>
-                                                <input type="number" name="sakit[<?php echo $karyawan['id_transaksi_karyawan']; ?>]" value="<?php echo $karyawan['sakit']; ?>" min="0">
-                                            </td>
-                                            <td>
-                                                <input type="number" name="alpha[<?php echo $karyawan['id_transaksi_karyawan']; ?>]" value="<?php echo $karyawan['alpha']; ?>" min="0">
-                                            </td>
-                                            <td>
-                                                <input type="number" name="jam_lembur[<?php echo $karyawan['id_transaksi_karyawan']; ?>]" value="<?php echo $karyawan['alpha']; ?>" min="0">
-                                            </td>
+                                            <td><?php echo $row['id_penggajian']; ?></td>
+                                            <td><?php echo $row['nama_karyawan']; ?></td>
+                                            <td><?php echo $row['nama_jabatan']; ?></td>
+                                            <td><?php echo $row['nama_divisi']; ?></td>
+                                            <td><?php echo $row['gaji_pokok']; ?></td>
+                                            <td><?php echo $row['tunjangan']; ?></td>
+                                            <td><?php echo $row['potongan']; ?></td>
+                                            <td><?php echo $row['gaji_lembur']; ?></td>
+                                            <td><?php echo $row['bonus']; ?></td>
+                                            <td><?php echo $row['gaji_bersih']; ?></td>
                                         </tr>
                                     <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                            <button type="submit" class="btn btn-success">Simpan Data</button>
-                        </form>
+                                <?php else: ?>
+                                    <tr><td colspan="6">Data Gaji tidak ditemukan.</td></tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
                     </div>
-                </div>
+                <?php endif; ?>
             </div>
         </main>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/scripts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
