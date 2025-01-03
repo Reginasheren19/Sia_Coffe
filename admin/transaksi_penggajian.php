@@ -4,8 +4,8 @@ include("../config/koneksi_mysql.php");
 // Inisialisasi variabel $data
 $data = null;
 
-$bulangaji = isset($_GET['bulangaji']) ? $_GET['bulangaji'] : '';
-$tahungaji = isset($_GET['tahungaji']) ? $_GET['tahungaji'] : '';
+$bulan = isset($_GET['bulangaji']) ? $_GET['bulangaji'] : '';
+$tahun = isset($_GET['tahungaji']) ? $_GET['tahungaji'] : '';
 $karyawan = isset($_GET['karyawan']) ? $_GET['karyawan'] : '';
 
 ?>
@@ -216,7 +216,7 @@ $karyawan = isset($_GET['karyawan']) ? $_GET['karyawan'] : '';
                                 </select>
                             </div>
                             <div class="form-group mb-3">
-                                <label for="bulan">Bulan</label>
+                                <label for="bulangaji">Bulan</label>
                                 <select class="form-control ml-3" name="bulangaji" id="bulangaji">
                                     <option value="">Pilih Bulan</option>
                                     <option value="01" <?php echo ($bulangaji === '01') ? 'selected' : ''; ?>>Januari</option>
@@ -258,7 +258,6 @@ $karyawan = isset($_GET['karyawan']) ? $_GET['karyawan'] : '';
             </div>
         </main>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="js/scripts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
