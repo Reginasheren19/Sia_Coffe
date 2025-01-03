@@ -56,7 +56,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <h1 class="mb-4">Transaksi Pendapatan</h1>
 
     <!-- Tombol untuk membuka modal -->
-    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addTransaksiPendapatanModal">Add Pendapatan</button>
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTransaksiPendapatanModal">
+        Add Pendapatan
+    </button>
 
     <!-- Tabel Data Transaksi Pendapatan -->
     <div class="table-responsive">
