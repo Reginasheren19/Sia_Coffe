@@ -169,29 +169,7 @@ error_reporting(0)
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item active">Data Pendapatan</li>
                     </ol>
-                    <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Launch demo modal
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
+                
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
@@ -199,11 +177,11 @@ error_reporting(0)
                         </div>
                         <div class="card-body">
                     <!-- Tombol Tambah Data -->
-                <div class="mb-3 d-flex justify-content-end">
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTransaksiPendapatanModal">
-                        Add Pendapatan
-                    </button>
-                </div>
+                    <div class="mb-3 d-flex justify-content-end">
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addProdukModal">
+                                    Add Data
+                                </button>
+                            </div>
 
                 
 
@@ -291,99 +269,51 @@ error_reporting(0)
 </div>
 
 
-<!-- Modal Tambah Transaksi Pendapatan -->
-<div class="modal fade" id="addTransaksiPendapatanModal" tabindex="-1" aria-labelledby="addTransaksiPendapatanModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-        <form method="POST" action="add_transaksi_pendapatan.php">
-        <div class="modal-header">
-            <h5 class="modal-title" id="addTransaksiPendapatanModalLabel">Tambah Transaksi Pendapatan</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <div class="mb-3">
-                <label for="id_customer" class="form-label">ID Customer</label>
-                <select class="form-select" id="id_customer" name="id_customer" required>
-                    <?php
-                    $customers = mysqli_query($koneksi, "SELECT id_customer, nama_customer FROM master_customer");
-                    while ($customer = mysqli_fetch_assoc($customers)) {
-                        echo "<option value='{$customer['id_customer']}'>{$customer['nama_customer']}</option>";
-                    }
-                    ?>
-                </select>
+<!-- Modal Tambah Data -->
+<div class="modal fade" id="addProdukModal" tabindex="-1" aria-labelledby="addProdukModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form method="POST" action="add_produk.php">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addProdukModalLabel">Tambah Data Produk</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="nama_produk" class="form-label">Nama Produk</label>
+                                <input type="text" class="form-control" id="nama_produk" name="nama_produk" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="kategori_produk" class="form-label">Kategori Produk</label>
+                                    <select class="form-select" id="kategori_produk" name="kategori_produk" required>
+                                        <option value="">Pilih Kategori</option>
+                                        <option value="Minuman Panas">Minuman Panas</option>
+                                        <option value="Minuman Dingin">Minuman Dingin</option>
+                                        <option value="Makanan Ringan">Makanan Ringan</option>
+                                        <option value="Dessert">Dessert</option>
+                                    </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="harga_satuan" class="form-label">Harga Satuan (Rp)</label>
+                                <input type="number" class="form-control" id="harga_satuan" name="harga_satuan" placeholder="Contoh: 25000" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="satuan" class="form-label">Satuan</label>
+                                <input type="text" class="form-control" id="satuan" name="satuan" placeholder="Contoh: Gelas, Piring" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="deskripsi" class="form-label">Deskripsi</label>
+                            <textarea class="form-control" id="deskripsi" name="deskripsi" rows="3" placeholder="Contoh: Minuman kopi dengan cream susu" required></textarea>
+                            </div>
+                        </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-primary">Simpan</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="id_produk" class="form-label">ID Produk</label>
-                <select class="form-select" id="id_produk" name="id_produk" required>
-                    <?php
-                    $products = mysqli_query($koneksi, "SELECT id_produk, nama_produk FROM master_produk");
-                    while ($product = mysqli_fetch_assoc($products)) {
-                        echo "<option value='{$product['id_produk']}'>{$product['nama_produk']}</option>";
-                    }
-                    ?>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="kuantitas" class="form-label">Kuantitas</label>
-                <input type="number" class="form-control" id="kuantitas" name="kuantitas" required>
-            </div>
-            <div class="mb-3">
-                <label for="harga_satuan" class="form-label">Harga Satuan</label>
-                <input type="number" step="0.01" class="form-control" id="harga_satuan" name="harga_satuan" required>
-            </div>
-            <div class="mb-3">
-                <label for="id_metode_pembayaran" class="form-label">Metode Pembayaran</label>
-                <select class="form-select" id="id_metode_pembayaran" name="id_metode_pembayaran" required>
-                    <?php
-                    $methods = mysqli_query($koneksi, "SELECT id_metode_pembayaran, nama_metode FROM master_metode_pembayaran");
-                    while ($method = mysqli_fetch_assoc($methods)) {
-                        echo "<option value='{$method['id_metode_pembayaran']}'>{$method['nama_metode']}</option>";
-                    }
-                    ?>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="id_jenis_pendapatan" class="form-label">Jenis Pendapatan</label>
-                <select class="form-select" id="id_jenis_pendapatan" name="id_jenis_pendapatan" required>
-                    <?php
-                    $types = mysqli_query($koneksi, "SELECT id_jenis_pendapatan, nama_jenis_pendapatan FROM jenis_pendapatan");
-                    while ($type = mysqli_fetch_assoc($types)) {
-                        echo "<option value='{$type['id_jenis_pendapatan']}'>{$type['nama_jenis_pendapatan']}</option>";
-                    }
-                    ?>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="id_karyawan" class="form-label">ID Karyawan</label>
-                <select class="form-select" id="id_karyawan" name="id_karyawan" required>
-                    <?php
-                    $employees = mysqli_query($koneksi, "SELECT id_karyawan, nama_karyawan FROM karyawan");
-                    while ($employee = mysqli_fetch_assoc($employees)) {
-                        echo "<option value='{$employee['id_karyawan']}'>{$employee['nama_karyawan']}</option>";
-                    }
-                    ?>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="status_transaksi" class="form-label">Status Transaksi</label>
-                <select class="form-select" id="status_transaksi" name="status_transaksi" required>
-                    <option value="Lunas">Lunas</option>
-                    <option value="Belum Lunas">Belum Lunas</option>
-                    <option value="Dibatalkan">Dibatalkan</option>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="catatan_transaksi" class="form-label">Catatan Transaksi</label>
-                <textarea class="form-control" id="catatan_transaksi" name="catatan_transaksi"></textarea>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-            <button type="submit" class="btn btn-primary">Simpan</button>
-        </div>
-        </form>
-    </div>
-</div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="js/scripts.js"></script>
