@@ -175,7 +175,12 @@ error_reporting(0)
                             Tabel Transaksi Pendapatan
                         </div>
                         <div class="card-body">
-                   
+                    <!-- Tombol Tambah Data -->
+                <div class="mb-3 d-flex justify-content-end">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTransaksiPendapatanModal">
+                        Add Pendapatan
+                    </button>
+                </div>
 
 <!-- Tabel Data Transaksi Pen -->
 <div class="table-responsive">
@@ -259,12 +264,7 @@ error_reporting(0)
         </tbody>
     </table>
 </div>
- <!-- Tombol Tambah Data -->
- <div class="mb-3 d-flex justify-content-end">
-    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTransaksiPendapatanModal">
-        Add Pendapatan
-    </button>
-</div>
+
 
 <!-- Modal Tambah Transaksi Pendapatan -->
 <div class="modal fade" id="addTransaksiPendapatanModal" tabindex="-1" aria-labelledby="addTransaksiPendapatanModalLabel" aria-hidden="true">
