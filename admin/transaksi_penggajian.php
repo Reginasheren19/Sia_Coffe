@@ -108,6 +108,10 @@ $karyawan = isset($_GET['karyawan']) ? $_GET['karyawan'] : '';
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Pengeluaran
                         </a>
+                        <a class="nav-link" href="pelunasan_hutang.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Pelunasan Hutang
+                            </a>
                         <div class="sb-sidenav-menu-heading">Payroll Cycle</div>
                         <a class="nav-link" href="charts.html">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
