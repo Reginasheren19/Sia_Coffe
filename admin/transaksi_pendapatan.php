@@ -169,20 +169,7 @@ error_reporting(0)
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item active">Data Pendapatan</li>
                     </ol>
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-table me-1"></i>
-                            Tabel Transaksi Pendapatan
-                        </div>
-                        <div class="card-body">
-                    <!-- Tombol Tambah Data -->
-                <div class="mb-3 d-flex justify-content-end">
-                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTransaksiPendapatanModal">
-                        Add Pendapatan
-                    </button>
-                </div>
-
-                <!-- Button trigger modal -->
+                    <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
   Launch demo modal
 </button>
@@ -205,6 +192,20 @@ error_reporting(0)
     </div>
   </div>
 </div>
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            Tabel Transaksi Pendapatan
+                        </div>
+                        <div class="card-body">
+                    <!-- Tombol Tambah Data -->
+                <div class="mb-3 d-flex justify-content-end">
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTransaksiPendapatanModal">
+                        Add Pendapatan
+                    </button>
+                </div>
+
+                
 
 <!-- Tabel Data Transaksi Pen -->
 <div class="table-responsive">
