@@ -220,35 +220,37 @@ ini_set('display_errors', 1);
                                         $query = "SELECT 
                                                     tp.id_transaksi_pemesanan,
                                                     mc.nama_customer,
-                                                    tp.tanggal_transaksi,
+                                                    tp.tgl_transaksi,
                                                     tp.total_harga,
                                                     mm.nama_metode,
                                                     ma.nama_akun
-                                                  FROM 
-                                                    transaksi_pemesanan tp
-                                                  JOIN 
-                                                    master_customer mc ON tp.id_customer = mc.id_customer
-                                                  JOIN 
-                                                    master_metode_pembayaran mm ON tp.id_metode = mm.id_metode
-                                                  JOIN
-                                                    master_akun ma ON tp.kode_akun = ma.kode_akun";
-                                        
-                                        $result = mysqli_query($koneksi, $query);
+                                                    FROM 
+                                                        transaksi_pemesanan tp
+                                                    JOIN 
+                                                        master_customer mc ON tp.id_customer = mc.id_customer
+                                                    JOIN 
+                                                        master_metode_pembayaran mm ON tp.id_metode = mm.id_metode
+                                                    JOIN
+                                                        master_akun ma ON tp.kode_akun = ma.kode_akun";
+                                
+                                         $result = mysqli_query($koneksi, $query);
 
-                                        if (!$result) {
+                                         if (!$result) {
                                             die("Query failed: " . mysqli_error($koneksi));
                                         }
-                                        
-                                        while ($row = mysqli_fetch_assoc($result)) {
+                                       while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>
                                                 <td>{$row['id_transaksi_pemesanan']}</td>
                                                 <td>{$row['nama_customer']}</td>
-                                                <td>{$row['tanggal_transaksi']}</td>
+                                                <td>{$row['tgl_transaksi']}</td>
                                                 <td>{$row['total_harga']}</td>
                                                 <td>{$row['nama_metode']}</td>
                                                 <td>{$row['nama_akun']}</td>
+                                                <td>
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                    <a href='delete_transaksi_pemesanan.php?penggajian={$row['id_transaksi_pemesanan']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this transaksi?')\">Delete</a>
+                                                    <a href='delete_transaksi_pemesanan.php?id={$row['id_transaksi_pemesanan']}' 
+                                                       class='btn btn-danger btn-sm' 
+                                                       onclick=\"return confirm('Are you sure you want to delete this transaksi?')\">Delete</a>
                                                 </td>
                                             </tr>";
                                         }

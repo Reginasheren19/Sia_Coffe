@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         mpb.nama_metode, 
                         tp.id_jenis_pendapatan, 
                         jp.nama_jenis_pendapatan, 
-                        tp.id_karyawan, 
+                        tp.NIK, 
                         k.nama_karyawan, 
                         tp.status_transaksi, 
                         tp.catatan_transaksi 
@@ -110,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 JOIN master_produk mp ON tp.id_produk = mp.id_produk
                 JOIN master_metode_pembayaran mpb ON tp.id_metode_pembayaran = mpb.id_metode_pembayaran
                 JOIN jenis_pendapatan jp ON tp.id_jenis_pendapatan = jp.id_jenis_pendapatan
-                JOIN karyawan k ON tp.id_karyawan = k.id_karyawan            
+                JOIN karyawan k ON tp.NIK = k.NIK            
                 ");
 
 
@@ -130,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <td>{$row['nama_metode']}</td>
                     <td>{$row['id_jenis_pendapatan']}</td>
                     <td>{$row['nama_jenis_pendapatan']}</td>
-                    <td>{$row['id_karyawan']}</td>
+                    <td>{$row['NIK']}</td>
                     <td>{$row['nama_karyawan']}</td>
                     <td>{$row['status_transaksi']}</td>
                     <td>{$row['catatan_transaksi']}</td>
@@ -208,8 +208,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </select>
             </div>
             <div class="mb-3">
-                <label for="id_karyawan" class="form-label">ID Karyawan</label>
-                <select class="form-select" id="id_karyawan" name="id_karyawan" required>
+                <label for="NIK" class="form-label">NIK</label>
+                <select class="form-select" id="NIK" name="NIK" required>
                     <?php
                     $employees = mysqli_query($koneksi, "SELECT id_karyawan, nama_karyawan FROM karyawan");
                     while ($employee = mysqli_fetch_assoc($employees)) {

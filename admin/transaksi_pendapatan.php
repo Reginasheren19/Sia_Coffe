@@ -6,7 +6,7 @@ $sql = mysqli_query($koneksi,"SELECT * FROM transaksi_pendapatan");
 ?>
 
 <?php
-error_reporting(0)
+error_reporting(0);
 ?>
 
 
@@ -211,6 +211,7 @@ error_reporting(0)
         </thead>
         <tbody id="data_pendapatan">
             <?php
+
             // Query untuk mengambil data transaksi_pendapatan
             $result = mysqli_query($koneksi, "
                 SELECT tp.id_transaksi, 
@@ -226,7 +227,7 @@ error_reporting(0)
                         mpb.nama_metode, 
                         tp.id_jenis_pendapatan, 
                         jp.nama_jenis_pendapatan, 
-                        tp.id_karyawan, 
+                        tp.NIK, 
                         k.nama_karyawan, 
                         tp.status_transaksi, 
                         tp.catatan_transaksi 
@@ -235,7 +236,7 @@ error_reporting(0)
                 JOIN master_produk mp ON tp.id_produk = mp.id_produk
                 JOIN master_metode_pembayaran mpb ON tp.id_metode_pembayaran = mpb.id_metode_pembayaran
                 JOIN jenis_pendapatan jp ON tp.id_jenis_pendapatan = jp.id_jenis_pendapatan
-                JOIN karyawan k ON tp.id_karyawan = k.id_karyawan            
+                JOIN karyawan k ON tp.NIK = k.NIK            
                 ");
 
             // Tampilkan data transaksi
@@ -254,7 +255,7 @@ error_reporting(0)
                     <td>{$row['nama_metode']}</td>
                     <td>{$row['id_jenis_pendapatan']}</td>
                     <td>{$row['nama_jenis_pendapatan']}</td>
-                    <td>{$row['id_karyawan']}</td>
+                    <td>{$row['NIK']}</td>
                     <td>{$row['nama_karyawan']}</td>
                     <td>{$row['status_transaksi']}</td>
                     <td>{$row['catatan_transaksi']}</td>
@@ -332,12 +333,12 @@ error_reporting(0)
                 </select>
             </div>
             <div class="mb-3">
-                <label for="id_karyawan" class="form-label">ID Karyawan</label>
-                <select class="form-select" id="id_karyawan" name="id_karyawan" required>
+                <label for="NIK" class="form-label">NIK</label>
+                <select class="form-select" id="NIK" name="iNIK" required>
                     <?php
-                    $employees = mysqli_query($koneksi, "SELECT id_karyawan, nama_karyawan FROM karyawan");
+                    $employees = mysqli_query($koneksi, "SELECT NIK, nama_karyawan FROM karyawan");
                     while ($employee = mysqli_fetch_assoc($employees)) {
-                        echo "<option value='{$employee['id_karyawan']}'>{$employee['nama_karyawan']}</option>";
+                        echo "<option value='{$employee['NIK']}'>{$employee['nama_karyawan']}</option>";
                     }
                     ?>
                 </select>
@@ -363,10 +364,9 @@ error_reporting(0)
     </div>
 </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="js/scripts.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
 <script src="js/datatables-simple-demo.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
                 </body>
 
