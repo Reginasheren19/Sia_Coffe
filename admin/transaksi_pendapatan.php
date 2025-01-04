@@ -189,7 +189,7 @@ error_reporting(0);
 
                 
 
-<!-- Tabel Data Transaksi Pen -->
+<!-- Tabel Data Transaksi Pendapatan -->
 <div class="table-responsive">
     <table class="table table-bordered">
         <thead>

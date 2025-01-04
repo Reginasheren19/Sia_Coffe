@@ -187,14 +187,10 @@ ini_set('display_errors', 1);
             <main>
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">Master Data Pemesanan</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Data Pemesanan</li>
-                    </ol>
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            Employee Data Table
+                            Tabel Data Pemesanan
                         </div>
                         <div class="card-body">
                             <!-- Tombol Tambah Data -->
@@ -209,161 +205,171 @@ ini_set('display_errors', 1);
                                     <thead>
                                         <tr>
                                             <th>Id Transaksi Pemesanan</th>
-                                            <th>Id Customer</th>
+                                            <th>Nama Customer</th>
                                             <th>Tanggal Transaksi</th>
                                             <th>Total Harga</th>
-                                            <th>Id Metode</th>
-                                            <th>Kode Akun</th>
+                                            <th>Metode Pembayaran</th>
+                                            <th>Nama Akun</th>
+                                            <th>Nama produk</th>
+                                            <th>Jumlah Produk</th>
+                                            <th>Harga Satuan</th>
+                                            <th>Subtotal</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody id="data_transaksi_pemesanan">
                                         <?php
-                                        // Query untuk mendapatkan data transaksi pemesanan dengan data terkait
-                                        $query = "SELECT 
-                                                    tp.id_transaksi_pemesanan,
-                                                    mc.nama_customer,
-                                                    tp.tgl_transaksi,
-                                                    tp.total_harga,
-                                                    mm.nama_metode,
-                                                    ma.nama_akun
-                                                    FROM 
-                                                        transaksi_pemesanan tp
-                                                    JOIN 
-                                                        master_customer mc ON tp.id_customer = mc.id_customer
-                                                    JOIN 
-                                                        master_metode_pembayaran mm ON tp.id_metode = mm.id_metode
-                                                    JOIN
-                                                        master_akun ma ON tp.kode_akun = ma.kode_akun";
-                                
-                                        // $result = mysqli_query($koneksi, $query);
+                                    // Query to fetch transaction data with related details (customer, payment method, account, product)
+                                    $result = mysqli_query($koneksi,"
+                                        SELECT tp.id_transaksi_pemesanan,
+                                            c.nama_customer,
+                                            tp.tgl_transaksi,
+                                            tp.total_harga,
+                                            mp.nama_metode,
+                                            ak.nama_akun,
+                                            p.nama_produk,
+                                            tp.jumlah_produk,
+                                            tp.harga_satuan,
+                                            tp.subtotal
+                                        FROM transaksi_pemesanan tp
+                                        JOIN master_customer c ON tp.id_customer = c.id_customer
+                                        JOIN master_metode_pembayaran mp ON tp.id_metode = mp.id_metode
+                                        JOIN master_akun ak ON tp.id_akun = ak.id_akun
+                                        JOIN master_produk p ON tp.id_produk = p.id_produk
+                                    ");
 
-                                         if (!$result) {
-                                            die("Query failed: " . mysqli_error($koneksi));
-                                        }
+                                    //Display transaction data
+
                                        while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>
                                                 <td>{$row['id_transaksi_pemesanan']}</td>
                                                 <td>{$row['nama_customer']}</td>
-                                                <td>{$row['tgl_transaksi']}</td>
-                                                <td>{$row['total_harga']}</td>
-                                                <td>{$row['nama_metode']}</td>
+                                                <td>" . date('d-m-Y', strtotime($row['tanggal_transaksi'])) . "</td>
+                                                <td>" . number_format($row['total_harga'], 0, ',', '.') . "</td>
+                                                <td>{$row['nama_metode_pembayaran']}</td>
                                                 <td>{$row['nama_akun']}</td>
+                                                <td>{$row['nama_produk']}</td>
+                                                <td>{$row['jumlah_produk']}</td>
+                                                <td>" . number_format($row['harga_satuan'], 0, ',', '.') . "</td>
+                                                <td>" . number_format($row['subtotal'], 0, ',', '.') . "</td>
                                                 <td>
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
                                                     <a href='delete_transaksi_pemesanan.php?id={$row['id_transaksi_pemesanan']}' 
-                                                       class='btn btn-danger btn-sm' 
-                                                       onclick=\"return confirm('Are you sure you want to delete this transaksi?')\">Delete</a>
-                                                </td>
+                                                    class='btn btn-danger btn-sm' 
+                                                    onclick=\"return confirm('Are you sure you want to delete this transaksi?')\">Delete</a>                                                </td>
                                             </tr>";
                                         }
                                         ?>
                                     </tbody>
                                 </table>
                             </div>
+                            <!-- Modal for Adding Transaksi Pemesanan -->
+                            <div class="modal fade" id="addTransaksiPemesananModal" tabindex="-1" aria-labelledby="addTransaksiPemesananModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form method="POST" action="add_transaksi_pemesanan.php">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="addTransaksiPemesananModalLabel">Tambah Transaksi Pemesanan</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                        <label for="id_transaksi_pemesanan" class="form-label">ID Transaksi Pemesanan</label>
+                                                        <input type="text" class="form-control" id="id_transaksi_pemesanan" name="id_transaksi_pemesanan" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="nama_customer" class="form-label">Nama Customer</label>
+                                                    <select class="form-select" id="id_customer" name="id_customer" required>
+                                                        <option value="">Pilih Customer</option>
+                                                        <?php
+                                                        // Fetch customer data from the database
+                                                        $customers = mysqli_query($koneksi, "SELECT id_customer, nama_customer FROM customer");
+                                                        while ($customer = mysqli_fetch_assoc($customers)) {
+                                                            echo "<option value='{$customer['id_customer']}'>{$customer['nama_customer']}</option>";
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label for="id_metode" class="form-label">Metode Pembayaran</label>
+                                                        <select class="form-select" id="id_metode" name="id_metode" required>
+                                                            <option value="">Pilih Metode Pembayaran</option>
+                                                            <?php
+                                                            $paymentMethods = mysqli_query($koneksi, "SELECT id_metode, nama_metode_pembayaran FROM metode_pembayaran");
+                                                            while ($method = mysqli_fetch_assoc($paymentMethods)) {
+                                                                echo "<option value='{$method['id_metode']}'>{$method['nama_metode_pembayaran']}</option>";
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                    <label for="tanggal_transaksi" class="form-label">Tanggal Transaksi</label>
+                                                    <input type="date" class="form-control" id="tanggal_transaksi" name="tanggal_transaksi" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="id_produk" class="form-label">Nama Produk</label>
+                                                    <select class="form-select" id="id_produk" name="id_produk" required>
+                                                        <option value="">Pilih Produk</option>
+                                                        <?php
+                                                        $products = mysqli_query($koneksi, "SELECT id_produk, nama_produk FROM produk");
+                                                        while ($product = mysqli_fetch_assoc($products)) {
+                                                            echo "<option value='{$product['id_produk']}'>{$product['nama_produk']}</option>";
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="jumlah_produk" class="form-label">Jumlah Produk</label>
+                                                    <input type="number" class="form-control" id="jumlah_produk" name="jumlah_produk" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="harga_satuan" class="form-label">Harga Satuan</label>
+                                                    <input type="number" class="form-control" id="harga_satuan" name="harga_satuan" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="subtotal" class="form-label">Subtotal</label>
+                                                    <input type="number" class="form-control" id="subtotal" name="subtotal" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                <button type="submit" class="btn btn-primary">Simpan</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <script>
+                            // Mengisi subtotal otomatis berdasarkan jumlah produk dan harga satuan
+                            $('#jumlah_produk, #harga_satuan').on('input', function() {
+                                const jumlahProduk = parseInt($('#jumlah_produk').val()) || 0;
+                                const hargaSatuan = parseFloat($('#harga_satuan').val()) || 0;
+                                const subtotal = jumlahProduk * hargaSatuan;
+
+                                // Menampilkan subtotal di kolom yang sesuai
+                                $('#subtotal').val(subtotal.toFixed(0)); // Format angka tanpa desimal
+                            });
+                        </script>
+
+                    </div>
+                            <!DOCTYPE html>
+                            <html lang="en">
+                            <head>
+                                <meta charset="UTF-8">
+                                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                                <title>Transaksi Pemesanan</title>
+                                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                            </head>
+                            <body>
 
                         </div>
                     </div>
                 </div>
             </main>
 
-            <!-- Modal -->
-            <div class="modal fade" id="gajiModal" tabindex="-1" aria-labelledby="gajiModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="gajiModalLabel">Tambah Penggajian</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Form untuk menambahkan penggajian -->
-                    <form action="add_transaksi_penggajian.php" method="POST">
-                    <div class="form-group">
-                        <label for="id_transaksi_karyawan">ID Transaksi Karyawan:</label>
-                        <input type="text" name="id_transaksi_karyawan" id="id_transaksi_karyawan" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="periode_gaji">Periode Gaji (Bulan/Tahun):</label>
-                        <input type="month" name="periode_gaji" id="periode_gaji" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="gaji_pokok">Gaji Pokok:</label>
-                        <input type="number" name="gaji_pokok" id="gaji_pokok" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="tunjangan">Tunjangan:</label>
-                        <input type="number" name="tunjangan" id="tunjangan" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="potongan">Potongan:</label>
-                        <input type="number" name="potongan" id="potongan" class="form-control" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary mt-3">Tambah Penggajian</button>
-                    </form>
-                </div>
-                </div>
-            </div>
-            </div>
-
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-            <script src="js/scripts.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-            <script src="js/datatables-simple-demo.js"></script>
-            <script>
-            function updateKaryawanInfo() {
-                const nik = document.getElementById('NIK').value;
-                if (nik) {
-                    fetch(`get_karyawan_info.php?NIK=${ nik}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            document.getElementById('nama_karyawan').value = data.nama_karyawan;
-                            document.getElementById('alamat_karyawan').value = data.alamat_karyawan;
-                            document.getElementById('tgl_lahir').value = data.tgl_lahir;
-                            document.getElementById('jenis_kelamin').value = data.jenis_kelamin;
-                            document.getElementById('no_telp').value = data.no_telp;
-                            document.getElementById('email').value = data.email;
-                            document.getElementById('tgl_bergabung').value = data.tgl_bergabung;
-                        })
-                        .catch(error => console.error('Error fetching karyawan info:', error));
-                } else {
-                    // Clear fields if no NIK is selected
-                    document.getElementById('nama_karyawan').value = '';
-                    document.getElementById('alamat_karyawan').value = '';
-                    document.getElementById('tgl_lahir').value = '';
-                    document.getElementById('jenis_kelamin').value = '';
-                    document.getElementById('no_telp').value = '';
-                    document.getElementById('email').value = '';
-                    document.getElementById('tgl_bergabung').value = '';
-                }
-            }
-
-            function updateJabatanInfo() {
-                const idJabatan = document.getElementById('id_jabatan').value;
-                if (idJabatan) {
-                    fetch(`get_jabatan_info.php?id_jabatan=${idJabatan}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            document.getElementById('nama_jabatan').value = data.nama_jabatan;
-                        })
-                        .catch(error => console.error('Error fetching jabatan info:', error));
-                } else {
-                    document.getElementById('nama_jabatan').value = '';
-                }
-            }
-
-            function updateDivisiInfo() {
-                const idDivisi = document.getElementById('id_divisi').value;
-                if (idDivisi) {
-                    fetch(`get_divisi_info.php?id_divisi=${idDivisi}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            document.getElementById('nama_divisi').value = data.nama_divisi;
-                        })
-                        .catch(error => console.error('Error fetching divisi info:', error));
-                } else {
-                    document.getElementById('nama_divisi').value = '';
-                }
-            }
             </script>
         </body>
     </html>
