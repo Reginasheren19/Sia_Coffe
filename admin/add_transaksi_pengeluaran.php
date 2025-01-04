@@ -33,12 +33,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
     }
+
+        // Ambil ID terakhir transaksi
+        $id_transaksi = mysqli_insert_id($koneksi);
+
+        // Catat ke jurnal
+        catatKeJurnal('pengeluaran', $id_transaksi);
 }
 ?>
 
-<?php
-$status_class = strtolower($row['status']) == 'lunas' ? 'status-lunas' : 'status-belum-lunas';
-?>
 
 
 <!DOCTYPE html>
