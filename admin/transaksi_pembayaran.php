@@ -104,10 +104,7 @@ ini_set('display_errors', 1);
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Pengeluaran
                             </a>
-                            <a class="nav-link" href="pelunasan_hutang.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Pelunasan Hutang
-                            </a>
+
 
                             <div class="sb-sidenav-menu-heading">Payroll Cycle</div>
                             <a class="nav-link" href="charts.html">
@@ -186,7 +183,7 @@ ini_set('display_errors', 1);
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Master Data Pemesanan</h1>
+                    <h1 class="mt-4">Master Data Pembayaran</h1>
                     <ol class="breadcrumb mb-4">
                         <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                         <li class="breadcrumb-item active">Data Transaksi Pembayaran</li>
@@ -212,7 +209,8 @@ ini_set('display_errors', 1);
                                             <th>Id Transaksi Pemesanan</th>
                                             <th>Tanggal Pembayaran</th>
                                             <th>Jumlah Pembayaran</th>
-                                            <th>Id Metode</th>
+                                            <th>Metode Pembayaran</th>
+                                            <th>Status Pembayaran</th>
                                             <th>Kode Akun</th>
                                             <th>Action</th>
                                         </tr>
@@ -236,7 +234,7 @@ ini_set('display_errors', 1);
                                                   JOIN
                                                     master_akun ma ON tp.kode_akun = ma.kode_akun";
                                         
-                                        // $result = mysqli_query($koneksi, $query);
+                                        // $result = mysqli_query($koneksi, $query); perlu di benarkan
 
                                         if (!$result) {
                                             die("Query failed: " . mysqli_error($koneksi));

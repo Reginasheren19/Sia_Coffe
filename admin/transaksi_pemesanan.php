@@ -260,6 +260,7 @@ ini_set('display_errors', 1);
                                     </tbody>
                                 </table>
                             </div>
+                            
                             <!-- Modal for Adding Transaksi Pemesanan -->
                             <div class="modal fade" id="addTransaksiPemesananModal" tabindex="-1" aria-labelledby="addTransaksiPemesananModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
