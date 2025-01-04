@@ -191,7 +191,11 @@ $tahun_gaji = isset($_GET['tahun_gaji']) ? $_GET['tahun_gaji'] : '';
                     <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                     <li class="breadcrumb-item active">Penggajian Karyawan</li>
                 </ol>
-
+                <div class="mb-3 d-flex justify-content-end">
+                    <button type="button" class="btn btn-success ms-2" data-bs-toggle="modal" data-bs-target="#addGajiModal">
+                        Generate Gaji
+                    </button>
+                </div>
                 <!-- Form untuk memilih bulan dan tahun -->
                 <div class="card mb-4">
                     <div class="card-header">
@@ -232,9 +236,6 @@ $tahun_gaji = isset($_GET['tahun_gaji']) ? $_GET['tahun_gaji'] : '';
                                 <button type="submit" class="btn btn-success" formaction="get_gaji.php?bulan_gaji=<?php echo $bulan_gaji; ?>&tahun_gaji=<?php echo $tahun_gaji; ?>">
                                     Tampilkan Data
                                 </button>
-                                <button type="button" class="btn btn-success ms-2" data-bs-toggle="modal" data-bs-target="#addGajiModal" onclick="setBulanTahun('<?php echo $bulan_gaji; ?>', '<?php echo $tahun_gaji; ?>')">
-                                    Generate Gaji
-                                </button>
                             </div>
                         </form>
                     </div>
@@ -249,13 +250,45 @@ $tahun_gaji = isset($_GET['tahun_gaji']) ? $_GET['tahun_gaji'] : '';
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
+                                    <!-- Dropdown Bulan -->
+                                    <div class="mb-3">
+                                        <label for="modal_bulan_gaji" class="form-label">Bulan</label>
+                                        <select class="form-control" name="modal_bulan_gaji" id="modal_bulan_gaji" required>
+                                            <option value="">Pilih Bulan</option>
+                                            <option value="01">Januari</option>
+                                            <option value="02">Februari</option>
+                                            <option value="03">Maret</option>
+                                            <option value="04">April</option>
+                                            <option value="05">Mei</option>
+                                            <option value="06">Juni</option>
+                                            <option value="07">Juli</option>
+                                            <option value="08">Agustus</option>
+                                            <option value="09">September</option>
+                                            <option value="10">Oktober</option>
+                                            <option value="11">November</option>
+                                            <option value="12">Desember</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Dropdown Tahun -->
+                                    <div class="mb-3">
+                                        <label for="modal_tahun_gaji" class="form-label">Tahun</label>
+                                        <select class="form-control" name="modal_tahun_gaji" id="modal_tahun_gaji" required>
+                                            <option value="">Pilih Tahun</option>
+                                            <?php 
+                                            $tahun_sekarang = date('Y');
+                                            for ($i = 2023; $i <= $tahun_sekarang + 5; $i++) { ?>
+                                                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+
                                     <!-- Dropdown Karyawan -->
                                     <div class="mb-3">
                                         <label for="id_transaksi_karyawan" class="form-label">Karyawan</label>
                                         <select class="form-control" name="id_transaksi_karyawan" id="id_transaksi_karyawan" required>
                                             <option value="">Pilih Karyawan</option>
                                             <?php
-                                            // Query untuk mengambil data id_transaksi_karyawan dan nama dari tabel master_karyawan
                                             $query = "
                                                 SELECT 
                                                     tk.id_transaksi_karyawan, 
@@ -264,8 +297,6 @@ $tahun_gaji = isset($_GET['tahun_gaji']) ? $_GET['tahun_gaji'] : '';
                                                 JOIN master_karyawan mk ON tk.NIK = mk.NIK
                                             ";
                                             $result = mysqli_query($koneksi, $query);
-
-                                            // Menampilkan hasil query dalam elemen <option>
                                             while ($row = mysqli_fetch_assoc($result)) {
                                                 echo "<option value='{$row['id_transaksi_karyawan']}'>{$row['nama_karyawan']}</option>";
                                             }
@@ -273,33 +304,40 @@ $tahun_gaji = isset($_GET['tahun_gaji']) ? $_GET['tahun_gaji'] : '';
                                         </select>
                                     </div>
 
-                                    <!-- Button Hitung Gaji -->
+                                    <!-- Gaji Pokok -->
                                     <div class="mb-3">
-                                        <button type="button" class="btn btn-primary" id="btnHitungGaji">Hitung Gaji</button>
+                                        <label for="gaji_pokok" class="form-label">Gaji Pokok</label>
+                                        <input type="text" class="form-control" id="gaji_pokok" name="gaji_pokok" readonly>
                                     </div>
 
-                                    <!-- Kolom Isian Gaji -->
-                                    <div id="gajiDetail" style="display: none;">
-                                        <div class="mb-3">
-                                            <label for="gaji_pokok" class="form-label">Gaji Pokok</label>
-                                            <input type="text" class="form-control" id="gaji_pokok" name="gaji_pokok" readonly>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="tunjangan" class="form-label">Tunjangan</label>
-                                            <input type="text" class="form-control" id="tunjangan" name="tunjangan" readonly>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="potongan" class="form-label">Potongan</label>
-                                            <input type="text" class="form-control" id="potongan" name="potongan" readonly>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="gaji_lembur" class="form-label">Lembur</label>
-                                            <input type="text" class="form-control" id="gaji_lembur" name="gaji_lembur" readonly>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="bonus" class="form-label">Bonus</label>
-                                            <input type="number" class="form-control" id="bonus" name="bonus" min="0" placeholder="Masukkan Bonus">
-                                        </div>
+                                    <!-- Tunjangan -->
+                                    <div class="mb-3">
+                                        <label for="tunjangan" class="form-label">Tunjangan</label>
+                                        <input type="text" class="form-control" id="tunjangan" name="tunjangan" readonly>
+                                    </div>
+
+                                    <!-- Potongan -->
+                                    <div class="mb-3">
+                                        <label for="potongan" class="form-label">Potongan</label>
+                                        <input type="text" class="form-control" id="potongan" name="potongan" readonly>
+                                    </div>
+
+                                    <!-- Gaji Lembur -->
+                                    <div class="mb-3">
+                                        <label for="gaji_lembur" class="form-label">Gaji Lembur</label>
+                                        <input type="text" class="form-control" id="gaji_lembur" name="gaji_lembur" readonly>
+                                    </div>
+
+                                    <!-- Bonus -->
+                                    <div class="mb-3">
+                                        <label for="bonus" class="form-label">Bonus</label>
+                                        <input type="number" class="form-control" id="bonus" name="bonus" required>
+                                    </div>
+
+                                    <!-- Gaji Bersih -->
+                                    <div class="mb-3">
+                                        <label for="gaji_bersih" class="form-label">Gaji Bersih</label>
+                                        <input type="text" class="form-control" id="gaji_bersih" name="gaji_bersih" readonly>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
@@ -318,52 +356,41 @@ $tahun_gaji = isset($_GET['tahun_gaji']) ? $_GET['tahun_gaji'] : '';
     <script src="js/scripts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
     <script src="js/datatables-simple-demo.js"></script>
-    <script>
-        // Definisikan fungsi setBulanTahun
-        function setBulanTahun(bulan, tahun) {
-            document.getElementById("bulan_gaji").value = bulan_gaji;
-            document.getElementById("tahun_gaji").value = tahun_gaji;
-        }
-    </script>
-    <script>
-        document.getElementById("btnHitungGaji").addEventListener("click", function () {
-            // Ambil data bulan, tahun, dan ID karyawan
-            const bulanGaji = document.getElementById("bulan_gaji").value;
-            const tahunGaji = document.getElementById("tahun_gaji").value;
-            const idKaryawan = document.getElementById("id_transaksi_karyawan").value;
 
-            // Pastikan data bulan, tahun, dan ID karyawan tersedia
-            if (bulanGaji && tahunGaji && idKaryawan) {
-                const dataToSend = {
-                    id_transaksi_karyawan: idKaryawan,
-                    bulan_gaji: bulanGaji,
-                    tahun_gaji: tahunGaji
-                };
+    <script>
+        // Menangani pemilihan karyawan
+        $('#id_transaksi_karyawan').change(function() {
+            var idKaryawan = $(this).val();
+            var bulanGaji = $('#modal_bulan_gaji').val();
+            var tahunGaji = $('#modal_tahun_gaji').val();
 
-                fetch('add_gaji.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
+            if (idKaryawan && bulanGaji && tahunGaji) {
+                $.ajax({
+                    url: 'get_gaji_data.php', // File PHP untuk mengambil data gaji berdasarkan karyawan, bulan, dan tahun
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        id_transaksi_karyawan: idKaryawan,
+                        modal_bulan_gaji: bulanGaji,
+                        modal_tahun_gaji: tahunGaji
                     },
-                    body: JSON.stringify(dataToSend)
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Tampilkan data gaji di modal
-                        document.getElementById('gaji_pokok').value = data.data.gaji_pokok;
-                        document.getElementById('tunjangan').value = data.data.tunjangan;
-                        document.getElementById('potongan').value = data.data.potongan;
-                        document.getElementById('gaji_lembur').value = data.data.gaji_lembur;
-                        document.getElementById('bonus').value = data.data.bonus;
-                        document.getElementById('gajiDetail').style.display = 'block'; // Tampilkan detail gaji
-                    } else {
-                        alert(data.message);
+                    success: function(response) {
+                        if (response.success) {
+                            var data = response.data[0];
+                            // Mengisi data gaji
+                            $('#gaji_pokok').val(data.gaji_pokok);
+                            $('#tunjangan').val(data.tunjangan);
+                            $('#potongan').val(data.potongan);
+                            $('#gaji_lembur').val(data.gaji_lembur);
+
+                            // Menghitung gaji bersih
+                            var gajiBersih = parseFloat(data.gaji_pokok) + parseFloat(data.tunjangan) + parseFloat(data.bonus) - parseFloat(data.potongan) + parseFloat(data.gaji_lembur);
+                            $('#gaji_bersih').val(gajiBersih.toFixed(0));
+                        } else {
+                            alert('Data gaji tidak ditemukan.');
+                        }
                     }
-                })
-                .catch(error => console.error('Error fetching gaji data:', error));
-            } else {
-                alert("Bulan, tahun, dan karyawan harus diisi!");
+                });
             }
         });
     </script>
