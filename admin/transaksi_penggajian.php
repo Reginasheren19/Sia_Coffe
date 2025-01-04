@@ -4,8 +4,8 @@ include("../config/koneksi_mysql.php");
 // Inisialisasi variabel $data
 $datagaji = null;
 
-$bulan_gaji = isset($_GET['bulan_gaji']) ? $_GET['bulan_gaji'] : '';
-$tahun_gaji = isset($_GET['tahun_gaji']) ? $_GET['tahun_gaji'] : '';
+$bulan_gaji = isset($_GET['bulan']) ? $_GET['bulan'] : '';
+$tahun_gaji = isset($_GET['tahun']) ? $_GET['tahun'] : '';
 
 ?>
 
@@ -202,10 +202,10 @@ $tahun_gaji = isset($_GET['tahun_gaji']) ? $_GET['tahun_gaji'] : '';
                         <i class="fas fa-table me-1"></i> Data Gaji Karyawan
                     </div>
                     <div class="card-body">
-                        <form class="form-inline">
+                        <form class="form-inline" action="get_absensi.php" method="GET">
                             <div class="form-group mb-3">
-                                <label for="bulan_gaji">Bulan</label>
-                                <select class="form-control ml-3" name="bulan_gaji" id="bulan_gaji">
+                                <label for="bulan">Bulan</label>
+                                <select class="form-control ml-3" name="bulan" id="bulan">
                                     <option value="">Pilih Bulan</option>
                                     <option value="01" <?php echo ($bulan_gaji == '01') ? 'selected' : ''; ?>>Januari</option>
                                     <option value="02" <?php echo ($bulan_gaji == '02') ? 'selected' : ''; ?>>Februari</option>
@@ -222,8 +222,8 @@ $tahun_gaji = isset($_GET['tahun_gaji']) ? $_GET['tahun_gaji'] : '';
                                 </select>
                             </div>
                             <div class="form-group mb-2 ml-5">
-                                <label for="tahun_gaji">Tahun</label>
-                                <select class="form-control ml-3" name="tahun_gaji" id="tahun_gaji">
+                                <label for="tahun">Tahun</label>
+                                <select class="form-control ml-3" name="tahun" id="tahun">
                                     <option value="">Pilih Tahun</option>
                                     <?php 
                                     $tahun_sekarang = date('Y');
@@ -233,7 +233,7 @@ $tahun_gaji = isset($_GET['tahun_gaji']) ? $_GET['tahun_gaji'] : '';
                                 </select>
                             </div>
                             <div class="mb-3 d-flex justify-content-end">
-                                <button type="submit" class="btn btn-success" formaction="get_gaji.php?bulan_gaji=<?php echo $bulan_gaji; ?>&tahun_gaji=<?php echo $tahun_gaji; ?>">
+                                <button type="submit" class="btn btn-success" formaction="get_gaji.php?bulan=<?php echo $bulan_gaji; ?>&tahun=<?php echo $tahun_gaji; ?>">
                                     Tampilkan Data
                                 </button>
                             </div>
@@ -252,8 +252,8 @@ $tahun_gaji = isset($_GET['tahun_gaji']) ? $_GET['tahun_gaji'] : '';
                                 <div class="modal-body">
                                     <!-- Dropdown Bulan -->
                                     <div class="mb-3">
-                                        <label for="modal_bulan_gaji" class="form-label">Bulan</label>
-                                        <select class="form-control" name="modal_bulan_gaji" id="modal_bulan_gaji" required>
+                                    <label for="modal_bulan" class="form-label">Bulan</label>
+                                    <select class="form-control" name="modal_bulan" id="modal_bulan" required>
                                             <option value="">Pilih Bulan</option>
                                             <option value="01">Januari</option>
                                             <option value="02">Februari</option>
@@ -272,8 +272,8 @@ $tahun_gaji = isset($_GET['tahun_gaji']) ? $_GET['tahun_gaji'] : '';
 
                                     <!-- Dropdown Tahun -->
                                     <div class="mb-3">
-                                        <label for="modal_tahun_gaji" class="form-label">Tahun</label>
-                                        <select class="form-control" name="modal_tahun_gaji" id="modal_tahun_gaji" required>
+                                    <label for="modal_tahun" class="form-label">Tahun</label>
+                                    <select class="form-control" name="modal_tahun" id="modal_tahun" required>
                                             <option value="">Pilih Tahun</option>
                                             <?php 
                                             $tahun_sekarang = date('Y');
@@ -361,18 +361,18 @@ $tahun_gaji = isset($_GET['tahun_gaji']) ? $_GET['tahun_gaji'] : '';
         // Menangani pemilihan karyawan
         $('#id_transaksi_karyawan').change(function() {
             var idKaryawan = $(this).val();
-            var bulanGaji = $('#modal_bulan_gaji').val();
-            var tahunGaji = $('#modal_tahun_gaji').val();
+            var bulanGaji = $('#modal_bulan').val();
+            var tahunGaji = $('#modal_tahun').val();
 
             if (idKaryawan && bulanGaji && tahunGaji) {
                 $.ajax({
-                    url: 'get_gaji_data.php', // File PHP untuk mengambil data gaji berdasarkan karyawan, bulan, dan tahun
+                    url: 'add_datagaji.php', // File PHP untuk mengambil data gaji berdasarkan karyawan, bulan, dan tahun
                     type: 'POST',
                     dataType: 'json',
                     data: {
                         id_transaksi_karyawan: idKaryawan,
-                        modal_bulan_gaji: bulanGaji,
-                        modal_tahun_gaji: tahunGaji
+                        modal_bulan: bulanGaji,
+                        modal_tahun: tahunGaji
                     },
                     success: function(response) {
                         if (response.success) {

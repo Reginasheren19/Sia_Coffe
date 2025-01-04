@@ -2,8 +2,8 @@
 include("../config/koneksi_mysql.php");
 
 // Inisialisasi variabel
-$bulan_gaji = isset($_GET['bulan_gaji']) ? $_GET['bulan_gaji'] : '';
-$tahun_gaji = isset($_GET['tahun_gaji']) ? $_GET['tahun_gaji'] : '';
+$bulan = isset($_GET['bulan']) ? $_GET['bulan'] : '';
+$tahun = isset($_GET['tahun']) ? $_GET['tahun'] : '';
 $data_gaji = [];
 
 // Query untuk mendapatkan data transaksi karyawan yang terdaftar, lengkap dengan jabatan dan absensi
@@ -24,7 +24,7 @@ JOIN transaksi_karyawan tk ON tp.id_transaksi_karyawan = tk.id_transaksi_karyawa
 JOIN master_karyawan mk ON tk.NIK = mk.NIK
 JOIN master_jabatan mj ON tk.id_jabatan = mj.id_jabatan
 JOIN master_divisi md ON tk.id_divisi = md.id_divisi
-WHERE tp.bulan_gaji = '$bulan_gaji' AND tp.tahun_gaji = '$tahun_gaji'";
+WHERE tp.bulan_gaji = '$bulan' AND tp.tahun_gaji = '$tahun'";
 
 $result = mysqli_query($koneksi, $query);
 
@@ -36,7 +36,7 @@ $result = mysqli_query($koneksi, $query);
                 $data_gaji[] = $row;
             }
         } else {
-            $dataa_gaji = [];
+            $data_gaji = [];
         }
     } else {
         $data_gaji = null;
@@ -104,7 +104,7 @@ $result = mysqli_query($koneksi, $query);
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                             <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                             Pages
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            <div class="sb-nav-link-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
                         <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
@@ -222,7 +222,11 @@ $result = mysqli_query($koneksi, $query);
                     <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
                     <li class="breadcrumb-item active">Penggajian Karyawan</li>
                 </ol>
-
+                <div class="mb-3 d-flex justify-content-end">
+                    <button type="button" class="btn btn-success ms-2" data-bs-toggle="modal" data-bs-target="#addGajiModal">
+                        Generate Gaji
+                    </button>
+                </div>
                 <!-- Form untuk memilih bulan dan tahun -->
                 <div class="card mb-4">
                     <div class="card-header">
@@ -231,40 +235,37 @@ $result = mysqli_query($koneksi, $query);
                     <div class="card-body">
                         <form class="form-inline">
                             <div class="form-group mb-3">
-                                <label for="bulan_gaji">Bulan</label>
-                                <select class="form-control ml-3" name="bulan_gaji" id="bulan_gaji">
+                                <label for="bulan">Bulan</label>
+                                <select class="form-control ml-3" name="bulan" id="bulan">
                                     <option value="">Pilih Bulan</option>
-                                    <option value="01" <?php echo ($bulan_gaji == '01') ? 'selected' : ''; ?>>Januari</option>
-                                    <option value="02" <?php echo ($bulan_gaji == '02') ? 'selected' : ''; ?>>Februari</option>
-                                    <option value="03" <?php echo ($bulan_gaji == '03') ? 'selected' : ''; ?>>Maret</option>
-                                    <option value="04" <?php echo ($bulan_gaji == '04') ? 'selected' : ''; ?>>April</option>
-                                    <option value="05" <?php echo ($bulan_gaji == '05') ? 'selected' : ''; ?>>Mei</option>
-                                    <option value="06" <?php echo ($bulan_gaji == '06') ? 'selected' : ''; ?>>Juni</option>
-                                    <option value="07" <?php echo ($bulan_gaji == '07') ? 'selected' : ''; ?>>Juli</option>
-                                    <option value="08" <?php echo ($bulan_gaji == '08') ? 'selected' : ''; ?>>Agustus</option>
-                                    <option value="09" <?php echo ($bulan_gaji == '09') ? 'selected' : ''; ?>>September</option>
-                                    <option value="10" <?php echo ($bulan_gaji == '10') ? 'selected' : ''; ?>>Oktober</option>
-                                    <option value="11" <?php echo ($bulan_gaji == '11') ? 'selected' : ''; ?>>November</option>
-                                    <option value="12" <?php echo ($bulan_gaji == '12') ? 'selected' : ''; ?>>Desember</option>
+                                    <option value="01" <?php echo ($bulan == '01') ? 'selected' : ''; ?>>Januari</option>
+                                    <option value="02" <?php echo ($bulan == '02') ? 'selected' : ''; ?>>Februari</option>
+                                    <option value="03" <?php echo ($bulan == '03') ? 'selected' : ''; ?>>Maret</option>
+                                    <option value="04" <?php echo ($bulan == '04') ? 'selected' : ''; ?>>April</option>
+                                    <option value="05" <?php echo ($bulan == '05') ? 'selected' : ''; ?>>Mei</option>
+                                    <option value="06" <?php echo ($bulan == '06') ? 'selected' : ''; ?>>Juni</option>
+                                    <option value="07" <?php echo ($bulan == '07') ? 'selected' : ''; ?>>Juli</option>
+                                    <option value="08" <?php echo ($bulan == '08') ? 'selected' : ''; ?>>Agustus</option>
+                                    <option value="09" <?php echo ($bulan == '09') ? 'selected' : ''; ?>>September</option>
+                                    <option value="10" <?php echo ($bulan == '10') ? 'selected' : ''; ?>>Oktober</option>
+                                    <option value="11" <?php echo ($bulan == '11') ? 'selected' : ''; ?>>November</option>
+                                    <option value="12" <?php echo ($bulan == '12') ? 'selected' : ''; ?>>Desember</option>
                                 </select>
                             </div>
                             <div class="form-group mb-2 ml-5">
-                                <label for="tahun_gaji">Tahun</label>
-                                <select class="form-control ml-3" name="tahun_gaji" id="tahun_gaji">
+                                <label for="tahun">Tahun</label>
+                                <select class="form-control ml-3" name="tahun" id="tahun">
                                     <option value="">Pilih Tahun</option>
                                     <?php 
                                     $tahun_sekarang = date('Y');
                                     for ($i = 2023; $i <= $tahun_sekarang + 5; $i++) { ?>
-                                        <option value="<?php echo $i; ?>" <?php echo ($tahun_gaji == $i) ? 'selected' : ''; ?>><?php echo $i; ?></option>
+                                        <option value="<?php echo $i; ?>" <?php echo ($tahun == $i) ? 'selected' : ''; ?>><?php echo $i; ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
-                            <div class="mb-3d-flex justify-content-end">
-                                <button type="submit" class="btn btn-success">
+                            <div class="mb-3 d-flex justify-content-end">
+                                <button type="submit" class="btn btn-success" formaction="get_gaji.php?bulan=<?php echo $bulan_gaji; ?>&tahun=<?php echo $tahun_gaji; ?>">
                                     Tampilkan Data
-                                </button>
-                                <button type="submit" class="btn btn-success ms-2" formaction="add_gaji.php?bulan_gaji=<?php echo $bulan_gaji; ?>&tahun_gaji=<?php echo $tahun_gaji; ?>">
-                                    Generate Gaji
                                 </button>
                             </div>
                         </form>
@@ -273,7 +274,7 @@ $result = mysqli_query($koneksi, $query);
                 <!-- Menampilkan data absensi -->
                 <?php if ($data_gaji !== null): ?>
                     <div class="alert alert-info">
-                        Menampilkan Data Penggajian Karyawan Bulan: <strong><?php echo $bulan_gaji; ?></strong> Tahun: <strong><?php echo $tahun_gaji; ?></strong>
+                        Menampilkan Data Penggajian Karyawan Bulan: <strong><?php echo $bulan; ?></strong> Tahun: <strong><?php echo $tahun; ?></strong>
                     </div>
                     <div class="card mb-4">
                     <div class="card-header">
