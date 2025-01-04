@@ -211,49 +211,48 @@ ini_set('display_errors', 1);
                                             <th>Jumlah Pembayaran</th>
                                             <th>Metode Pembayaran</th>
                                             <th>Status Pembayaran</th>
-                                            <th>Kode Akun</th>
+                                            <th>Nama Akun</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="data_transaksi_pemesanan">
-                                        <?php
-                                        // Query untuk mendapatkan data transaksi pemesanan dengan data terkait
-                                        $query = "SELECT 
-                                                    tp.id_transaksi_pemesanan,
-                                                    mc.nama_customer,
-                                                    tp.tanggal_transaksi,
-                                                    tp.total_harga,
-                                                    mm.nama_metode,
-                                                    ma.nama_akun
-                                                  FROM 
-                                                    transaksi_pemesanan tp
-                                                  JOIN 
-                                                    master_customer mc ON tp.id_customer = mc.id_customer
-                                                  JOIN 
-                                                    master_metode_pembayaran mm ON tp.id_metode = mm.id_metode
-                                                  JOIN
-                                                    master_akun ma ON tp.kode_akun = ma.kode_akun";
-                                        
-                                        // $result = mysqli_query($koneksi, $query); perlu di benarkan
-
-                                        if (!$result) {
-                                            die("Query failed: " . mysqli_error($koneksi));
-                                        }
-                                        
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                            echo "<tr>
-                                                <td>{$row['id_transaksi_pemesanan']}</td>
-                                                <td>{$row['nama_customer']}</td>
-                                                <td>{$row['tanggal_transaksi']}</td>
-                                                <td>{$row['total_harga']}</td>
-                                                <td>{$row['nama_metode']}</td>
-                                                <td>{$row['nama_akun']}</td>
-                                                    <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                    <a href='delete_transaksi_pemesanan.php?penggajian={$row['id_transaksi_pemesanan']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this transaksi?')\">Delete</a>
-                                                </td>
-                                            </tr>";
-                                        }
-                                        ?>
+                                    <tbody id="data_transaksi_pembayaran">
+                                                                            <?php
+                                    // Query untuk mendapatkan data transaksi pembayaran beserta data terkait dari transaksi_pemesanan, master_customer, master_metode_pembayaran, dan master_akun
+                                    $result = mysqli_query($koneksi,"
+                                        SELECT tp.id_transaksi_pembayaran,
+                                            tpm.id_transaksi_pemesanan,  
+                                            tp.tanggal_pembayaran,
+                                            tp.jumlah_pembayaran,
+                                            mc.nama_customer,         
+                                            mp.nama_metode,           
+                                            tp.status_pembayaran,
+                                            ma.nama_akun              
+                                        FROM transaksi_pembayaran tp
+                                        JOIN transaksi_pemesanan tpm ON tp.id_transaksi_pemesanan = tpm.id_transaksi_pemesanan  
+                                        JOIN master_customer mc ON tpm.id_customer = mc.id_customer  
+                                        JOIN master_metode_pembayaran mp ON tp.id_metode = mp.id_metode  
+                                        JOIN master_akun ma ON tp.id_akun = ma.id_akun  
+                                    ");                                        
+                                        // Display data transaksi pembayaran
+                                    while ($row = mysqli_fetch_assoc($result)) {
+                                        echo "<tr>
+                                            <td>{$row['id_transaksi_pembayaran']}</td>
+                                            <td>{$row['id_transaksi_pemesanan']}</td>  
+                                            <td>" . date('d-m-Y', strtotime($row['tanggal_pembayaran'])) . "</td>
+                                            <td>" . number_format($row['jumlah_pembayaran'], 0, ',', '.') . "</td>
+                                            <td>{$row['nama_customer']}</td>  
+                                            <td>{$row['nama_metode']}</td>    
+                                            <td>{$row['status_pembayaran']}</td>
+                                            <td>{$row['nama_akun']}</td>      
+                                            <td>
+                                                <button class='btn btn-primary btn-sm btn-update'>Update</button>
+                                                <a href='delete_transaksi_pembayaran.php?id={$row['id_transaksi_pembayaran']}' 
+                                                class='btn btn-danger btn-sm' 
+                                                onclick=\"return confirm('Are you sure you want to delete this transaksi?')\">Delete</a>
+                                            </td>
+                                        </tr>";
+                                    }
+                                    ?>
                                     </tbody>
                                 </table>
                             </div>
