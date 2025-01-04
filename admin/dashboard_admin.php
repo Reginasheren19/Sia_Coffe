@@ -117,7 +117,10 @@ session_start();
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Pelunasan Hutang
                             </a>
-
+                            <a class="nav-link" href="transaksi_pengeluaran_lain.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Pengeluaran Lain
+                            </a>                        
 
                             <div class="sb-sidenav-menu-heading">Payroll Cycle</div>
                             <a class="nav-link" href="transaksi_karyawan.php">

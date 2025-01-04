@@ -107,11 +107,11 @@ error_reporting(0)
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Kelola Karyawan
                             </a>
-                            <a class="nav-link" href="tables.html">
+                            <a class="nav-link" href="transaksi_penggajian.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Penggajian
                             </a>
-                            <a class="nav-link" href="tables.html">
+                            <a class="nav-link" href="absensi.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Rekap Presensi
                             </a>

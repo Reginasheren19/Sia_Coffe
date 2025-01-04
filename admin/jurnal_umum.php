@@ -1,8 +1,7 @@
 <?php
 include("../config/koneksi_mysql.php");
 
-$sql = mysqli_query($koneksi,"SELECT * FROM transaksi_pengeluaran");
-
+$sql = mysqli_query($koneksi,"SELECT * FROM jurnal_umum");
 
 ?>
 
@@ -20,7 +19,7 @@ error_reporting(0)
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>TRANSAKSI PENGELUARAN - SIA COFFE SHOP</title>
+        <title>JURNAL UMUM - SIA COFFE SHOP</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -108,15 +107,15 @@ error_reporting(0)
                                 Pengeluaran Lain
                             </a>                        
                             <div class="sb-sidenav-menu-heading">Payroll Cycle</div>
-                            <a class="nav-link" href="charts.html">
+                            <a class="nav-link" href="transaksi_karyawan.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Kelola Karyawan
                             </a>
-                            <a class="nav-link" href="tables.html">
+                            <a class="nav-link" href="transaksi_penggajian.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Penggajian
                             </a>
-                            <a class="nav-link" href="tables.html">
+                            <a class="nav-link" href="absensi.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Rekap Presensi
                             </a>
@@ -178,198 +177,109 @@ error_reporting(0)
             <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Transaksi Pengeluaran</h1>
+                    <h1 class="mt-4">Jurnal Umum</h1>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Data Pengeluaran</li>
+                        <li class="breadcrumb-item active">Data Jurnal Umum</li>
                     </ol>
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            Tabel Transaksi Pengeluaran
+                            Tabel Jurnal Umum
                         </div>
                         <div class="card-body">
-                            <!-- Tombol Tambah Data -->
-                            <div class="mb-3 d-flex justify-content-end">
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTransaksiPengeluaranModal">
-                                    Add Pengeluaran
-                                </button>
-                            </div>
+
 <!-- Table for Data Transactions -->
-<div class="table-responsive">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Id Transaksi</th>
-                <th>No Nota</th>
-                <th>Kategori Pengeluaran</th>
-                <th>Nama Supplier</th>
-                <th>Nama Akun</th>
-                <th>Tanggal Transaksi</th>
-                <th>Harga</th>
-                <th>Banyaknya</th>
-                <th>Total</th>
-                <th>Total Bayar</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody id="data_pengeluaran">
-            <?php
-            // Query to fetch transaction data and join master_supplier and master_akun
-            $result = mysqli_query($koneksi, "
-                SELECT tp.id_transaksi, 
-                       tp.no_nota, 
-                       tp.kategori_pengeluaran, 
-                       ms.nama_supplier, 
-                       ma.nama_akun, 
-                       tp.tanggal_transaksi, 
-                       tp.harga, 
-                       tp.jumlah,
-                       tp.harga * tp.jumlah AS total, 
-                       tp.total_bayar, 
-                       tp.status
-                FROM transaksi_pengeluaran tp
-                JOIN master_supplier ms ON tp.id_supplier = ms.id_supplier
-                JOIN master_akun ma ON tp.id_akun = ma.id_akun
-            ");
+<div class="card-body">
+    <!-- Table for Data Transactions -->
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID Jurnal Umum</th>
+                    <th>Tanggal</th>
+                    <th>Keterangan</th>
+                    <th>Kode Akun</th>
+                    <th>Debit</th>
+                    <th>Kredit</th>
+                </tr>
+            </thead>
+            <tbody id="data_jurnal">
+                <?php
+                // Query untuk mengambil data dari tabel jurnal_umum
+                $result = mysqli_query($koneksi, "
+                    SELECT ju.id_jurnal_umum, 
+                           ju.tanggal, 
+                           ju.keterangan, 
+                           ju.kode_akun, 
+                           ju.debit, 
+                           ju.kredit
+                    FROM jurnal_umum ju
+                ");
 
-            // Display transaction data
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo "<tr>
-                    <td>{$row['id_transaksi']}</td>
-                    <td>{$row['no_nota']}</td>
-                    <td>{$row['kategori_pengeluaran']}</td>
-                    <td>{$row['nama_supplier']}</td>
-                    <td>{$row['nama_akun']}</td>
-                    <td>{$row['tanggal_transaksi']}</td>
-                    <td>" . number_format($row['harga'], 2) . "</td>
-                    <td>{$row['jumlah']}</td>
-                    <td>" . number_format($row['total'], 2) . "</td>
-                    <td>" . number_format($row['total_bayar'], 2) . "</td>
-                    <td>{$row['status']}</td>
-                </tr>";
-            }
-            ?>
-        </tbody>
-    </table>
-</div>
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transaksi Pengeluaran</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
-<!-- Modal for Adding Expense Transaction -->
-<div class="modal fade" id="addTransaksiPengeluaranModal" tabindex="-1" aria-labelledby="addTransaksiPengeluaranModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form method="POST" action="add_transaksi_pengeluaran.php">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addTransaksiPengeluaranModalLabel">Tambah Transaksi Pengeluaran</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                            <label for="no_nota" class="form-label">No Nota</label>
-                            <input type="text" class="form-control" id="no_nota" name="no_nota" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="kategori_pengeluaran" class="form-label">Kategori Pengeluaran</label>
-                        <select class="form-select" id="kategori_pengeluaran" name="kategori_pengeluaran" required>
-                            <option value="peralatan">Peralatan</option>
-                            <option value="perlengkapan">Perlengkapan</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="id_supplier" class="form-label">Nama Supplier</label>
-                        <select class="form-select" id="id_supplier" name="id_supplier">
-                            <option value="">Pilih Supplier</option>
-                            <?php
-                            // Fetch supplier data from the database
-                            $suppliers = mysqli_query($koneksi, "SELECT id_supplier, nama_supplier, saldo_hutang FROM master_supplier");
-                            while ($supplier = mysqli_fetch_assoc($suppliers)) {
-                                echo "<option value='{$supplier['id_supplier']}' data-saldo='{$supplier['saldo_hutang']}'>{$supplier['nama_supplier']}</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <!-- Dropdown for Account Name -->
-                    <div class="mb-3">
-                        <label for="id_akun" class="form-label">Nama Akun</label>
-                        <select class="form-select" id="id_akun" name="id_akun" required>
-                            <option value="">Pilih Akun</option>
-                            <?php
-                            $accounts = mysqli_query($koneksi, "SELECT id_akun, nama_akun FROM master_akun");
-                            while ($account = mysqli_fetch_assoc($accounts)) {
-                                echo "<option value='{$account['id_akun']}'>{$account['nama_akun']}</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="tanggal_transaksi" class="form-label">Tanggal Transaksi</label>
-                        <input type="date" class="form-control" id="tanggal_transaksi" name="tanggal_transaksi" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="harga" class="form-label">Harga</label>
-                        <input type="number" class="form-control" id="harga" name="harga" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="jumlah" class="form-label">Banyaknya</label>
-                        <input type="number" class="form-control" id="jumlah" name="jumlah" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="total" class="form-label">Total</label>
-                        <input type="number" class="form-control" id="total" name="total" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label for="total_bayar" class="form-label">Total Bayar</label>
-                        <input type="number" class="form-control" id="total_bayar" name="total_bayar" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-        </div>
+                // Menampilkan data
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<tr>
+                        <td>{$row['id_jurnal_umum']}</td>
+                        <td>{$row['tanggal']}</td>
+                        <td>{$row['keterangan']}</td>
+                        <td>{$row['kode_akun']}</td>
+                        <td>" . number_format($row['debit'], 2) . "</td>
+                        <td>" . number_format($row['kredit'], 2) . "</td>
+                    </tr>";
+                }
+                ?>
+            </tbody>
+        </table>
     </div>
 </div>
 
+<?php
+
+function catatKeJurnal($jenis_transaksi, $id_transaksi, $id_pengeluaran_lain) {
+    global $koneksi;
+
+    // Tentukan tabel sumber berdasarkan jenis transaksi
+    $tabel_sumber = '';
+    if ($jenis_transaksi === 'pengeluaran') {
+        $tabel_sumber = 'transaksi_pengeluaran';
+    } elseif ($jenis_transaksi === 'pengeluaran_lain') {
+        $tabel_sumber = 'transaksi_pengeluaran_lain';
+    } else {
+        die("Jenis transaksi tidak valid!");
+    }
+
+    // Ambil data transaksi dari tabel sumber
+    $query = "SELECT tanggal_transaksi AS tanggal, kategori_pengeluaran AS keterangan, id_akun, total FROM $tabel_sumber WHERE id = '$id_transaksi'";
+    $query = "SELECT tanggal_pengeluaran_lain AS tanggal, nama_akun AS keterangan, id_akun, total FROM $tabel_sumber WHERE id = '$id_pengeluaran_lain'";
+ 
+    $result = mysqli_query($koneksi, $query);
+
+    if ($row = mysqli_fetch_assoc($result)) {
+        // Data transaksi
+        $tanggal = $row['tanggal']; // Sudah otomatis menggunakan alias 'tanggal'
+        $keterangan = $row['keterangan'];
+        $id_akun = $row['id_akun'];
+        $total = $row['total'];
+
+        // Tentukan debit dan kredit
+        $debit = ($jenis_transaksi === 'pengeluaran') ? $total : 0;
+        $kredit = ($jenis_transaksi === 'pemasukan') ? $total : 0;
+
+        // Masukkan ke jurnal umum
+        $query_jurnal = "INSERT INTO jurnal_umum (tanggal, keterangan, kode_akun, debit, kredit)
+                         VALUES ('$tanggal', '$keterangan', '$id_akun', '$debit', '$kredit')";
+        mysqli_query($koneksi, $query_jurnal);
+    } else {
+        die("Data transaksi tidak ditemukan!");
+    }
+}
+
+// Kode untuk tampilkan data jurnal umum
+$sql = mysqli_query($koneksi, "SELECT * FROM jurnal_umum");
+
+?>
 
 
-<script>
-    // Mengisi total pengeluaran otomatis berdasarkan harga dan jumlah
-    $('#harga, #jumlah').on('input', function() {
-        const harga = parseFloat($('#harga').val()) || 0;
-        const jumlah = parseInt($('#jumlah').val()) || 0;
-        const total = harga * jumlah;
-
-        // Menampilkan total pengeluaran di kolom yang sesuai
-        $('#total').val(total.toFixed(2)); // Format angka dengan dua desimal
-    });
-
-    // Mengubah status secara otomatis saat total bayar dimasukkan
-    $('#total_bayar').on('input', function() {
-        const total = parseFloat($('#total').val()) || 0;
-        const totalBayar = parseFloat($('#total_bayar').val()) || 0;
-
-        // Menentukan status berdasarkan total bayar dan total pengeluaran
-        if (totalBayar < total) {
-            $('#status').val('Belum Lunas');
-        } else {
-            $('#status').val('Lunas');
-        }
-    });
-</script>
-</body>
-</html>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="js/scripts.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
