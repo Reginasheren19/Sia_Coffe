@@ -207,7 +207,6 @@ ini_set('display_errors', 1);
                                             <th>Id Transaksi Pemesanan</th>
                                             <th>Nama Customer</th>
                                             <th>Tanggal Transaksi</th>
-                                            <th>Total Harga</th>
                                             <th>Metode Pembayaran</th>
                                             <th>Nama Akun</th>
                                             <th>Nama produk</th>
@@ -224,7 +223,6 @@ ini_set('display_errors', 1);
                                         SELECT tp.id_transaksi_pemesanan,
                                             c.nama_customer,
                                             tp.tgl_transaksi,
-                                            tp.total_harga,
                                             mp.nama_metode,
                                             ak.nama_akun,
                                             p.nama_produk,
@@ -245,7 +243,6 @@ ini_set('display_errors', 1);
                                                 <td>{$row['id_transaksi_pemesanan']}</td>
                                                 <td>{$row['nama_customer']}</td>
                                                 <td>" . date('d-m-Y', strtotime($row['tanggal_transaksi'])) . "</td>
-                                                <td>" . number_format($row['total_harga'], 0, ',', '.') . "</td>
                                                 <td>{$row['nama_metode_pembayaran']}</td>
                                                 <td>{$row['nama_akun']}</td>
                                                 <td>{$row['nama_produk']}</td>
@@ -272,11 +269,6 @@ ini_set('display_errors', 1);
                                                 <h5 class="modal-title" id="addTransaksiPemesananModalLabel">Tambah Transaksi Pemesanan</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
-                                            <div class="modal-body">
-                                                <div class="mb-3">
-                                                        <label for="id_transaksi_pemesanan" class="form-label">ID Transaksi Pemesanan</label>
-                                                        <input type="text" class="form-control" id="id_transaksi_pemesanan" name="id_transaksi_pemesanan" required>
-                                                </div>
                                                 <div class="mb-3">
                                                     <label for="nama_customer" class="form-label">Nama Customer</label>
                                                     <select class="form-select" id="id_customer" name="id_customer" required>
@@ -351,7 +343,6 @@ ini_set('display_errors', 1);
                                 $('#subtotal').val(subtotal.toFixed(0)); // Format angka tanpa desimal
                             });
                         </script>
-
                     </div>
                             <!DOCTYPE html>
                             <html lang="en">
