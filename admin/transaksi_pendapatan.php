@@ -196,21 +196,15 @@ error_reporting(0);
             <tr>
                 <th>Id Transaksi</th>
                 <th>Tanggal Transaksi</th>
-                <th>Id Customer</th>
                 <th>Nama Customer</th>
-                <th>Id Produk</th>
                 <th>Nama Produk</th>
                 <th>Kuantitas</th>
                 <th>Harga Satuan</th>
                 <th>Total Pendapatan</th>
-                <th>Id Metode</th>
-                <th>Id Jenis Pendapatan</th>
-                <th>Nama Jenis Pendapatan</th>
-                <th>NIK</th>
-                <th>Nama Karyawan</th>
+                <th>Metode Pembayaran</th>
+                <th>Jenis Pendapatan</th>
                 <th>Status Transaksi</th>
                 <th>Catatan Transaksi</th>
-                <th>Action</th>
             </tr>
         </thead>
         <tbody id="data_pendapatan">

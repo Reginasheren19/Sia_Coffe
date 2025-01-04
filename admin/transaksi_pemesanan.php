@@ -213,7 +213,6 @@ ini_set('display_errors', 1);
                                             <th>Jumlah Produk</th>
                                             <th>Harga Satuan</th>
                                             <th>Subtotal</th>
-                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody id="data_transaksi_pemesanan">
@@ -260,7 +259,7 @@ ini_set('display_errors', 1);
                                     </tbody>
                                 </table>
                             </div>
-                            
+
                             <!-- Modal for Adding Transaksi Pemesanan -->
                             <div class="modal fade" id="addTransaksiPemesananModal" tabindex="-1" aria-labelledby="addTransaksiPemesananModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">

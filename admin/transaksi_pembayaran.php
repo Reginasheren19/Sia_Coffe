@@ -184,10 +184,6 @@ ini_set('display_errors', 1);
             <main>
                 <div class="container-fluid px-4">
                     <h1 class="mt-4">Master Data Pembayaran</h1>
-                    <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Data Transaksi Pembayaran</li>
-                    </ol>
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
@@ -212,7 +208,6 @@ ini_set('display_errors', 1);
                                             <th>Metode Pembayaran</th>
                                             <th>Status Pembayaran</th>
                                             <th>Nama Akun</th>
-                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody id="data_transaksi_pembayaran">
@@ -221,15 +216,13 @@ ini_set('display_errors', 1);
                                     $result = mysqli_query($koneksi,"
                                         SELECT tp.id_transaksi_pembayaran,
                                             tpm.id_transaksi_pemesanan,  
-                                            tp.tanggal_pembayaran,
+                                            tp.tgl_pembayaran,
                                             tp.jumlah_pembayaran,
-                                            mc.nama_customer,         
                                             mp.nama_metode,           
-                                            tp.status_pembayaran,
+                                            tp.status,
                                             ma.nama_akun              
                                         FROM transaksi_pembayaran tp
                                         JOIN transaksi_pemesanan tpm ON tp.id_transaksi_pemesanan = tpm.id_transaksi_pemesanan  
-                                        JOIN master_customer mc ON tpm.id_customer = mc.id_customer  
                                         JOIN master_metode_pembayaran mp ON tp.id_metode = mp.id_metode  
                                         JOIN master_akun ma ON tp.id_akun = ma.id_akun  
                                     ");                                        
@@ -238,9 +231,8 @@ ini_set('display_errors', 1);
                                         echo "<tr>
                                             <td>{$row['id_transaksi_pembayaran']}</td>
                                             <td>{$row['id_transaksi_pemesanan']}</td>  
-                                            <td>" . date('d-m-Y', strtotime($row['tanggal_pembayaran'])) . "</td>
+                                            <td>" . date('d-m-Y', strtotime($row['tgl_pembayaran'])) . "</td>
                                             <td>" . number_format($row['jumlah_pembayaran'], 0, ',', '.') . "</td>
-                                            <td>{$row['nama_customer']}</td>  
                                             <td>{$row['nama_metode']}</td>    
                                             <td>{$row['status_pembayaran']}</td>
                                             <td>{$row['nama_akun']}</td>      
