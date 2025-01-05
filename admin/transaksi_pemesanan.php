@@ -1,9 +1,12 @@
 <?php
 include("../config/koneksi_mysql.php");
 
-// Mengatur error reporting
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+$sql = mysqli_query($koneksi,"SELECT * FROM transaksi_pemesanan");
+
+?>
+
+<?php
+error_reporting(0)
 ?>
 
 <!DOCTYPE html>
@@ -190,7 +193,7 @@ ini_set('display_errors', 1);
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            Tabel Data Pemesanan
+                            Tabel Transaksi Pemesanan
                         </div>
                         <div class="card-body">
                             <!-- Tombol Tambah Data -->
@@ -199,6 +202,7 @@ ini_set('display_errors', 1);
                                     Add Data
                                 </button>
                             </div>
+
                             <!-- Tabel Data Transaksi Pemesanan -->
                             <div class="table-responsive">
                                 <table class="table table-bordered">
@@ -241,24 +245,32 @@ ini_set('display_errors', 1);
                                             echo "<tr>
                                                 <td>{$row['id_transaksi_pemesanan']}</td>
                                                 <td>{$row['nama_customer']}</td>
-                                                <td>" . date('d-m-Y', strtotime($row['tanggal_transaksi'])) . "</td>
+                                                <td>" . date('d-m-Y', strtotime($row['tgl_transaksi'])) . "</td>
                                                 <td>{$row['nama_metode_pembayaran']}</td>
                                                 <td>{$row['nama_akun']}</td>
                                                 <td>{$row['nama_produk']}</td>
                                                 <td>{$row['jumlah_produk']}</td>
                                                 <td>" . number_format($row['harga_satuan'], 0, ',', '.') . "</td>
                                                 <td>" . number_format($row['subtotal'], 0, ',', '.') . "</td>
-                                                <td>
-                                                    <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                    <a href='delete_transaksi_pemesanan.php?id={$row['id_transaksi_pemesanan']}' 
-                                                    class='btn btn-danger btn-sm' 
-                                                    onclick=\"return confirm('Are you sure you want to delete this transaksi?')\">Delete</a>                                                </td>
                                             </tr>";
                                         }
                                         ?>
                                     </tbody>
                                 </table>
                             </div>
+
+                            <!DOCTYPE html>
+                            <html lang="en">
+                            <head>
+                                <meta charset="UTF-8">
+                                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                                <title>Transaksi Pemesanan</title>
+                                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                            </head>
+                            <body>
+
 
                             <!-- Modal for Adding Transaksi Pemesanan -->
                             <div class="modal fade" id="addTransaksiPemesananModal" tabindex="-1" aria-labelledby="addTransaksiPemesananModalLabel" aria-hidden="true">
@@ -287,7 +299,7 @@ ini_set('display_errors', 1);
                                                         <select class="form-select" id="id_metode" name="id_metode" required>
                                                             <option value="">Pilih Metode Pembayaran</option>
                                                             <?php
-                                                            $paymentMethods = mysqli_query($koneksi, "SELECT id_metode, nama_metode_pembayaran FROM metode_pembayaran");
+                                                            $paymentMethods = mysqli_query($koneksi, "SELECT id_metode, nama_metode_pembayaran FROM master_smetode_pembayaran");
                                                             while ($method = mysqli_fetch_assoc($paymentMethods)) {
                                                                 echo "<option value='{$method['id_metode']}'>{$method['nama_metode_pembayaran']}</option>";
                                                             }
@@ -295,8 +307,8 @@ ini_set('display_errors', 1);
                                                         </select>
                                                     </div>
                                                     <div class="mb-3">
-                                                    <label for="tanggal_transaksi" class="form-label">Tanggal Transaksi</label>
-                                                    <input type="date" class="form-control" id="tanggal_transaksi" name="tanggal_transaksi" required>
+                                                    <label for="tgl_transaksi" class="form-label">Tanggal Transaksi</label>
+                                                    <input type="date" class="form-control" id="tgl_transaksi" name="tgl_transaksi" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="id_produk" class="form-label">Nama Produk</label>

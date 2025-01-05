@@ -12,9 +12,9 @@ echo '</pre>';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Ambil data dari form dengan sanitasi
     $id_customer = mysqli_real_escape_string($koneksi, $_POST['id_customer']);
-    $id_metode_pembayaran = mysqli_real_escape_string($koneksi, $_POST['id_metode_pembayaran']);
+    $id_metode = mysqli_real_escape_string($koneksi, $_POST['id_metode']);
     $id_akun = mysqli_real_escape_string($koneksi, $_POST['id_akun']);
-    $tanggal_transaksi = mysqli_real_escape_string($koneksi, $_POST['tanggal_transaksi']);
+    $tgl_transaksi = mysqli_real_escape_string($koneksi, $_POST['tgl_transaksi']);
     $id_produk = mysqli_real_escape_string($koneksi, $_POST['id_produk']);
     $jumlah_produk = (int)$_POST['jumlah_produk']; // Menggunakan integer untuk jumlah produk
     $harga_satuan = (float)$_POST['harga_satuan']; // Menggunakan float untuk harga satuan
@@ -22,9 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Query untuk menyimpan data ke tabel transaksi_pemesanan
     $sql = "INSERT INTO transaksi_pemesanan 
-            (id_customer, id_metode_pembayaran, id_akun, tanggal_transaksi, id_produk, jumlah_produk, harga_satuan, subtotal) 
+            (id_customer, id_metode, id_akun, tgl_transaksi, id_produk, jumlah_produk, harga_satuan, subtotal) 
             VALUES 
-            ('$id_customer', '$id_metode_pembayaran', '$id_akun', '$tanggal_transaksi', '$id_produk', '$jumlah_produk', '$harga_satuan', '$subtotal')";
+            ('$id_customer', '$id_metode', '$id_akun', '$tgl_transaksi', '$id_produk', '$jumlah_produk', '$harga_satuan', '$subtotal')";
 
     // Eksekusi query
     if (mysqli_query($koneksi, $sql)) {
@@ -87,8 +87,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                         </select>
                                                     </div>
                                                     <div class="mb-3">
-                                                    <label for="tanggal_transaksi" class="form-label">Tanggal Transaksi</label>
-                                                    <input type="date" class="form-control" id="tanggal_transaksi" name="tanggal_transaksi" required>
+                                                    <label for="tgl_transaksi" class="form-label">Tanggal Transaksi</label>
+                                                    <input type="date" class="form-control" id="tgl_transaksi" name="tgl_transaksi" required>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="id_produk" class="form-label">Nama Produk</label>
