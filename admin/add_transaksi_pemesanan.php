@@ -13,7 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Ambil data dari form dengan sanitasi
     $id_customer = mysqli_real_escape_string($koneksi, $_POST['id_customer']);
     $id_metode = mysqli_real_escape_string($koneksi, $_POST['id_metode']);
-    $id_akun = mysqli_real_escape_string($koneksi, $_POST['id_akun']);
     $tgl_transaksi = mysqli_real_escape_string($koneksi, $_POST['tgl_transaksi']);
     $id_produk = mysqli_real_escape_string($koneksi, $_POST['id_produk']);
     $jumlah_produk = (int)$_POST['jumlah_produk']; // Menggunakan integer untuk jumlah produk
