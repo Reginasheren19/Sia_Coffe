@@ -186,7 +186,7 @@ ini_set('display_errors', 1);
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Master Data Pemesanan</h1>
+                    <h1 class="mt-4">Transaksi Pemesanan</h1>
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
