@@ -214,27 +214,20 @@ error_reporting(0);
             $result = mysqli_query($koneksi, "
                 SELECT tp.id_transaksi, 
                         tp.tanggal_transaksi, 
-                        tp.id_customer, 
                         mc.nama_customer, 
-                        tp.id_produk, 
                         mp.nama_produk,
                         tp.kuantitas, 
                         tp.harga_satuan, 
-                        tp.kuantitas * tp.harga_satuan AS total_pendapatan, 
-                        tp.id_metode_pembayaran, 
-                        mpb.nama_metode, 
-                        tp.id_jenis_pendapatan, 
-                        jp.nama_jenis_pendapatan, 
-                        tp.NIK, 
-                        k.nama_karyawan, 
+                        (tp.kuantitas * tp.harga_satuan) AS total_pendapatan, 
+                        mpb.nama_metode AS metode_pembayaran, 
+                        jp.nama_jenis_pendapatan AS jenis_pendapatan, 
                         tp.status_transaksi, 
-                        tp.catatan_transaksi 
+                        tp.catatan_transaksi
                 FROM transaksi_pendapatan tp
                 JOIN master_customer mc ON tp.id_customer = mc.id_customer
                 JOIN master_produk mp ON tp.id_produk = mp.id_produk
                 JOIN master_metode_pembayaran mpb ON tp.id_metode_pembayaran = mpb.id_metode_pembayaran
                 JOIN jenis_pendapatan jp ON tp.id_jenis_pendapatan = jp.id_jenis_pendapatan
-                JOIN karyawan k ON tp.NIK = k.NIK            
                 ");
 
             // Tampilkan data transaksi
@@ -242,24 +235,16 @@ error_reporting(0);
                 echo "<tr>
                     <td>{$row['id_transaksi']}</td>
                     <td>{$row['tanggal_transaksi']}</td>
-                    <td>{$row['id_customer']}</td>
                     <td>{$row['nama_customer']}</td>
-                    <td>{$row['id_produk']}</td>
                     <td>{$row['nama_produk']}</td>
                     <td>{$row['kuantitas']}</td>
                     <td>" . number_format($row['harga_satuan'], 2) . "</td>
                     <td>" . number_format($row['total_pendapatan'], 2) . "</td>
-                    <td>{$row['id_metode_pembayaran']}</td>
-                    <td>{$row['nama_metode']}</td>
-                    <td>{$row['id_jenis_pendapatan']}</td>
-                    <td>{$row['nama_jenis_pendapatan']}</td>
-                    <td>{$row['NIK']}</td>
-                    <td>{$row['nama_karyawan']}</td>
+                    <td>{$row['metode_pembayaran']}</td>
+                    <td>{$row['jenis_pendapatan']}</td>
                     <td>{$row['status_transaksi']}</td>
                     <td>{$row['catatan_transaksi']}</td>
-                    <td>
-                        <a href='delete_transaksi_pendapatan.php?transaksi={$row['id_transaksi']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this transaction?')\">Delete</a>
-                    </td>
+                
                 </tr>";
             }
             ?>
@@ -267,17 +252,7 @@ error_reporting(0);
     </table>
 </div>
 
-<!DOCTYPE html>
-                            <html lang="en">
-                            <head>
-                                <meta charset="UTF-8">
-                                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                                <title>Transaksi Pendapatan</title>
-                                <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-                                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-                                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-                            </head>
-                            <body>
+
 
 <!-- Modal Tambah Transaksi Pendapatan -->
 <div class="modal fade" id="addTransaksiPendapatanModal" tabindex="-1" aria-labelledby="addTransaksiPendapatanModalLabel" aria-hidden="true">
