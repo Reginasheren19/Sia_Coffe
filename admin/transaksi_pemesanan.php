@@ -212,7 +212,6 @@ error_reporting(0)
                                             <th>Nama Customer</th>
                                             <th>Tanggal Transaksi</th>
                                             <th>Metode Pembayaran</th>
-                                            <th>Nama Akun</th>
                                             <th>Nama produk</th>
                                             <th>Jumlah Produk</th>
                                             <th>Harga Satuan</th>
@@ -227,7 +226,6 @@ error_reporting(0)
                                             c.nama_customer,
                                             tp.tgl_transaksi,
                                             mp.nama_metode,
-                                            ak.nama_akun,
                                             p.nama_produk,
                                             tp.jumlah_produk,
                                             tp.harga_satuan,
@@ -235,7 +233,6 @@ error_reporting(0)
                                         FROM transaksi_pemesanan tp
                                         JOIN master_customer c ON tp.id_customer = c.id_customer
                                         JOIN master_metode_pembayaran mp ON tp.id_metode = mp.id_metode
-                                        JOIN master_akun ak ON tp.id_akun = ak.id_akun
                                         JOIN master_produk p ON tp.id_produk = p.id_produk
                                     ");
 
@@ -247,7 +244,6 @@ error_reporting(0)
                                                 <td>{$row['nama_customer']}</td>
                                                 <td>" . date('d-m-Y', strtotime($row['tgl_transaksi'])) . "</td>
                                                 <td>{$row['nama_metode_pembayaran']}</td>
-                                                <td>{$row['nama_akun']}</td>
                                                 <td>{$row['nama_produk']}</td>
                                                 <td>{$row['jumlah_produk']}</td>
                                                 <td>" . number_format($row['harga_satuan'], 0, ',', '.') . "</td>
