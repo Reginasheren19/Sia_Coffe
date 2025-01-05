@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 <div class="container mt-4">
-    <h1 class="mb-4">Transaksi Pengeluaran Lain</h1>
+    <h1 class="mb-4">Transaksi Pemesanan</h1>
 
     <!-- Tombol untuk membuka modal -->
     <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addTransaksiPemesananModal">Add Pemesanan</button>

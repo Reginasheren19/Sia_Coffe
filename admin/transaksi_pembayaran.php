@@ -211,7 +211,7 @@ ini_set('display_errors', 1);
                                         </tr>
                                     </thead>
                                     <tbody id="data_transaksi_pembayaran">
-                                                                            <?php
+                                        <?php
                                     // Query untuk mendapatkan data transaksi pembayaran beserta data terkait dari transaksi_pemesanan, master_customer, master_metode_pembayaran, dan master_akun
                                     $result = mysqli_query($koneksi,"
                                         SELECT tp.id_transaksi_pembayaran,
@@ -234,14 +234,9 @@ ini_set('display_errors', 1);
                                             <td>" . date('d-m-Y', strtotime($row['tgl_pembayaran'])) . "</td>
                                             <td>" . number_format($row['jumlah_pembayaran'], 0, ',', '.') . "</td>
                                             <td>{$row['nama_metode']}</td>    
-                                            <td>{$row['status_pembayaran']}</td>
+                                            <td>{$row['status']}</td>
                                             <td>{$row['nama_akun']}</td>      
-                                            <td>
-                                                <button class='btn btn-primary btn-sm btn-update'>Update</button>
-                                                <a href='delete_transaksi_pembayaran.php?id={$row['id_transaksi_pembayaran']}' 
-                                                class='btn btn-danger btn-sm' 
-                                                onclick=\"return confirm('Are you sure you want to delete this transaksi?')\">Delete</a>
-                                            </td>
+                                            
                                         </tr>";
                                     }
                                     ?>
@@ -254,103 +249,122 @@ ini_set('display_errors', 1);
                 </div>
             </main>
 
-            <!-- Modal -->
-            <div class="modal fade" id="gajiModal" tabindex="-1" aria-labelledby="gajiModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="gajiModalLabel">Tambah Penggajian</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- Form untuk menambahkan penggajian -->
-                    <form action="add_transaksi_penggajian.php" method="POST">
-                    <div class="form-group">
-                        <label for="id_transaksi_karyawan">ID Transaksi Karyawan:</label>
-                        <input type="text" name="id_transaksi_karyawan" id="id_transaksi_karyawan" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="periode_gaji">Periode Gaji (Bulan/Tahun):</label>
-                        <input type="month" name="periode_gaji" id="periode_gaji" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="gaji_pokok">Gaji Pokok:</label>
-                        <input type="number" name="gaji_pokok" id="gaji_pokok" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="tunjangan">Tunjangan:</label>
-                        <input type="number" name="tunjangan" id="tunjangan" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="potongan">Potongan:</label>
-                        <input type="number" name="potongan" id="potongan" class="form-control" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary mt-3">Tambah Penggajian</button>
-                    </form>
-                </div>
-                </div>
-            </div>
-            </div>
+            <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Transaksi Pembayaran</title>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                </head>
+                <body>
 
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-            <script src="js/scripts.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-            <script src="js/datatables-simple-demo.js"></script>
+            <!-- Modal untuk menambah transaksi pembayaran-->
+            <div class="modal fade" id="addTransaksiPembayaranModal" tabindex="-1" aria-labelledby="addTransaksiPembayaranModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addTransaksiPembayaranModalLabel">Tambah Transaksi Pembayaran</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Form untuk menambahkan transaksi pembayaran -->
+                            <form action="add_transaksi_pembayaran.php" method="POST">
+                                <div class="form-group">
+                                    <label for="id_transaksi_pemesanan">ID Transaksi Pemesanan:</label>
+                                    <select name="id_transaksi_pemesanan" id="id_transaksi_pemesanan" class="form-control" required>
+                                        <option value="" selected disabled>Pilih ID Pemesanan</option>
+                                        <?php
+                                        // Query untuk mendapatkan data transaksi pemesanan
+                                        $pemesanan_result = mysqli_query($koneksi, "SELECT id_transaksi_pemesanan, total_pemesanan FROM transaksi_pemesanan");
+                                        while ($pemesanan = mysqli_fetch_assoc($pemesanan_result)) {
+                                            echo "<option value='{$pemesanan['id_transaksi_pemesanan']}' data-total='{$pemesanan['total_pemesanan']}'>
+                                                {$pemesanan['id_transaksi_pemesanan']}
+                                            </option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="tgl_pembayaran">Tanggal Pembayaran:</label>
+                                    <input type="date" name="tgl_pembayaran" id="tgl_pembayaran" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="jumlah_pembayaran">Jumlah Pembayaran:</label>
+                                    <input type="number" name="jumlah_pembayaran" id="jumlah_pembayaran" class="form-control" readonly required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_metode">Metode Pembayaran:</label>
+                                    <select name="id_metode" id="id_metode" class="form-control" required>
+                                        <?php
+                                        // Query untuk mendapatkan data metode pembayaran
+                                        $metode_result = mysqli_query($koneksi, "SELECT id_metode, nama_metode FROM master_metode_pembayaran");
+                                        while ($metode = mysqli_fetch_assoc($metode_result)) {
+                                            echo "<option value='{$metode['id_metode']}'>{$metode['nama_metode']}</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="status">Status Pembayaran:</label>
+                                    <select name="status" id="status" class="form-control" required>
+                                        <option value="Lunas">Lunas</option>
+                                        <option value="Belum Lunas">Belum Lunas</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="id_akun">Nama Akun:</label>
+                                    <select name="id_akun" id="id_akun" class="form-control" required>
+                                        <?php
+                                        // Query untuk mendapatkan data akun
+                                        $akun_result = mysqli_query($koneksi, "SELECT id_akun, nama_akun FROM master_akun");
+                                        while ($akun = mysqli_fetch_assoc($akun_result)) {
+                                            echo "<option value='{$akun['id_akun']}'>{$akun['nama_akun']}</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                        <button type="submit" class="btn btn-primary">Simpan</button>
+                                    </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            
+
             <script>
-            function updateKaryawanInfo() {
-                const nik = document.getElementById('NIK').value;
-                if (nik) {
-                    fetch(`get_karyawan_info.php?NIK=${ nik}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            document.getElementById('nama_karyawan').value = data.nama_karyawan;
-                            document.getElementById('alamat_karyawan').value = data.alamat_karyawan;
-                            document.getElementById('tgl_lahir').value = data.tgl_lahir;
-                            document.getElementById('jenis_kelamin').value = data.jenis_kelamin;
-                            document.getElementById('no_telp').value = data.no_telp;
-                            document.getElementById('email').value = data.email;
-                            document.getElementById('tgl_bergabung').value = data.tgl_bergabung;
-                        })
-                        .catch(error => console.error('Error fetching karyawan info:', error));
-                } else {
-                    // Clear fields if no NIK is selected
-                    document.getElementById('nama_karyawan').value = '';
-                    document.getElementById('alamat_karyawan').value = '';
-                    document.getElementById('tgl_lahir').value = '';
-                    document.getElementById('jenis_kelamin').value = '';
-                    document.getElementById('no_telp').value = '';
-                    document.getElementById('email').value = '';
-                    document.getElementById('tgl_bergabung').value = '';
-                }
-            }
+                document.addEventListener('DOMContentLoaded', function () {
+                    const idTransaksiPemesananSelect = document.getElementById('id_transaksi_pemesanan');
+                    const jumlahPembayaranInput = document.getElementById('jumlah_pembayaran');
 
-            function updateJabatanInfo() {
-                const idJabatan = document.getElementById('id_jabatan').value;
-                if (idJabatan) {
-                    fetch(`get_jabatan_info.php?id_jabatan=${idJabatan}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            document.getElementById('nama_jabatan').value = data.nama_jabatan;
-                        })
-                        .catch(error => console.error('Error fetching jabatan info:', error));
-                } else {
-                    document.getElementById('nama_jabatan').value = '';
-                }
-            }
+                    idTransaksiPemesananSelect.addEventListener('change', function () {
+                        const selectedOption = this.options[this.selectedIndex];
+                        const totalPemesanan = selectedOption.getAttribute('data-total');
 
-            function updateDivisiInfo() {
-                const idDivisi = document.getElementById('id_divisi').value;
-                if (idDivisi) {
-                    fetch(`get_divisi_info.php?id_divisi=${idDivisi}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            document.getElementById('nama_divisi').value = data.nama_divisi;
-                        })
-                        .catch(error => console.error('Error fetching divisi info:', error));
-                } else {
-                    document.getElementById('nama_divisi').value = '';
-                }
-            }
+                        if (totalPemesanan) {
+                            jumlahPembayaranInput.value = totalPemesanan; // Isi otomatis jumlah pembayaran
+                        } else {
+                            jumlahPembayaranInput.value = ''; // Kosongkan jika tidak ada data
+                        }
+                    });
+                });
             </script>
+            </div>
+            <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>Transaksi Pembayaran</title>
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                </head>
+
+        
         </body>
     </html>
