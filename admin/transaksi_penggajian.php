@@ -1,5 +1,7 @@
 <?php
 include("../config/koneksi_mysql.php");
+ini_set('display_errors', 0);  // Matikan tampilan error
+error_reporting(E_ALL); 
 
 // Inisialisasi variabel $data
 $datagaji = null;
@@ -358,40 +360,93 @@ $tahun_gaji = isset($_GET['tahun']) ? $_GET['tahun'] : '';
     <script src="js/datatables-simple-demo.js"></script>
 
     <script>
-        // Menangani pemilihan karyawan
-        $('#id_transaksi_karyawan').change(function() {
-            var idKaryawan = $(this).val();
-            var bulanGaji = $('#modal_bulan').val();
-            var tahunGaji = $('#modal_tahun').val();
+        $(document).ready(function() {
+            // Menampilkan karyawan dalam dropdown
+            $.ajax({
+                url: 'get_karyawan.php',
+                method: 'GET',
+                success: function(response) {
+                    var karyawanList = JSON.parse(response);
+                    var karyawanSelect = $('#id_transaksi_karyawan');
+                    karyawanSelect.empty().append('<option value="">Pilih Karyawan</option>');
+                    karyawanList.forEach(function(karyawan) {
+                        karyawanSelect.append('<option value="' + karyawan.id_transaksi_karyawan + '">' + karyawan.nama_karyawan + '</option>');
+                    });
+                }
+            });
 
-            if (idKaryawan && bulanGaji && tahunGaji) {
+            // Ketika tombol "Generate Gaji" diklik
+            $('#generateGajiBtn').on('click', function() {
+                $('#generateGajiModal').modal('show');
+            });
+
+            // Ketika form submit untuk generate gaji
+            $('#generateGajiForm').on('submit', function(e) {
+                e.preventDefault();
+                var idTransaksiKaryawan = $('#id_transaksi_karyawan').val();
+                var bulanGaji = $('#bulan_gaji').val();
+                var tahunGaji = $('#tahun_gaji').val();
+
+                if (idTransaksiKaryawan && bulanGaji && tahunGaji) {
+                    $.ajax({
+                        url: 'generate_gaji.php',
+                        method: 'POST',
+                        data: {
+                            id_transaksi_karyawan: idTransaksiKaryawan,
+                            bulan_gaji: bulanGaji,
+                            tahun_gaji: tahunGaji
+                        },
+                        success: function(response) {
+                            var dataGaji = JSON.parse(response);
+
+                            if (dataGaji.success) {
+                                $('#gaji_pokok').val(dataGaji.data.gaji_pokok);
+                                $('#tunjangan').val(dataGaji.data.tunjangan);
+                                $('#bonus').val(dataGaji.data.bonus);
+                                $('#potongan').val(dataGaji.data.potongan);
+                                $('#gaji_lembur').val(dataGaji.data.gaji_lembur);
+                                $('#gaji_bersih').val(dataGaji.data.gaji_bersih);
+                                $('#gajiDetails').show();
+                                $('#btnSelesai').prop('disabled', false);
+                            } else {
+                                alert(dataGaji.message);
+                            }
+                        }
+                    });
+                } else {
+                    alert('Pilih karyawan, bulan, dan tahun terlebih dahulu');
+                }
+            });
+
+            // Ketika tombol "Selesai" diklik
+            $('#btnSelesai').on('click', function() {
+                var dataGaji = {
+                    id_transaksi_karyawan: $('#id_transaksi_karyawan').val(),
+                    bulan_gaji: $('#bulan_gaji').val(),
+                    tahun_gaji: $('#tahun_gaji').val(),
+                    gaji_pokok: $('#gaji_pokok').val(),
+                    tunjangan: $('#tunjangan').val(),
+                    bonus: $('#bonus').val(),
+                    potongan: $('#potongan').val(),
+                    gaji_lembur: $('#gaji_lembur').val(),
+                    gaji_bersih: $('#gaji_bersih').val()
+                };
+
                 $.ajax({
-                    url: 'add_datagaji.php', // File PHP untuk mengambil data gaji berdasarkan karyawan, bulan, dan tahun
-                    type: 'POST',
-                    dataType: 'json',
-                    data: {
-                        id_transaksi_karyawan: idKaryawan,
-                        modal_bulan: bulanGaji,
-                        modal_tahun: tahunGaji
-                    },
+                    url: 'add_gaji.php',
+                    method: 'POST',
+                    data: dataGaji,
                     success: function(response) {
-                        if (response.success) {
-                            var data = response.data[0];
-                            // Mengisi data gaji
-                            $('#gaji_pokok').val(data.gaji_pokok);
-                            $('#tunjangan').val(data.tunjangan);
-                            $('#potongan').val(data.potongan);
-                            $('#gaji_lembur').val(data.gaji_lembur);
-
-                            // Menghitung gaji bersih
-                            var gajiBersih = parseFloat(data.gaji_pokok) + parseFloat(data.tunjangan) + parseFloat(data.bonus) - parseFloat(data.potongan) + parseFloat(data.gaji_lembur);
-                            $('#gaji_bersih').val(gajiBersih.toFixed(0));
+                        var result = JSON.parse(response);
+                        if (result.success) {
+                            alert(result.message);
+                            $('#generateGajiModal').modal('hide');
                         } else {
-                            alert('Data gaji tidak ditemukan.');
+                            alert(result.message);
                         }
                     }
                 });
-            }
+            });
         });
     </script>
 </body>
