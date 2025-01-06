@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Query untuk menyimpan data ke database
     $sql = "INSERT INTO transaksi_pendapatan 
               (tanggal_transaksi, id_customer, nama_customer, id_produk, nama_produk, kuantitas, harga_satuan, total_pendapatan, id_metode, id_jenis_pendapatan, nama_jenis_pendapatan, NIK, nama_karyawan, status_transaksi, catatan_transaksi) 
-              VALUES ('$tanggal_transaksi', '$id_customer', '$nama_customer', '$id_produk', '$nama_produk', '$kuantitas', '$harga_satuan', '$total_pendapatan', '$id_metode', '$harga_satuan', '$id_jenis_pendapatan', '$nama_jenis_pendapatan', '$NIK', '$nama_karyawan', '$status_transaksi', '$catatan_transaksi')";
+              VALUES ('$tanggal_transaksi', '$id_customer', '$nama_customer', '$id_produk', '$nama_produk', '$kuantitas', '$harga_satuan', '$total_pendapatan', '$id_metode', '$id_jenis_pendapatan', '$nama_jenis_pendapatan', '$NIK', '$nama_karyawan', '$status_transaksi', '$catatan_transaksi')";
 
     // Eksekusi query
     if (mysqli_query($koneksi, $sql)) {
@@ -67,50 +67,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <tr>
                     <th>Id Transaksi</th>
                     <th>Tanggal Transaksi</th>
-                    <th>Id Customer</th>
                     <th>Nama Customer</th>
-                    <th>Id Produk</th>
                     <th>Nama Produk</th>
                     <th>Kuantitas</th>
                     <th>Harga Satuan</th>
                     <th>Total Pendapatan</th>
-                    <th>Id Metode</th>
-                    <th>Id Jenis Pendapatan</th>
-                    <th>Nama Jenis Pendapatan</th>
-                    <th>NIK</th>
-                    <th>Nama Karyawan</th>
+                    <th>Metode Pembayaran</th>
+                    <th>Jenis Pendapatan</th>
                     <th>Status Transaksi</th>
                     <th>Catatan Transaksi</th>
-                    <th>Action</th>
                 </tr>
             </thead>
             <tbody id="data_pendapatan">
                 <?php
+
             // Query untuk mengambil data transaksi_pendapatan
             $result = mysqli_query($koneksi, "
-                SELECT tp.id_transaksi, 
-                        tp.tanggal_transaksi, 
-                        tp.id_customer, 
-                        mc.nama_customer, 
-                        tp.id_produk, 
+                SELECT tp.id_transaksi,
+                        tp.tanggal_transaksi,
+                        mc.nama_customer,
                         mp.nama_produk,
-                        tp.kuantitas, 
-                        tp.harga_satuan, 
-                        tp.kuantitas * tp.harga_satuan AS total_pendapatan, 
-                        tp.id_metode_pembayaran, 
-                        mpb.nama_metode, 
-                        tp.id_jenis_pendapatan, 
-                        jp.nama_jenis_pendapatan, 
-                        tp.NIK, 
-                        k.nama_karyawan, 
-                        tp.status_transaksi, 
-                        tp.catatan_transaksi 
-                FROM transaksi_pendapatan tp
+                        tp.kuantitas,
+                        tp.harga_satuan,
+                        (tp.kuantitas * tp.harga_satuan) AS total_pendapatan,
+                        mpb.nama_metode AS metode_pembayaran,
+                        jp.nama_jenis_pendapatan AS jenis_pendapatan,
+                        tp.status_transaksi,
+                        tp.catatan_transaksi,
+                                FROM transaksi_pendapatan tp
                 JOIN master_customer mc ON tp.id_customer = mc.id_customer
                 JOIN master_produk mp ON tp.id_produk = mp.id_produk
                 JOIN master_metode_pembayaran mpb ON tp.id_metode_pembayaran = mpb.id_metode_pembayaran
-                JOIN jenis_pendapatan jp ON tp.id_jenis_pendapatan = jp.id_jenis_pendapatan
-                JOIN karyawan k ON tp.NIK = k.NIK            
+                JOIN jenis_pendapatan jp ON tp.id_jenis_pendapatan = jp.id_jenis_pendapatan                                 
                 ");
 
 
@@ -119,21 +107,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo "<tr>
                     <td>{$row['id_transaksi']}</td>
                     <td>{$row['tanggal_transaksi']}</td>
-                    <td>{$row['id_customer']}</td>
                     <td>{$row['nama_customer']}</td>
-                    <td>{$row['id_produk']}</td>
                     <td>{$row['nama_produk']}</td>
                     <td>{$row['kuantitas']}</td>
                     <td>" . number_format($row['harga_satuan'], 2) . "</td>
                     <td>" . number_format($row['total_pendapatan'], 2) . "</td>
-                    <td>{$row['id_metode_pembayaran']}</td>
-                    <td>{$row['nama_metode']}</td>
-                    <td>{$row['id_jenis_pendapatan']}</td>
-                    <td>{$row['nama_jenis_pendapatan']}</td>
-                    <td>{$row['NIK']}</td>
-                    <td>{$row['nama_karyawan']}</td>
+                    <td>{$row['metode_pembayaran']}</td>
+                    <td>{$row['jenis_pendapatan']}</td>
                     <td>{$row['status_transaksi']}</td>
                     <td>{$row['catatan_transaksi']}</td>
+
+                    </tr>
                     <td>
                         <a href='delete_transaksi_pendapatan.php?transaksi={$row['id_transaksi']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this transaction?')\">Delete</a>
                     </td>
@@ -203,17 +187,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $types = mysqli_query($koneksi, "SELECT id_jenis_pendapatan, nama_jenis_pendapatan FROM jenis_pendapatan");
                     while ($type = mysqli_fetch_assoc($types)) {
                         echo "<option value='{$type['id_jenis_pendapatan']}'>{$type['nama_jenis_pendapatan']}</option>";
-                    }
-                    ?>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="NIK" class="form-label">NIK</label>
-                <select class="form-select" id="NIK" name="NIK" required>
-                    <?php
-                    $employees = mysqli_query($koneksi, "SELECT id_karyawan, nama_karyawan FROM karyawan");
-                    while ($employee = mysqli_fetch_assoc($employees)) {
-                        echo "<option value='{$employee['id_karyawan']}'>{$employee['nama_karyawan']}</option>";
                     }
                     ?>
                 </select>

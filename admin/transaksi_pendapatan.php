@@ -196,6 +196,7 @@ error_reporting(0);
             <tr>
                 <th>Id Transaksi</th>
                 <th>Tanggal Transaksi</th>
+                <th>Nama Akun</th>
                 <th>Nama Customer</th>
                 <th>Nama Produk</th>
                 <th>Kuantitas</th>
@@ -316,17 +317,7 @@ error_reporting(0);
                     ?>
                 </select>
             </div>
-            <div class="mb-3">
-                <label for="NIK" class="form-label">NIK</label>
-                <select class="form-select" id="NIK" name="iNIK" required>
-                    <?php
-                    $employees = mysqli_query($koneksi, "SELECT NIK, nama_karyawan FROM karyawan");
-                    while ($employee = mysqli_fetch_assoc($employees)) {
-                        echo "<option value='{$employee['NIK']}'>{$employee['nama_karyawan']}</option>";
-                    }
-                    ?>
-                </select>
-            </div>
+
             <div class="mb-3">
                 <label for="status_transaksi" class="form-label">Status Transaksi</label>
                 <select class="form-select" id="status_transaksi" name="status_transaksi" required>
