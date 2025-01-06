@@ -10,14 +10,12 @@ echo '</pre>';
 // Proses data saat form disubmit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tanggal_transaksi = mysqli_real_escape_string($koneksi, $_POST['tanggal_transaksi']);
-    $id_customer = mysqli_real_escape_string($koneksi, $_POST['id_customer']);
     $nama_customer = mysqli_real_escape_string($koneksi, $_POST['nama_customer']);
-    $id_produk = mysqli_real_escape_string($koneksi, $_POST['id_produk']);
     $nama_produk = mysqli_real_escape_string($koneksi, $_POST['nama_produk']);
     $kuantitas = mysqli_real_escape_string($koneksi, $_POST['kuantitas']);
     $harga_satuan = (int)$_POST['harga_satuan'];
     $total_pendapatan = (int)$_POST['total_pendapatan'];
-    $id_metode = mysqli_real_escape_string($koneksi, $_POST['id_metode']);
+    $nama_metode = mysqli_real_escape_string($koneksi, $_POST['nama_metode']);
     $id_akun = mysqli_real_escape_string($koneksi, $_POST['id_akun']);
     $id_jenis_pendapatan = mysqli_real_escape_string($koneksi, $_POST['id_jenis_pendapatan']);
     $nama_jenis_pendapatan = mysqli_real_escape_string($koneksi, $_POST['nama_jenis_pendapatan']);
