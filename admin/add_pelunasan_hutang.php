@@ -3,41 +3,34 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include("../config/koneksi_mysql.php");
 
+// Debugging untuk melihat data yang dikirimkan dari form
+echo '<pre>';
+print_r($_POST);
+echo '</pre>';
+
+// Proses data saat form disubmit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $no_nota = mysqli_real_escape_string($koneksi, $_POST['no_nota']);
-    $id_supplier = mysqli_real_escape_string($koneksi, $_POST['id_supplier']);
+    // Ambil data dari form
+    $nota_pelunasan = mysqli_real_escape_string($koneksi, $_POST['nota_pelunasan']);
+    $id_transaksi = mysqli_real_escape_string($koneksi, $_POST['id_transaksi']);
     $tanggal_pelunasan = mysqli_real_escape_string($koneksi, $_POST['tanggal_pelunasan']);
-    $total_pelunasan = (float)$_POST['total_pelunasan'];
+    $id_supplier = mysqli_real_escape_string($koneksi, $_POST['id_supplier']);
+    $saldo_hutang_pl = (float)$_POST['saldo_hutang_pl']; // Menggunakan float untuk saldo hutang
+    $total_pelunasan = (float)$_POST['total_pelunasan']; // Menggunakan float untuk total pelunasan
 
-    // Ambil saldo hutang
-    $query_saldo = "
-        SELECT (tp.harga * tp.jumlah - tp.total_bayar) AS saldo_hutang 
-        FROM transaksi_pengeluaran tp 
-        WHERE tp.no_nota = '$no_nota'
-    ";
-    $result_saldo = mysqli_query($koneksi, $query_saldo);
-    $saldo_hutang = 0;
-
-    if ($result_saldo && mysqli_num_rows($result_saldo) > 0) {
-        $row = mysqli_fetch_assoc($result_saldo);
-        $saldo_hutang = (float)$row['saldo_hutang'];
+    // Validasi jika total pelunasan lebih besar dari saldo hutang
+    if ($total_pelunasan > $saldo_hutang_pl) {
+        echo "<script>alert('Total pelunasan tidak boleh lebih besar dari saldo hutang!'); window.history.back();</script>";
+        exit();
     }
 
-    if ($total_pelunasan > $saldo_hutang) {
-        echo "<script>alert('Error: Total pelunasan tidak boleh lebih besar dari saldo hutang!'); window.history.back();</script>";
-        exit;
-    }
+    // Query untuk menyimpan data ke tabel pelunasan_hutang
+    $sql = "INSERT INTO pelunasan_hutang (nota_pelunasan, id_transaksi, tanggal_pelunasan, id_supplier, saldo_hutang_pl, total_pelunasan) 
+            VALUES ('$nota_pelunasan', '$id_transaksi', '$tanggal_pelunasan', '$id_supplier', '$saldo_hutang_pl', '$total_pelunasan')";
 
-    $sql = "INSERT INTO transaksi_hutang (no_nota, id_supplier, tanggal_pelunasan, total_pelunasan) 
-            VALUES ('$no_nota', '$id_supplier', '$tanggal_pelunasan', '$total_pelunasan')";
-    $sql_update_pengeluaran = "
-        UPDATE transaksi_pengeluaran 
-        SET total_bayar = total_bayar + $total_pelunasan 
-        WHERE no_nota = '$no_nota'
-    ";
-
-    if (mysqli_query($koneksi, $sql) && mysqli_query($koneksi, $sql_update_pengeluaran)) {
-        echo "<script>alert('Pelunasan hutang berhasil ditambahkan!'); window.location.href='pelunasan_hutang.php';</script>";
+    // Eksekusi query
+    if (mysqli_query($koneksi, $sql)) {
+        echo "<script>alert('Data pelunasan hutang berhasil ditambahkan!'); window.location.href='pelunasan_hutang.php';</script>";
     } else {
         echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
     }
@@ -49,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pelunasan Hutang</title>
+    <title>Transaksi Pengeluaran Lain</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -57,23 +50,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 <div class="container mt-4">
     <h1 class="mb-4">Pelunasan Hutang</h1>
+        <!-- Tombol untuk membuka modal -->
+        <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addPelunasanHutangModal">Add Pelunasan Hutang</button>
 
-    <!-- Tombol untuk membuka modal -->
-    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addHutangModal">Add Hutang</button>
-
-<!-- Modal untuk Menambah Transaksi Hutang -->
-<div class="modal fade" id="addHutangModal" tabindex="-1" aria-labelledby="addHutangModalLabel" aria-hidden="true">
+<!-- Modal for Adding Debt Payment -->
+<div class="modal fade" id="addPelunasanHutangModal" tabindex="-1" aria-labelledby="addPelunasanHutangModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <form method="POST" action="add_pelunasan_hutang.php">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addHutangModalLabel">Tambah Transaksi Hutang</h5>
+                    <h5 class="modal-title" id="addPelunasanHutangModalLabel">Tambah Pelunasan Hutang</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="no_nota" class="form-label">No Nota</label>
-                        <input type="text" class="form-control" id="no_nota" name="no_nota" required>
+                        <label for="id_transaksi" class="form-label">No Nota</label>
+                        <input type="text" class="form-control" id="id_transaksi" name="id_transaksi" value="<?php echo isset($transaction['no_nota']) ? $transaction['no_nota'] : ''; ?>" readonly required>
                     </div>
                     <div class="mb-3">
                         <label for="nota_pelunasan" class="form-label">Nota Pelunasan</label>
@@ -88,17 +80,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <select class="form-select" id="id_supplier" name="id_supplier" required>
                             <option value="">Pilih Supplier</option>
                             <?php
-                            // PHP untuk menampilkan daftar supplier
-                            $suppliers = mysqli_query($koneksi, "SELECT id_supplier, nama_supplier FROM master_supplier");
-                            while ($supplier = mysqli_fetch_assoc($suppliers)) {
-                                echo "<option value='{$supplier['id_supplier']}'>{$supplier['nama_supplier']}</option>";
-                            }
+                                // Mengambil data supplier
+                                $suppliers = mysqli_query($koneksi, "SELECT id_supplier, nama_supplier FROM master_supplier");
+                                while ($supplier = mysqli_fetch_assoc($suppliers)) {
+                                    echo "<option value='{$supplier['id_supplier']}'>{$supplier['nama_supplier']}</option>";
+                                }
                             ?>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="saldo_hutang" class="form-label">Saldo Hutang</label>
-                        <input type="text" class="form-control" id="saldo_hutang" name="saldo_hutang" readonly>
+                        <label for="saldo_hutang_pl" class="form-label">Saldo Hutang</label>
+                        <input type="text" class="form-control" id="saldo_hutang_pl" name="saldo_hutang_pl" readonly>
                     </div>
                     <div class="mb-3">
                         <label for="total_pelunasan" class="form-label">Total Pelunasan</label>
@@ -113,40 +105,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </div>
 </div>
-
-<script>
-    $(document).ready(function () {
-        // Event saat pengguna mengetikkan nomor nota
-        $('#no_nota').on('keyup', function () {
-            var noNota = $(this).val();
-
-            // Cek jika input tidak kosong
-            if (noNota !== '') {
-                // Lakukan AJAX request ke get_saldo_hutang.php
-                $.ajax({
-                    url: 'get_saldo_hutang.php',
-                    type: 'GET',
-                    data: { no_nota: noNota },
-                    dataType: 'json',
-                    success: function (response) {
-                        // Jika saldo hutang ditemukan, tampilkan
-                        if (response.saldo_hutang !== undefined) {
-                            $('#saldo_hutang').val(response.saldo_hutang.toFixed(2)); // Format ke 2 desimal
-                        } else {
-                            $('#saldo_hutang').val('0.00'); // Default jika tidak ada saldo
-                        }
-                    },
-                    error: function () {
-                        alert('Gagal mengambil saldo hutang. Coba lagi.');
-                    }
-                });
-            } else {
-                // Reset saldo hutang jika input kosong
-                $('#saldo_hutang').val('');
-            }
-        });
-    });
-</script>
-
 </body>
 </html>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="js/scripts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<script src="js/datatables-simple-demo.js"></script>
+<script>

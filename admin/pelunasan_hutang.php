@@ -189,17 +189,18 @@ error_reporting(0)
                         <div class="card-body">
                             <!-- Tombol Tambah Data -->
                             <div class="mb-3 d-flex justify-content-end">
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addHutangModal">
-                                    Add Hutang
+                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addPelunasanHutangModal">
+                                    Add Pelunasan Hutang
                                 </button>
                             </div>
-    <!-- Tabel untuk Transaksi Hutang -->
+    <!-- Table for Data Hutang -->
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
                 <tr>
                     <th>Id Hutang</th>
                     <th>No Nota</th>
+                    <th>Nota Pelunasan</th>
                     <th>Tanggal Pelunasan</th>
                     <th>Nama Supplier</th>
                     <th>Saldo Hutang</th>
@@ -208,27 +209,29 @@ error_reporting(0)
             </thead>
             <tbody id="data_hutang">
                 <?php
-                // Query untuk mengambil data transaksi hutang
+                // Query untuk mengambil data hutang dan bergabung dengan tabel master_supplier dan transaksi_pengeluaran
                 $result = mysqli_query($koneksi, "
-                    SELECT th.id_hutang, 
-                           th.no_nota, 
-                           th.tanggal_pelunasan, 
+                    SELECT ph.id_hutang, 
+                           tp.no_nota, 
+                           ph.nota_pelunasan, 
+                           ph.tanggal_pelunasan, 
                            ms.nama_supplier, 
-                           (tp.harga * tp.jumlah - tp.total_bayar) AS saldo_hutang, 
-                           th.total_pelunasan
-                    FROM transaksi_hutang th
-                    JOIN master_supplier ms ON th.id_supplier = ms.id_supplier
-                    JOIN transaksi_pengeluaran tp ON th.no_nota = tp.no_nota
+                           ph.saldo_hutang_pl, 
+                           ph.total_pelunasan
+                    FROM pelunasan_hutang ph
+                    JOIN transaksi_pengeluaran tp ON ph.id_transaksi = tp.id_transaksi
+                    JOIN master_supplier ms ON ph.id_supplier = ms.id_supplier
                 ");
 
-                // Menampilkan data transaksi hutang
+                // Menampilkan data hutang
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo "<tr>
                         <td>{$row['id_hutang']}</td>
                         <td>{$row['no_nota']}</td>
+                        <td>{$row['nota_pelunasan']}</td>
                         <td>{$row['tanggal_pelunasan']}</td>
                         <td>{$row['nama_supplier']}</td>
-                        <td>" . number_format($row['saldo_hutang'], 2) . "</td>
+                        <td>" . number_format($row['saldo_hutang_pl'], 2) . "</td>
                         <td>" . number_format($row['total_pelunasan'], 2) . "</td>
                     </tr>";
                 }
@@ -236,33 +239,32 @@ error_reporting(0)
             </tbody>
         </table>
     </div>
+</div>
 
-
-
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Pelunasan Hutang</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    </head>
-    <body>
-<!-- Modal untuk Menambah Transaksi Hutang -->
-<div class="modal fade" id="addHutangModal" tabindex="-1" aria-labelledby="addHutangModalLabel" aria-hidden="true">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pelunasan Hutang</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<!-- Modal for Adding Debt Payment -->
+<div class="modal fade" id="addPelunasanHutangModal" tabindex="-1" aria-labelledby="addPelunasanHutangModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <form method="POST" action="add_pelunasan_hutang.php">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="addHutangModalLabel">Tambah Transaksi Hutang</h5>
+                    <h5 class="modal-title" id="addPelunasanHutangModalLabel">Tambah Pelunasan Hutang</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="no_nota" class="form-label">No Nota</label>
-                        <input type="text" class="form-control" id="no_nota" name="no_nota" required>
+                        <label for="id_transaksi" class="form-label">No Nota</label>
+                        <input type="text" class="form-control" id="id_transaksi" name="id_transaksi" value="<?php echo isset($transaction['no_nota']) ? $transaction['no_nota'] : ''; ?>" readonly required>
                     </div>
                     <div class="mb-3">
                         <label for="nota_pelunasan" class="form-label">Nota Pelunasan</label>
@@ -277,17 +279,17 @@ error_reporting(0)
                         <select class="form-select" id="id_supplier" name="id_supplier" required>
                             <option value="">Pilih Supplier</option>
                             <?php
-                            // PHP untuk menampilkan daftar supplier
-                            $suppliers = mysqli_query($koneksi, "SELECT id_supplier, nama_supplier FROM master_supplier");
-                            while ($supplier = mysqli_fetch_assoc($suppliers)) {
-                                echo "<option value='{$supplier['id_supplier']}'>{$supplier['nama_supplier']}</option>";
-                            }
+                                // Mengambil data supplier
+                                $suppliers = mysqli_query($koneksi, "SELECT id_supplier, nama_supplier FROM master_supplier");
+                                while ($supplier = mysqli_fetch_assoc($suppliers)) {
+                                    echo "<option value='{$supplier['id_supplier']}'>{$supplier['nama_supplier']}</option>";
+                                }
                             ?>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label for="saldo_hutang" class="form-label">Saldo Hutang</label>
-                        <input type="text" class="form-control" id="saldo_hutang" name="saldo_hutang" readonly>
+                        <label for="saldo_hutang_pl" class="form-label">Saldo Hutang</label>
+                        <input type="text" class="form-control" id="saldo_hutang_pl" name="saldo_hutang_pl" readonly>
                     </div>
                     <div class="mb-3">
                         <label for="total_pelunasan" class="form-label">Total Pelunasan</label>
@@ -303,44 +305,8 @@ error_reporting(0)
     </div>
 </div>
 
-<script>
-    $(document).ready(function () {
-        // Event saat pengguna mengetikkan nomor nota
-        $('#no_nota').on('keyup', function () {
-            var noNota = $(this).val();
-
-            // Cek jika input tidak kosong
-            if (noNota !== '') {
-                // Lakukan AJAX request ke get_saldo_hutang.php
-                $.ajax({
-                    url: 'get_saldo_hutang.php',
-                    type: 'GET',
-                    data: { no_nota: noNota },
-                    dataType: 'json',
-                    success: function (response) {
-                        // Jika saldo hutang ditemukan, tampilkan
-                        if (response.saldo_hutang !== undefined) {
-                            $('#saldo_hutang').val(response.saldo_hutang.toFixed(2)); // Format ke 2 desimal
-                        } else {
-                            $('#saldo_hutang').val('0.00'); // Default jika tidak ada saldo
-                        }
-                    },
-                    error: function () {
-                        alert('Gagal mengambil saldo hutang. Coba lagi.');
-                    }
-                });
-            } else {
-                // Reset saldo hutang jika input kosong
-                $('#saldo_hutang').val('');
-            }
-        });
-    });
-</script>
-</body>
-</html>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="js/scripts.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
 <script src="js/datatables-simple-demo.js"></script>
 <script>
-
