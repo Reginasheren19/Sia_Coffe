@@ -1,15 +1,10 @@
 <?php
 include("../config/koneksi_mysql.php");
 
-$sql = mysqli_query($koneksi,"SELECT * FROM transaksi_hutang");
-
+// Mengatur error reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 ?>
-
-<?php
-error_reporting(0)
-?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -27,7 +22,7 @@ error_reporting(0)
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.php">SIA Coffee Shop</a>
+            <a class="navbar-brand ps-3" href="dashboard_admin.php">SIA Coffee Shop</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -187,12 +182,12 @@ error_reporting(0)
                             Tabel Hutang
                         </div>
                         <div class="card-body">
-                            <!-- Tombol Tambah Data -->
-                            <div class="mb-3 d-flex justify-content-end">
-                                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addPelunasanHutangModal">
-                                    Add Pelunasan Hutang
-                                </button>
-                            </div>
+                        <!-- Tombol Tambah Data -->
+                        <div class="mb-3 d-flex justify-content-end">
+                            <a href="add_pelunasan_hutang.php" class="btn btn-success">
+                                Add Pelunasan Hutang
+                            </a>
+                        </div>
     <!-- Table for Data Hutang -->
     <div class="table-responsive">
         <table class="table table-bordered">
@@ -210,20 +205,20 @@ error_reporting(0)
             <tbody id="data_hutang">
                 <?php
                 // Query untuk mengambil data hutang dan bergabung dengan tabel master_supplier dan transaksi_pengeluaran
-                $result = mysqli_query($koneksi, "
-                    SELECT ph.id_hutang, 
+                $query =
+                    "SELECT ph.id_hutang, 
                            tp.no_nota, 
                            ph.nota_pelunasan, 
                            ph.tanggal_pelunasan, 
                            ms.nama_supplier, 
                            ph.saldo_hutang_pl, 
                            ph.total_pelunasan
-                    FROM pelunasan_hutang ph
+                    FROM   transaksi_hutang ph
                     JOIN transaksi_pengeluaran tp ON ph.id_transaksi = tp.id_transaksi
-                    JOIN master_supplier ms ON ph.id_supplier = ms.id_supplier
-                ");
+                    JOIN master_supplier ms ON ph.id_supplier = ms.id_supplier";
 
                 // Menampilkan data hutang
+                $result = mysqli_query($koneksi, $query);
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo "<tr>
                         <td>{$row['id_hutang']}</td>
@@ -234,79 +229,8 @@ error_reporting(0)
                         <td>" . number_format($row['saldo_hutang_pl'], 2) . "</td>
                         <td>" . number_format($row['total_pelunasan'], 2) . "</td>
                     </tr>";
-                }
+                }   
                 ?>
             </tbody>
         </table>
     </div>
-</div>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pelunasan Hutang</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
-<!-- Modal for Adding Debt Payment -->
-<div class="modal fade" id="addPelunasanHutangModal" tabindex="-1" aria-labelledby="addPelunasanHutangModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form method="POST" action="add_pelunasan_hutang.php">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addPelunasanHutangModalLabel">Tambah Pelunasan Hutang</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="id_transaksi" class="form-label">No Nota</label>
-                        <input type="text" class="form-control" id="id_transaksi" name="id_transaksi" value="<?php echo isset($transaction['no_nota']) ? $transaction['no_nota'] : ''; ?>" readonly required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="nota_pelunasan" class="form-label">Nota Pelunasan</label>
-                        <input type="text" class="form-control" id="nota_pelunasan" name="nota_pelunasan" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="tanggal_pelunasan" class="form-label">Tanggal Pelunasan</label>
-                        <input type="date" class="form-control" id="tanggal_pelunasan" name="tanggal_pelunasan" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="id_supplier" class="form-label">Nama Supplier</label>
-                        <select class="form-select" id="id_supplier" name="id_supplier" required>
-                            <option value="">Pilih Supplier</option>
-                            <?php
-                                // Mengambil data supplier
-                                $suppliers = mysqli_query($koneksi, "SELECT id_supplier, nama_supplier FROM master_supplier");
-                                while ($supplier = mysqli_fetch_assoc($suppliers)) {
-                                    echo "<option value='{$supplier['id_supplier']}'>{$supplier['nama_supplier']}</option>";
-                                }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="saldo_hutang_pl" class="form-label">Saldo Hutang</label>
-                        <input type="text" class="form-control" id="saldo_hutang_pl" name="saldo_hutang_pl" readonly>
-                    </div>
-                    <div class="mb-3">
-                        <label for="total_pelunasan" class="form-label">Total Pelunasan</label>
-                        <input type="number" class="form-control" id="total_pelunasan" name="total_pelunasan" required>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script src="js/scripts.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-<script src="js/datatables-simple-demo.js"></script>
-<script>
