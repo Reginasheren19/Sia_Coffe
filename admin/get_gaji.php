@@ -295,6 +295,7 @@ $result = mysqli_query($koneksi, $query);
                                     <th>Lembur</th>
                                     <th>Bonus</th>
                                     <th>Gaji Bersih</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -311,6 +312,9 @@ $result = mysqli_query($koneksi, $query);
                                             <td><?php echo $row['gaji_lembur']; ?></td>
                                             <td><?php echo $row['bonus']; ?></td>
                                             <td><?php echo $row['gaji_bersih']; ?></td>
+                                            <td>
+                                                <a href="cetak_slip.php?id_penggajian=<?php echo $row['id_penggajian']; ?>" class="btn btn-primary btn-sm" target="_blank">Cetak Slip</a>
+                                            </td>
                                         </tr>
                                     <?php endforeach; ?>
                                 <?php else: ?>
