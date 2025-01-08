@@ -1,11 +1,44 @@
 <?php
 include("../config/koneksi_mysql.php");
 
-// Inisialisasi variabel $data
-$data = null;
-
+// Inisialisasi variabel
 $bulan_jurnal = isset($_GET['bulan']) ? $_GET['bulan'] : '';
 $tahun_jurnal = isset($_GET['tahun']) ? $_GET['tahun'] : '';
+$data = [];
+
+// Query untuk mendapatkan data transaksi karyawan yang terdaftar, lengkap dengan jabatan dan absensi
+$query = "SELECT 
+    ju.id_jurnal_umum,
+    ju.tanggal,
+    ju.keterangan,
+    ma.nama_akun,
+    ju.debit,
+    ju.kredit
+FROM 
+    jurnal_umum ju
+JOIN 
+    master_akun ma ON ju.id_akun = ma.id_akun
+WHERE 
+    MONTH(ju.tanggal) = '01' 
+    AND YEAR(ju.tanggal) = '2024'
+ORDER BY 
+    ju.tanggal ASC;";
+
+$result = mysqli_query($koneksi, $query);
+
+    // Output hasil query dalam format HTML
+    if ($result) {
+        if (mysqli_num_rows($result) > 0) {
+            $data = [];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $data[] = $row;
+            }
+        } else {
+            $data = [];
+        }
+    } else {
+        $data = null;
+    }
 
 ?>
 
@@ -182,10 +215,10 @@ $tahun_jurnal = isset($_GET['tahun']) ? $_GET['tahun'] : '';
         <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">Jurnal Umum</h1>
+                <h1 class="mt-4">Jurnal Uuum</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Jurnal Umum</li>
+                    <li class="breadcrumb-item active">jurnal Umum</li>
                 </ol>
 
                 <!-- Form untuk memilih bulan dan tahun -->
@@ -226,7 +259,7 @@ $tahun_jurnal = isset($_GET['tahun']) ? $_GET['tahun'] : '';
                             </div>
                             <div class="mb-3
                              d-flex justify-content-end">
-                                <button type="submit" class="btn btn-success" formaction="get_jurnalumum.php?bulan=<?php echo $bulan_jurnal; ?>&tahun=<?php echo $tahun_jurnal; ?>">
+                                <button type="submit" class="btn btn-success">
                                     Tampilkan Data
                                 </button>
                                 <button type="submit" class="btn btn-success ms-2" formaction="add_absensi.php?bulan=<?php echo $bulan_jurnal; ?>&tahun=<?php echo $tahun_jurnal; ?>">
@@ -236,6 +269,47 @@ $tahun_jurnal = isset($_GET['tahun']) ? $_GET['tahun'] : '';
                         </form>
                     </div>
                 </div>
+                <!-- Menampilkan data absensi -->
+                <?php if ($data !== null): ?>
+                    <div class="alert alert-info">
+                        Menampilkan Data Jurnal Umum Bulan: <strong><?php echo $bulan_jurnal; ?></strong> Tahun: <strong><?php echo $tahun_jurnal; ?></strong>
+                    </div>
+                    <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i> Filter Jurnal Umum
+                    </div>
+                    <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="table-absensi">
+                            <thead>
+                                <tr>
+                                    <th>ID Jurnal</th>
+                                    <th>Tanggal</th>
+                                    <th>Keterangan</th>
+                                    <th>Akun</th>
+                                    <th>Debit</th>
+                                    <th>Kredit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if ($data): ?>
+                                    <?php foreach ($data as $row): ?>
+                                        <tr>
+                                            <td><?php echo $row['id_jurnal']; ?></td>
+                                            <td><?php echo $row['tanggal']; ?></td>
+                                            <td><?php echo $row['keterangan']; ?></td>
+                                            <td><?php echo $row['nama_akun']; ?></td>
+                                            <td><?php echo number_format($row['debit'], 2); ?></td>
+                                            <td><?php echo number_format($row['kredit'], 2); ?></td>
+                                            </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr><td colspan="6">Data Jurnal Umum tidak ditemukan.</td></tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endif; ?>
             </div>
         </main>
     </div>
