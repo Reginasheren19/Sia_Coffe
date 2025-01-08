@@ -7,6 +7,14 @@ echo '<pre>';
 print_r($_POST);
 echo '</pre>';
 
+// Query untuk mendapatkan ID transaksi terakhir
+$result = mysqli_query($koneksi, "SELECT MAX(id_transaksi) AS last_id FROM transaksi_pengeluaran");
+$row = mysqli_fetch_assoc($result);
+$lastId = isset($row['last_id']) ? $row['last_id'] + 1 : 1; // Jika kosong, mulai dari 1
+
+// Format no_nota
+$no_nota = 'TRP-' . date('Ymd') . '-' . $lastId;
+
 // Proses data saat form disubmit
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Ambil data dari form
@@ -34,11 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
     }
 
-        // Ambil ID terakhir transaksi
-        $id_transaksi = mysqli_insert_id($koneksi);
-
-        // Catat ke jurnal
-        catatKeJurnal('pengeluaran', $id_transaksi);
 }
 ?>
 
@@ -72,8 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                            <label for="no_nota" class="form-label">No Nota</label>
-                            <input type="text" class="form-control" id="no_nota" name="no_nota" required>
+                        <label for="no_nota">No Nota:</label>
+                        <input type="text" class="form-control" id="no_nota" name="no_nota" value="<?php echo $no_nota; ?>" readonly>
                     </div>
                     <div class="mb-3">
                         <label for="kategori_pengeluaran" class="form-label">Kategori Pengeluaran</label>
@@ -122,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div class="mb-3">
                         <label for="total" class="form-label">Total</label>
-                        <input type="number" class="form-control" id="total" name="total" required>
+                        <input type="number" class="form-control" id="total" name="total" disabled>
                     </div>
                     <div class="mb-3">
                         <label for="total_bayar" class="form-label">Total Bayar</label>

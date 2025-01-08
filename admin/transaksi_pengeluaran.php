@@ -249,6 +249,16 @@ error_reporting(0)
                 </tr>";
             }
             ?>
+             <?php
+
+                // Query untuk mendapatkan ID transaksi terakhir
+                $result_last_id = mysqli_query($koneksi, "SELECT MAX(id_transaksi) AS last_id FROM transaksi_pengeluaran");
+                $row_last_id = mysqli_fetch_assoc($result_last_id);
+                $lastId = isset($row_last_id['last_id']) ? $row_last_id['last_id'] + 1 : 1; // Jika kosong, mulai dari 1
+
+                // Format no_nota
+                $no_nota = 'TRP-' . date('Ymd') . '-' . $lastId;
+                ?>
         </tbody>
     </table>
 </div>
@@ -276,8 +286,8 @@ error_reporting(0)
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                            <label for="no_nota" class="form-label">No Nota</label>
-                            <input type="text" class="form-control" id="no_nota" name="no_nota" required>
+                        <label for="no_nota">No Nota:</label>
+                        <input type="text" class="form-control" id="no_nota" name="no_nota" value="<?php echo $no_nota; ?>" readonly>
                     </div>
                     <div class="mb-3">
                         <label for="kategori_pengeluaran" class="form-label">Kategori Pengeluaran</label>
@@ -292,9 +302,9 @@ error_reporting(0)
                             <option value="">Pilih Supplier</option>
                             <?php
                             // Fetch supplier data from the database
-                            $suppliers = mysqli_query($koneksi, "SELECT id_supplier, nama_supplier, saldo_hutang FROM master_supplier");
+                            $suppliers = mysqli_query($koneksi, "SELECT id_supplier, nama_supplier FROM master_supplier");
                             while ($supplier = mysqli_fetch_assoc($suppliers)) {
-                                echo "<option value='{$supplier['id_supplier']}' data-saldo='{$supplier['saldo_hutang']}'>{$supplier['nama_supplier']}</option>";
+                                echo "<option value='{$supplier['id_supplier']}'>{$supplier['nama_supplier']}</option>";
                             }
                             ?>
                         </select>
@@ -370,6 +380,8 @@ error_reporting(0)
 </script>
 </body>
 </html>
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 <script src="js/scripts.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
