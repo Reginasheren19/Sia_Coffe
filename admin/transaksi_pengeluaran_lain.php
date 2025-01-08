@@ -230,6 +230,16 @@ error_reporting(0)
                 </tr>";
             }
             ?>
+            <?php
+                // Query untuk mendapatkan ID transaksi terakhir
+                $result_last_id = mysqli_query($koneksi, "SELECT MAX(id_pengeluaran_lain) AS last_id FROM transaksi_pengeluaran_lain");
+                $row_last_id = mysqli_fetch_assoc($result_last_id);
+                $lastId = isset($row_last_id['last_id']) ? $row_last_id['last_id'] + 1 : 1; // Jika kosong, mulai dari 1
+
+                // Format no_nota
+                $nota_pengeluaran_lain = 'TRPL-' . date('Ymd') . '-' . $lastId;
+            ?>
+
         </tbody>
     </table>
 </div>
@@ -257,7 +267,7 @@ error_reporting(0)
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="nota_pengeluaran_lain" class="form-label">Nota Pengeluaran</label>
-                        <input type="text" class="form-control" id="nota_pengeluaran_lain" name="nota_pengeluaran_lain" required>
+                        <input type="text" class="form-control" id="nota_pengeluaran_lain"  name="nota_pengeluaran_lain" value="<?php echo $nota_pengeluaran_lain; ?>" readonly>
                     </div>
                     <!-- Dropdown for Account Name -->
                     <div class="mb-3">
