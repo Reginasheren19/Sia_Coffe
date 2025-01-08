@@ -4,6 +4,7 @@ include("../config/koneksi_mysql.php");
 // Mengatur error reporting
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +15,7 @@ ini_set('display_errors', 1);
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>TRANSAKSI PENGELUARAN - SIA COFFE SHOP</title>
+        <title>PELUNASAN HUTANG - SIA COFFE SHOP</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -194,7 +195,7 @@ ini_set('display_errors', 1);
             <thead>
                 <tr>
                     <th>Id Hutang</th>
-                    <th>No Nota</th>
+                    <th>ID Transaksi</th>
                     <th>Nota Pelunasan</th>
                     <th>Tanggal Pelunasan</th>
                     <th>Nama Supplier</th>
@@ -206,23 +207,23 @@ ini_set('display_errors', 1);
                 <?php
                 // Query untuk mengambil data hutang dan bergabung dengan tabel master_supplier dan transaksi_pengeluaran
                 $query =
-                    "SELECT ph.id_hutang, 
-                           tp.no_nota, 
-                           ph.nota_pelunasan, 
-                           ph.tanggal_pelunasan, 
-                           ms.nama_supplier, 
-                           ph.saldo_hutang_pl, 
-                           ph.total_pelunasan
-                    FROM   transaksi_hutang ph
-                    JOIN transaksi_pengeluaran tp ON ph.id_transaksi = tp.id_transaksi
-                    JOIN master_supplier ms ON ph.id_supplier = ms.id_supplier";
+                    "SELECT th.id_hutang, 
+                            tp.id_transaksi, 
+                            th.nota_pelunasan, 
+                            th.tanggal_pelunasan, 
+                            ms.nama_supplier, 
+                            th.saldo_hutang_pl, 
+                            th.total_pelunasan
+                        FROM    transaksi_hutang th
+                        JOIN transaksi_pengeluaran tp ON th.id_transaksi = tp.id_transaksi
+                        JOIN master_supplier ms ON th.id_supplier = ms.id_supplier";
 
                 // Menampilkan data hutang
                 $result = mysqli_query($koneksi, $query);
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo "<tr>
                         <td>{$row['id_hutang']}</td>
-                        <td>{$row['no_nota']}</td>
+                        <td>{$row['id_transaksi']}</td>
                         <td>{$row['nota_pelunasan']}</td>
                         <td>{$row['tanggal_pelunasan']}</td>
                         <td>{$row['nama_supplier']}</td>
@@ -231,6 +232,15 @@ ini_set('display_errors', 1);
                     </tr>";
                 }   
                 ?>
+                <?php
+                // Query untuk mendapatkan ID transaksi terakhir
+                $result_last_id = mysqli_query($koneksi, "SELECT MAX(id_hutang) AS last_id FROM transaksi_hutang");
+                $row_last_id = mysqli_fetch_assoc($result_last_id);
+                $lastId = isset($row_last_id['last_id']) ? $row_last_id['last_id'] + 1 : 1; // Jika kosong, mulai dari 1
+
+                $nota_pelunasan = 'PLH-' . date('Ymd') . '-' . $lastId;
+                ?>
+
             </tbody>
         </table>
     </div>

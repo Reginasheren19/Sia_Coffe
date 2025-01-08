@@ -1,24 +1,34 @@
 <?php
 include("../config/koneksi_mysql.php");
 
+// Query untuk mendapatkan ID transaksi terakhir
+$result = mysqli_query($koneksi, "SELECT MAX(id_hutang) AS last_id FROM transaksi_hutang");
+$row = mysqli_fetch_assoc($result);
+$lastId = isset($row['last_id']) ? $row['last_id'] + 1 : 1; // Jika kosong, mulai dari 1
+
+// Format no_nota
+$nota_pelunasan = 'PLH-' . date('Ymd') . '-' . $lastId;
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id_transaksi = $_POST['id_transaksi'];
-    $nota_pelunasan = $_POST['nota_pelunasan'];
-    $tanggal_pelunasan = $_POST['tanggal_pelunasan'];
-    $id_supplier = $_POST['id_supplier'];
-    $saldo_hutang_pl = $_POST['saldo_hutang_pl'];
-    $total_pelunasan = $_POST['total_pelunasan'];
+    $id_transaksi =  mysqli_real_escape_string($koneksi, $_POST['id_transaksi']);
+    $nota_pelunasan = mysqli_real_escape_string($koneksi, $_POST['nota_pelunasan']);
+    $tanggal_pelunasan = mysqli_real_escape_string($koneksi, $_POST['tanggal_pelunasan']);
+    $id_supplier = mysqli_real_escape_string($koneksi, $_POST['id_supplier']); 
+    $saldo_hutang_pl = mysqli_real_escape_string($koneksi, $_POST['saldo_hutang_pl']);
+    $total_pelunasan = mysqli_real_escape_string($koneksi, $_POST['total_pelunasan']);
 
     // Query untuk menyimpan data ke database
-    $query = "
-        INSERT INTO pelunasan_hutang (id_transaksi, nota_pelunasan, tanggal_pelunasan, id_supplier, saldo_hutang_pl, total_pelunasan)
+    $sql = "
+        INSERT INTO transaksi_hutang (id_transaksi, nota_pelunasan, tanggal_pelunasan, id_supplier, saldo_hutang_pl, total_pelunasan)
         VALUES ('$id_transaksi', '$nota_pelunasan', '$tanggal_pelunasan', '$id_supplier', '$saldo_hutang_pl', '$total_pelunasan')
     ";
 
-    if (mysqli_query($koneksi, $query)) {
-        header("Location: pelunasan_hutang.php"); // Redirect kembali ke halaman utama
+    // Eksekusi query
+    if (mysqli_query($koneksi, $sql)) {
+        echo "<script>alert('Data berhasil ditambahkan!'); window.location.href='pelunasan_hutang.php';</script>";
     } else {
-        echo "Error: " . mysqli_error($koneksi);
+        echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
     }
 }
 ?>
@@ -36,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -204,12 +215,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h1 class="mb-4">Form Pelunasan Hutang</h1>
                 <form method="POST" action="add_pelunasan_hutang.php">
                     <div class="mb-3">
-                        <label for="id_transaksi" class="form-label">No Nota</label>
+                        <label for="id_transaksi" class="form-label">ID Transaksi</label>
                         <input type="text" class="form-control" id="id_transaksi" name="id_transaksi" required>
                     </div>
                     <div class="mb-3">
                         <label for="nota_pelunasan" class="form-label">Nota Pelunasan</label>
-                        <input type="text" class="form-control" id="nota_pelunasan" name="nota_pelunasan" required>
+                        <input type="text" class="form-control" id="nota_pelunasan"  name="nota_pelunasan" value="<?php echo $nota_pelunasan; ?>" readonly>
                     </div>
                     <div class="mb-3">
                         <label for="tanggal_pelunasan" class="form-label">Tanggal Pelunasan</label>
@@ -217,16 +228,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div class="mb-3">
                         <label for="id_supplier" class="form-label">Nama Supplier</label>
-                        <select class="form-select" id="id_supplier" name="id_supplier" required>
-                            <option value="">Pilih Supplier</option>
-                            <?php
-                                // Mengambil data supplier
-                                $suppliers = mysqli_query($koneksi, "SELECT id_supplier, nama_supplier FROM master_supplier");
-                                while ($supplier = mysqli_fetch_assoc($suppliers)) {
-                                    echo "<option value='{$supplier['id_supplier']}'>{$supplier['nama_supplier']}</option>";
-                                }
-                            ?>
-                        </select>
+                        <input type="text" class="form-control" id="id_supplier" name="id_supplier" readonly>
                     </div>
                     <div class="mb-3">
                         <label for="saldo_hutang_pl" class="form-label">Saldo Hutang</label>
@@ -240,5 +242,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <a href="pelunasan_hutang.php" class="btn btn-secondary">Kembali</a>
                 </form>
             </div>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <script>
+                $(document).ready(function () {
+                    $('#id_transaksi').on('change', function () { // Menggunakan id_transaksi
+                        let idTransaksi = $(this).val(); // Mengambil nilai dari id_transaksi
+                        if (idTransaksi !== '') {
+                            $.ajax({
+                                url: 'get_supplier.php',
+                                type: 'GET',
+                                data: { id_transaksi: idTransaksi }, // Mengirimkan id_transaksi ke get_supplier.php
+                                success: function (response) {
+                                    let data = JSON.parse(response);
+                                    if (data.nama_supplier) {
+                                        $('#id_supplier').val(data.nama_supplier); // Mengisi nama supplier
+                                    } else {
+                                        alert('ID Transaksi tidak ditemukan atau tidak valid!');
+                                        $('#id_supplier').val('');
+                                    }
+                                },
+                                error: function () {
+                                    alert('Terjadi kesalahan saat mengambil data!');
+                                }
+                            });
+                        }
+                    });
+                });
+            </script>
             </body>
             </html>
