@@ -224,7 +224,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div id="layoutSidenav_content">
             <main>
             <div class="container mt-5">
-            <h1 class="mb-4">Form Transaksi Pemesanan</h1>
+            <h1 class="mb-4">Form Transaksi Pendapatan</h1>
             <form method="POST" action="add_transaksi_pendapatan.php">
                 <div class="mb-3">
                     <label for="id_transaksi_pembayaran" class="form-label">ID Transaksi Pembayaran</label>

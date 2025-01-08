@@ -212,11 +212,12 @@ ini_set('display_errors', 1);
                                     </tr>
                                 </thead>
                                 <tbody id="data_transaksi_pemesanan">
-                                    <?php
+                                    <?php   
+                                    
                                     // Query untuk mengambil data transaksi pemesanan
                                     $query = "
                                             SELECT 
-                                        tp.id_transaksi,  -- ID transaksi pemesanan
+                                        tp.id_transaksi_pemesanan,  -- ID transaksi pemesanan
                                         mc.nama_customer, -- Nama customer berdasarkan ID customer
                                         tp.tanggal_transaksi,  -- Tanggal transaksi
                                         mm.nama_metode, -- Nama metode pembayaran berdasarkan ID metode pembayaran
@@ -224,17 +225,17 @@ ini_set('display_errors', 1);
                                         tp.jumlah_produk, -- Jumlah produk yang dipesan
                                         tp.harga_satuan, -- Harga satuan produk
                                         (tp.jumlah_produk * tp.harga_satuan) AS subtotal,  -- Perhitungan subtotal
-                                        tp.status_transaksi  -- Status transaksi
                                     FROM transaksi_pendapatan tp
                                     JOIN master_customer mc ON tp.id_customer = mc.id_customer
                                     JOIN master_produk mp ON tp.id_produk = mp.id_produk
                                     JOIN master_metode_pembayaran mm ON tp.id_metode_pembayaran = mm.id_metode
                                 ";
+                                
 
                                     // Menampilkan data hasil query
-                                    while ($row = mysqli_fetch_assoc($result)) {
-                                    echo "<tr>
-                                        <td>{$row['id_transaksi']}</td>
+                                    if ($result) {
+                                        while ($row = mysqli_fetch_assoc($result)) {                                    echo "<tr>
+                                        <td>{$row['id_transaksi_pemesanan']}</td>
                                         <td>{$row['nama_customer']}</td>
                                         <td>{$row['tanggal_transaksi']}</td>
                                         <td>{$row['nama_metode']}</td>
@@ -242,8 +243,8 @@ ini_set('display_errors', 1);
                                         <td>{$row['jumlah_produk']}</td>
                                         <td>" . number_format($row['harga_satuan'], 2) . "</td>
                                         <td>" . number_format($row['subtotal'], 2) . "</td>
-                                        <td>{$row['status_transaksi']}</td>
                                     </tr>";
+                                    }
                                     }   
                                     ?>
                                 </tbody>

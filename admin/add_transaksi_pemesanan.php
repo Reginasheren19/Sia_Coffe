@@ -2,41 +2,41 @@
 include("../config/koneksi_mysql.php");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id_transaksi = $_POST['id_transaksi'];
-    $id_transaksi_pembayaran = $_POST['id_transaksi_pembayaran'];
-    $tanggal_transaksi = $_POST['tanggal_transaksi'];
-    $id_customer = $_POST['id_customer'];
-    $id_produk = $_POST['id_produk'];
-    $kuantitas = $_POST['kuantitas'];
-    $harga_satuan = $_POST['harga_satuan'];
-    $total_pendapatan = $_POST['total_pendapatan'];
-    $saldo_piutang = $_POST['saldo_piutang'];
-    $id_metode = $_POST['id_metode'];
-    $id_akun = $_POST['id_akun'];
-    $id_jenis_pendapatan = $_POST['id_jenis_pendapatan'];
-    $status_transaksi = $_POST['status_transaksi'];
+    // Validasi setiap field dari form
+    $id_transaksi_pemesanan = isset($_POST['id_transaksi_pemesanan']) ? mysqli_real_escape_string($koneksi, $_POST['id_transaksi_pemesanan']) : null;
+    $id_customer = isset($_POST['id_customer']) ? mysqli_real_escape_string($koneksi, $_POST['id_customer']) : null;
+    $tgl_transaksi = isset($_POST['tgl_transaksi']) ? mysqli_real_escape_string($koneksi, $_POST['tgl_transaksi']) : null;
+    $id_metode = isset($_POST['id_metode']) ? mysqli_real_escape_string($koneksi, $_POST['id_metode']) : null;
+    $id_produk = isset($_POST['id_produk']) ? mysqli_real_escape_string($koneksi, $_POST['id_produk']) : null;
+    $jumlah_produk = isset($_POST['jumlah_produk']) ? mysqli_real_escape_string($koneksi, $_POST['jumlah_produk']) : null;
+    $harga_satuan = isset($_POST['harga_satuan']) ? mysqli_real_escape_string($koneksi, $_POST['harga_satuan']) : null;
+    $subtotal = isset($_POST['subtotal']) ? mysqli_real_escape_string($koneksi, $_POST['subtotal']) : null;
 
- // Query untuk menyimpan data ke database
- $query = "
- INSERT INTO transaksi_pendapatan (
-     id_transaksi, id_transaksi_pembayaran, tanggal_transaksi, 
-     id_customer, id_produk, kuantitas, harga_satuan, total_pendapatan, 
-     saldo_piutang, id_metode, id_akun, id_jenis_pendapatan, status_transaksi
- ) VALUES (
-     '$id_transaksi', '$id_transaksi_pembayaran', '$tanggal_transaksi', 
-     '$id_customer', '$id_produk', '$kuantitas', '$harga_satuan', '$total_pendapatan', 
-     '$saldo_piutang', '$id_metode', '$id_akun', '$id_jenis_pendapatan', '$status_transaksi'
- )
-";
-    if (mysqli_query($koneksi, $query)) {
-        header("Location: transaksi_pendapatan.php?success=1"); // Redirect dengan pesan sukses
-        exit();
-    } else {
-        echo "Error: " . mysqli_error($koneksi);
-        exit();
+    // Pastikan semua field yang wajib terisi tidak kosong
+    if ($id_customer && $tgl_transaksi && $id_metode && $id_produk && $jumlah_produk && $harga_satuan && $subtotal) {
+        // Query untuk menyimpan data ke database
+        $query = "
+            INSERT INTO transaksi_pemesanan (
+                id_customer, tgl_transaksi, id_metode, id_produk, jumlah_produk, harga_satuan, subtotal
+            ) VALUES (
+                '$id_customer', '$tgl_transaksi', '$id_metode', '$id_produk', '$jumlah_produk', '$harga_satuan', '$subtotal'
+            )
+        ";
+
+        // Eksekusi query
+        if (mysqli_query($koneksi, $query)) {
+            header("Location: transaksi_pemesanan.php?success=1"); // Redirect dengan pesan sukses
+            exit();
+        } else {
+            echo "Error: " . mysqli_error($koneksi);
+            exit();
+        }
     }
+   
 }
 ?>
+
+
 
 
 <!DOCTYPE html>
@@ -133,12 +133,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             Pendapatan
                         </a>
                         <a class="nav-link" href="transaksi_pemesanan.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Pemesanan
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Pemesanan
                         </a>
                         <a class="nav-link" href="transaksi_pembayaran.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Pembayaran
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Pembayaran
                         </a>
                         <div class="sb-sidenav-menu-heading">Expenditure Cycle</div>
                         <a class="nav-link" href="charts.html">
@@ -146,9 +146,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             Pengeluaran
                         </a>
                         <a class="nav-link" href="pelunasan_hutang.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Pelunasan Hutang
-                            </a>
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Pelunasan Hutang
+                        </a>
                         <div class="sb-sidenav-menu-heading">Payroll Cycle</div>
                         <a class="nav-link" href="charts.html">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
@@ -224,16 +224,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div id="layoutSidenav_content">
             <main>
             <div class="container mt-5">
-            <h1 class="mb-4">Form Transaksi Pendapatan</h1>
-            <form method="POST" action="add_transaksi_pendapatan.php">
-                <div class="mb-3">
-                    <label for="id_transaksi_pembayaran" class="form-label">ID Transaksi Pembayaran</label>
-                    <input type="text" class="form-control" id="id_transaksi_pembayaran" name="id_transaksi_pembayaran" required>
-                </div> 
-                <div class="mb-3">
-                    <label for="tanggal_transaksi" class="form-label">Tanggal Transaksi</label>
-                    <input type="date" class="form-control" id="tanggal_transaksi" name="tanggal_transaksi" required>
-                </div>
+            <h1 class="mb-4">Form Transaksi Pemesanan</h1>
+            <form method="POST" action="add_transaksi_pemesanan.php">
                 <div class="mb-3">
                     <label for="id_customer" class="form-label">Nama Customer</label>
                     <select class="form-select" id="id_customer" name="id_customer" required>
@@ -242,6 +234,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $customers = mysqli_query($koneksi, "SELECT id_customer, nama_customer FROM master_customer");
                         while ($customer = mysqli_fetch_assoc($customers)) {
                             echo "<option value='{$customer['id_customer']}'>{$customer['nama_customer']}</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="tgl_transaksi" class="form-label">Tanggal Transaksi</label>
+                    <input type="date" class="form-control" id="tgl_transaksi" name="tgl_transaksi" required>
+                </div>
+                <div class="mb-3">
+                    <label for="id_metode" class="form-label">Metode Pembayaran</label>
+                    <select class="form-select" id="id_metode" name="id_metode" required>
+                        <option value="">Pilih Metode</option>
+                        <?php
+                        $metode = mysqli_query($koneksi, "SELECT id_metode, nama_metode FROM master_metode_pembayaran");
+                        while ($met = mysqli_fetch_assoc($metode)) {
+                            echo "<option value='{$met['id_metode']}'>{$met['nama_metode']}</option>";
                         }
                         ?>
                     </select>
@@ -259,67 +267,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="kuantitas" class="form-label">Kuantitas</label>
-                    <input type="number" class="form-control" id="kuantitas" name="kuantitas" required>
+                    <label for="jumlah_produk" class="form-label">Jumlah Produk</label>
+                    <input type="number" class="form-control" id="jumlah_produk" name="jumlah_produk" required onchange="updateSubtotal()">
                 </div>
                 <div class="mb-3">
                     <label for="harga_satuan" class="form-label">Harga Satuan</label>
-                    <input type="number" class="form-control" id="harga_satuan" name="harga_satuan" required readonly>
+                    <input type="number" class="form-control" id="harga_satuan" name="harga_satuan" readonly>
                 </div>
                 <div class="mb-3">
-                    <label for="total_pendapatan" class="form-label">Total Pendapatan</label>
-                    <input type="number" class="form-control" id="total_pendapatan" name="total_pendapatan" required readonly>
+                    <label for="subtotal" class="form-label">Subtotal</label>
+                    <input type="number" class="form-control" id="subtotal" name="subtotal" readonly>
                 </div>
-                <div class="mb-3">
-                    <label for="saldo_piutang" class="form-label">Saldo Piutang</label>
-                    <input type="number" class="form-control" id="saldo_piutang" name="saldo_piutang" required readonly>
-                </div>
-                <div class="mb-3">
-                    <label for="id_metode_pembayaran" class="form-label">Metode Pembayaran</label>
-                    <select class="form-select" id="id_metode_pembayaran" name="id_metode_pembayaran" required>
-                        <option value="">Pilih Metode</option>
-                        <?php
-                        $metode = mysqli_query($koneksi, "SELECT id_metode, nama_metode FROM master_metode_pembayaran");
-                        while ($met = mysqli_fetch_assoc($metode)) {
-                            echo "<option value='{$met['id_metode']}'>{$met['nama_metode']}</option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="kode_akun" class="form-label">Nama Akun</label>
-                    <select class="form-select" id="kode_akun" name="kode_akun" required>
-                        <option value="">Pilih Akun</option>
-                        <?php
-                        $akun = mysqli_query($koneksi, "SELECT kode_akun, nama_akun FROM master_akun");
-                        while ($ak = mysqli_fetch_assoc($akun)) {
-                            echo "<option value='{$ak['kode_akun']}'>{$ak['nama_akun']}</option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="id_jenis_pendapatan" class="form-label">Jenis Pendapatan</label>
-                    <select class="form-select" id="id_jenis_pendapatan" name="id_jenis_pendapatan" required>
-                        <option value="">Pilih Jenis</option>
-                        <?php
-                        $jenis = mysqli_query($koneksi, "SELECT id_jenis_pendapatan, nama_jenis_pendapatan FROM master_jenis_pendapatan");
-                        while ($jen = mysqli_fetch_assoc($jenis)) {
-                            echo "<option value='{$jen['id_jenis_pendapatan']}'>{$jen['nama_jenis_pendapatan']}</option>";
-                        }
-                        ?>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="status_transaksi" class="form-label">Status Transaksi</label>
-                    <select class="form-select" id="status_transaksi" name="status_transaksi" required>
-                        <option value="">Pilih Status</option>
-                        <option value="Lunas">Lunas</option>
-                        <option value="Belum Lunas">Belum Lunas</option>
-                    </select>
-                </div>
+                
                 <button type="submit" class="btn btn-primary">Simpan</button>
-                <a href="transaksi_pendapatan.php" class="btn btn-secondary">Kembali</a>
+                <a href="transaksi_pemesanan.php" class="btn btn-secondary">Kembali</a>
             </form>
 
             <script>
@@ -331,35 +292,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     var hargaSatuan = selectedOption.getAttribute('data-harga');
                     hargaSatuanInput.value = hargaSatuan;
                 }
-                // Fungsi untuk menghitung total pendapatan
-                function updateTotalPendapatan() {
-                    var kuantitas = document.getElementById('kuantitas').value;
-                    var hargaSatuan = document.getElementById('harga_satuan').value;
-                    var totalPendapatanInput = document.getElementById('total_pendapatan');
-                    
-                    if (kuantitas && hargaSatuan) {
-                        totalPendapatanInput.value = (kuantitas * hargaSatuan).toFixed(2);
-                    } else {
-                        totalPendapatanInput.value = 0;
-                    }
-                    updateSaldoPiutang();
-                }
-                 // Fungsi untuk menghitung saldo piutang berdasarkan DP dan status transaksi
-                function updateSaldoPiutang() {
-                    var totalPendapatan = document.getElementById('total_pendapatan').value;
-                    var dp = document.getElementById('dp').value;
-                    var saldoPiutangInput = document.getElementById('saldo_piutang');
-                    var statusTransaksi = document.getElementById('status_transaksi').value;
+                // Fungsi untuk menghitung total pembayaran
+                function updateSubtotal() {
+                    var jumlah_produk = parseFloat(document.getElementById('jumlah_produk').value) || 0;
+                    var hargaSatuan = parseFloat(document.getElementById('harga_satuan').value) || 0;
+                    var subtotalInput = document.getElementById('subtotal'); // Nama variabel diperbaiki
 
-                    if (statusTransaksi === "Lunas") {
-                        saldoPiutangInput.value = 0; // Saldo Piutang 0 jika Lunas
-                    } else if (statusTransaksi === "Booking") {
-                        var saldoPiutang = (totalPendapatan - dp);
-                        saldoPiutangInput.value = saldoPiutang > 0 ? saldoPiutang.toFixed(2) : 0; // Menghitung saldo piutang
+                    // Hitung subtotal jika kedua nilai diisi
+                    if (jumlah_produk && hargaSatuan) {
+                        subtotalInput.value = (jumlah_produk * hargaSatuan).toFixed(2);
+                    } else {
+                        subtotalInput.value = 0;
                     }
                 }
+                
             </script>
-                </div>
             </main>
-            </body>
-            </html>
+        </div>
+    </div>
+</body>
+</html>
