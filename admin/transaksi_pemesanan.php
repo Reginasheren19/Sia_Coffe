@@ -234,7 +234,8 @@ ini_set('display_errors', 1);
 
                                     // Menampilkan data hasil query
                                     if ($result) {
-                                        while ($row = mysqli_fetch_assoc($result)) {                                    echo "<tr>
+                                        while ($row = mysqli_fetch_assoc($result)) {                                    
+                                        echo "<tr>
                                         <td>{$row['id_transaksi_pemesanan']}</td>
                                         <td>{$row['nama_customer']}</td>
                                         <td>{$row['tanggal_transaksi']}</td>

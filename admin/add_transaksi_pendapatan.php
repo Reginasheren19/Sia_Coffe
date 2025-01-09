@@ -227,9 +227,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <h1 class="mb-4">Form Transaksi Pendapatan</h1>
             <form method="POST" action="add_transaksi_pendapatan.php">
                 <div class="mb-3">
-                    <label for="id_transaksi_pembayaran" class="form-label">ID Transaksi Pembayaran</label>
-                    <input type="text" class="form-control" id="id_transaksi_pembayaran" name="id_transaksi_pembayaran" required>
-                </div> 
+                    <label for="id_transaksi_pembayaran" class="form-label">Id Transaksi Pembayaran</label>
+                    <select class="form-select" id="id_transaksi_pembayaran" name="id_transaksi_pembayaran" required onchange="loadPembayaranDetails()">
+                        <option value="">Pilih Transaksi Pembayaran</option>
+                        <?php
+                        $transaksiPembayaran = mysqli_query($koneksi, "SELECT id_transaksi_pembayaran FROM transaksi_pembayaran");
+                        while ($row = mysqli_fetch_assoc($transaksiPembayaran)) {
+                            echo "<option value='{$row['id_transaksi_pembayaran']}'>{$row['id_transaksi_pembayaran']}</option>";
+                        }
+                        ?>
+                    </select>
+                </div>
                 <div class="mb-3">
                     <label for="tanggal_transaksi" class="form-label">Tanggal Transaksi</label>
                     <input type="date" class="form-control" id="tanggal_transaksi" name="tanggal_transaksi" required>
@@ -319,7 +327,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Simpan</button>
-                <a href="transaksi.pendapatan.php" class="btn btn-secondary">Kembali</a>
+                <a href="transaksi_pendapatan.php" class="btn btn-secondary">Kembali</a>
             </form>
 
             <script>

@@ -245,6 +245,7 @@ ini_set('display_errors', 1);
                                     JOIN master_jenis_pendapatan mjp ON tp.id_jenis_pendapatan = mjp.id_jenis_pendapatan";
 
                                     // Menampilkan data hasil query
+                                    if ($result) {
                                     while ($row = mysqli_fetch_assoc($result)) {
                                     echo "<tr>
                                         <td>{$row['id_transaksi_pendapatan']}</td>
@@ -261,7 +262,8 @@ ini_set('display_errors', 1);
                                         <td>{$row['jenis_pendapatan']}</td>
                                         <td>{$row['status_transaksi']}</td>
                                     </tr>";
-                                    }   
+                                    }
+                                }   
                                     ?>
                                 </tbody>
                             </table>
