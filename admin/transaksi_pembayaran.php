@@ -185,10 +185,7 @@ ini_set('display_errors', 1);
                         <li class="breadcrumb-item active">Data Pembayaran</li>
                     </ol>
                     <div class="card mb-4">
-                        <div class="card-header">
-                            <i class="fas fa-table me-1"></i>
-                            Tabel Pembayaran
-                        </div>
+                        
                         <div class="card-body">
                         <!-- Tombol Tambah Data -->
                         <div class="mb-3 d-flex justify-content-end">
