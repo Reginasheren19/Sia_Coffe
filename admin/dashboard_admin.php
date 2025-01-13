@@ -96,9 +96,13 @@ session_start();
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Pendapatan
                             </a>
-                            <a class="nav-link" href="transaksi_pembayaran.php">
+                            <a class="nav-link" href="pelunasan_piutang.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Pembayaran
+                                Pelunasan Piutang
+                            </a>
+                            <a class="nav-link" href="transaksi_pendapatan_lain.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Pendapatan Lain
                             </a>
                             <div class="sb-sidenav-menu-heading">Expenditure Cycle</div>
                             <a class="nav-link" href="transaksi_pengeluaran.php">

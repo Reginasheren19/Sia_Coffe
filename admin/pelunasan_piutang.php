@@ -4,6 +4,7 @@ include("../config/koneksi_mysql.php");
 // Mengatur error reporting
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +15,7 @@ ini_set('display_errors', 1);
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>TRANSAKSI PEMBAYARAN - SIA COFFE SHOP</title>
+        <title>PELUNASAN PIUTANG - SIA COFFE SHOP</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -88,13 +89,13 @@ ini_set('display_errors', 1);
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Pendapatan
                             </a>
-                            <a class="nav-link" href="transaksi_pemesanan.php">
+                            <a class="nav-link" href="pelunasan_piutag.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Pemesanan
+                                Pelunasan Piutang
                             </a>
-                            <a class="nav-link" href="transaksi_pembayaran.php">
+                            <a class="nav-link" href="transaksi_pendapatan_lain.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Pembayaran
+                                Pendapatan Lain
                             </a>
                             <div class="sb-sidenav-menu-heading">Expenditure Cycle</div>
                             <a class="nav-link" href="transaksi_pengeluaran.php">
@@ -180,82 +181,69 @@ ini_set('display_errors', 1);
             <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Transaksi Pembayaran</h1>
+                    <h1 class="mt-4">Pelunasan Piutang</h1>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Data Pembayaran</li>
+                        <li class="breadcrumb-item active">Data Piutang</li>
                     </ol>
                     <div class="card mb-4">
-                        
+                        <div class="card-header">
+                            <i class="fas fa-table me-1"></i>
+                            Tabel Piutang
+                        </div>
                         <div class="card-body">
                         <!-- Tombol Tambah Data -->
                         <div class="mb-3 d-flex justify-content-end">
-                            <a href="add_transaksi_pembayaran.php" class="btn btn-success">
-                                Add Pembayaran
+                            <a href="add_pelunasan_piutang.php" class="btn btn-success">
+                                Add Pelunasan piutang
                             </a>
                         </div>
-                        <!-- Table for Data Pembayaran -->
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Id Transaksi Pembayaran</th>
-                                        <th>Id Transaksi Pemesanan</th>
-                                        <th>Tanggal Pembayaran</th>
-                                        <th>Metode Pembayaran </th>
-                                        <th>Subtotal</th>
-                                        <th>Total Bayar</th>
-                                        <th>Saldo Piutang</th>
-                                        <th>Metode Pembayaran</th>
-                                        <th>Status</th>
-                                        <th>Nama Akun</th>
-                                    
-                                    </tr>
-                                </thead>
-                                <tbody id="data_transaksi_pembayaran">
-                                    <?php 
-                                    
-                                    // Query untuk mengambil data transaksi pembayaran
-                                    $query = "
-                                    SELECT 
-                                        tp.id_transaksi_pembayaran,
-                                        tp.id_transaksi_pemesanan,
-                                        tp.tgl_pembayaran,
-                                        mm.nama_metode AS metode_pembayaran,
-                                        tps.subtotal,
-                                        (tps.subtotal - COALESCE(tp.jumlah_bayar, 0)) AS saldo_piutang,
-                                        tp.status_pembayaran,
-                                        ma.nama_akun,
-                                        COALESCE(tp.jumlah_bayar, 0) AS total_bayar
-                                    FROM transaksi_pembayaran tp
-                                    JOIN transaksi_pemesanan tps ON tp.id_transaksi_pemesanan = tps.id_transaksi_pemesanan
-                                    JOIN master_metode_pembayaran mm ON tp.id_metode_pembayaran = mm.id_metode
-                                    JOIN master_akun ma ON tp.id_akun = ma.id_akun
-                                ";
+    <!-- Table for Data Piutang -->
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Id Piutang</th>
+                    <th>ID Transaksi Pendapatan</th>
+                    <th>Tanggal Pembayaran</th>
+                    <th>Nama Customer</th>
+                    <th>Saldo Piutang</th>
+                    <th>Total Pelunasan Piutang</th>
+                </tr>
+            </thead>
+            <tbody id="data_piutang">
+                <?php
+                // Query untuk mengambil data piutang
+                $query =
+                    "SELECT 
+                        tp.id_piutang, 
+                        tp.id_transaksi_pendapatan, 
+                        tp.tanggal_pembayaran, 
+                        mc.nama_customer, 
+                        tp.saldo_piutang, 
+                        tp.total_pembayaran_piutang
+                    FROM 
+                        transaksi_pelunasan tp
+                    JOIN 
+                        master_customer mc ON tp.id_customer = mc.id_customer
+                    JOIN 
+                    transaksi_pendapatan tpend ON tp.id_transaksi_pendapatan = tpend.id_transaksi_pendapatan -- Join dengan transaksi_pendapatan
+                    ";
+                // Menampilkan data pelunasan piutang
+                $result = mysqli_query($koneksi, $query);
+                while ($row = mysqli_fetch_assoc($result)) {
+                    echo "<tr>
+                        <td>{$row['id_piutang']}</td>
+                        <td>{$row['id_transaksi_pendapatan']}</td>
+                        <td>{$row['tanggal_pembayaran']}</td>
+                        <td>{$row['nama_customer']}</td>
+                        <td>" . number_format($row['saldo_piutang'], 2) . "</td>
+                        <td>" . number_format($row['total_pembayaran_piutang'], 2) . "</td>
+                        <td>{$row['detail_transaksi_pendapatan']}</td> <!-- Menampilkan detail transaksi pendapatan -->
+                    </tr>";
+                } 
+                ?>
+                
 
-                                    // Eksekusi query
-                                    $result = mysqli_query($koneksi, $query);
-
-                                    //Perisa apakah query berhasil
-                                    if ($result) {
-                                        //Menampilkan data hasil query
-                                        while ($row = mysqli_fetch_assoc($result)) {
-                                            echo "<tr>
-                                                <td>{$row['id_transaksi_pembayaran']}</td>
-                                                <td>{$row['id_transaksi_pemesanan']}</td>
-                                                <td>{$row['tgl_pembayaran']}</td>
-                                                <td>{$row['metode_pembayaran']}</td>
-                                                <td>" . number_format($row['subtotal'], 2) . "</td>
-                                                <td>" . number_format($row['saldo_piutang'], 2) . "</td>
-                                                <td>" . number_format($row['saldo_piutang'], 2) . "</td>
-                                                <td>{$row['status_pembayaran']}</td>
-                                                <td>{$row['nama_akun']}</td>
-                                            </tr>";
-                                        }
-                                    }
-
-                                    //Tutup koneksi
-                                    mysqli_close($koneksi);
-                                    ?>
-                                </tbody>
-                            </table>
-                        </div>
+            </tbody>
+        </table>
+    </div>

@@ -237,8 +237,8 @@ ini_set('display_errors', 1);
                                             mp.nama_produk,
                                             mm.nama_metode,
                                             tp.status_pembayaran,
-                                            tp.jumlah_dibayar,
-                                            ((tp.jumlah_produk * tp.harga_satuan) - tp.jumlah_dibayar) AS sisa_pembayaran
+                                            IF(tp.jumlah_dibayar < (tp.jumlah_produk * tp.harga_satuan), (tp.jumlah_produk * tp.harga_satuan) - tp.jumlah_dibayar, 0) AS sisa_pembayaran,
+                                            tp.jumlah_dibayar
                                         FROM 
                                             transaksi_pendapatan tp 
                                         LEFT JOIN 
@@ -248,7 +248,7 @@ ini_set('display_errors', 1);
                                         LEFT JOIN 
                                             master_metode_pembayaran mm ON tp.id_metode = mm.id_metode
                                         ";
-                                        
+                                                                                
                                 
 
                                         // Eksekusi query
@@ -259,9 +259,9 @@ ini_set('display_errors', 1);
                                             // Menampilkan data hasil query
                                             while ($row = mysqli_fetch_assoc($result)) {
                                             // Menentukan status pembayaran
-                                            $statusPembayaran = ($row['status_pembayaran'] == 1) ? "Lunas" : "Belum Lunas"; // Misal 1 = Lunas, 0 = Belum Lunas
+                                            //$statusPembayaran = ($row['status_pembayaran'] == 1) ? "Lunas" : "Belum Lunas"; // Misal 1 = Lunas, 0 = Belum Lunas
                                             // Menentukan sisa pembayaran
-                                            $sisaPembayaran = !empty($row['sisa_pembayaran']) && $row['sisa_pembayaran'] > 0 ? number_format($row['sisa_pembayaran'], 2) : "Lunas";
+                                            //$sisaPembayaran = !empty($row['sisa_pembayaran']) && $row['sisa_pembayaran'] > 0 ? number_format($row['sisa_pembayaran'], 2) : "Lunas";
                                             echo "<tr>
                                             <td>{$row['id_transaksi_pendapatan']}</td>
                                             <td>{$row['nama_customer']}</td>
@@ -271,8 +271,9 @@ ini_set('display_errors', 1);
                                             <td>{$row['jumlah_produk']}</td>
                                             <td>" . number_format($row['harga_satuan'], 2) . "</td>
                                             <td>" . number_format($row['subtotal'], 2) . "</td>
-                                            <td>{$statusPembayaran}</td>
-                                            <td>{$sisaPembayaran}</td>
+                                            <td>{$row['status_pembayaran']}</td>
+                                            <td>{$row['sisa_pembayaran']}</td>
+                                            <td>{$row['jumlah_dibayar']}</td>
                                         </tr>";
                                             }
                                         } else {

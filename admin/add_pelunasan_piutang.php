@@ -1,64 +1,50 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 include("../config/koneksi_mysql.php");
 
-// Debugging untuk melihat data yang dikirimkan dari form
-echo '<pre>';
-print_r($_POST);
-echo '</pre>';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Validasi setiap field dari form
-    $id_customer = isset($_POST['id_customer']) ? mysqli_real_escape_string($koneksi, $_POST['id_customer']) : null;
-    $tgl_transaksi = isset($_POST['tgl_transaksi']) ? mysqli_real_escape_string($koneksi, $_POST['tgl_transaksi']) : null;
-    $id_metode = isset($_POST['id_metode']) ? mysqli_real_escape_string($koneksi, $_POST['id_metode']) : null;
-    $id_produk = isset($_POST['id_produk']) ? mysqli_real_escape_string($koneksi, $_POST['id_produk']) : null;
-    $jumlah_produk = isset($_POST['jumlah_produk']) ? mysqli_real_escape_string($koneksi, $_POST['jumlah_produk']) : null;
-    $harga_satuan = isset($_POST['harga_satuan']) ? mysqli_real_escape_string($koneksi, $_POST['harga_satuan']) : null;
-    $subtotal = isset($_POST['subtotal']) ? mysqli_real_escape_string($koneksi, $_POST['subtotal']) : null;
-    $jumlah_dibayar = isset($_POST['jumlah_dibayar']) ? mysqli_real_escape_string($koneksi, $_POST['jumlah_dibayar']) : null;
-    $sisa_pembayaran = isset($_POST['sisa_pembayaran']) ? mysqli_real_escape_string($koneksi, $_POST['sisa_pembayaran']) : null;
-    $status_pembayaran = isset($_POST['status_pembayaran']) ? mysqli_real_escape_string($koneksi, $_POST['status_pembayaran']) : null;
+    $id_piutang =  mysqli_real_escape_string($koneksi, $_POST['id_piutang']);
+    $id_transaksi_pendapatan = mysqli_real_escape_string($koneksi, $_POST['id_transaksi_pendapatan']);
+    $id_customer = mysqli_real_escape_string($koneksi, $_POST['id_customer']);
+    $saldo_piutang = mysqli_real_escape_string($koneksi, $_POST['saldo_piutang']); 
+    $total_pembayaran_piutang = mysqli_real_escape_string($koneksi, $_POST['total_piutang']);
 
-    // Pastikan semua field yang wajib terisi tidak kosong
-    if ($id_customer && $tgl_transaksi && $id_metode && $id_produk && $jumlah_produk && $harga_satuan && $subtotal && $jumlah_dibayar && $sisa_pembayaran && $status_pembayaran) {
-        // Pastikan jumlah_produk, harga_satuan, subtotal, jumlah_dibayar, dan sisa_pembayaran adalah angka
-        if (is_numeric($jumlah_produk) && is_numeric($harga_satuan) && is_numeric($subtotal) && is_numeric($jumlah_dibayar) && is_numeric($sisa_pembayaran)) {
-            // Query untuk menyimpan data ke database
+    // Validasi ID Transaksi
+    $cekTransaksi = mysqli_query($koneksi, "SELECT id_transaksi FROM transaksi_pengeluaran WHERE id_transaksi = '$id_transaksi'");
+    if (mysqli_num_rows($cekTransaksi) === 0) {
+        echo "<script>alert('ID Transaksi tidak valid!'); window.location.href='pelunasan_hutang.php';</script>";
+        exit;
+    }
 
-        $query = "
-            INSERT INTO transaksi_pendapatan (
-                id_customer, tgl_transaksi, id_metode, id_produk, jumlah_produk, harga_satuan, subtotal, status_pembayaran, sisa_pembayaran, jumlah_dibayar
-            ) VALUES (
-                '$id_customer', '$tgl_transaksi', '$id_metode', '$id_produk', '$jumlah_produk', '$harga_satuan', '$subtotal', '$status_pembayaran', '$sisa_pembayaran', '$jumlah_dibayar'
-            )
-        ";
-        echo $query;
+    // Query untuk menyimpan data ke database
+    $sql = "
+        INSERT INTO transaksi_hutang (id_transaksi, nota_pelunasan, tanggal_pelunasan, id_supplier, saldo_hutang_pl, total_pelunasan)
+        VALUES ('$id_transaksi', '$nota_pelunasan', '$tanggal_pelunasan', '$id_supplier', '$saldo_hutang_pl', '$total_pelunasan')
+    ";
 
+        // Eksekusi query pelunasan hutang
+        if (mysqli_query($koneksi, $sql)) {
+            // Insert jurnal umum untuk pelunasan hutang
+            // Debit Hutang (id_akun hutang) dan Kredit Kas (id_akun kas)
+            $query_jurnal_debit = "
+                INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
+                VALUES ('$tanggal_pelunasan', 'Hutang', '10', '$total_pelunasan', 0)
+            ";
+    
+            $query_jurnal_kredit = "
+                INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
+                VALUES ('$tanggal_pelunasan', 'Kas', '2', 0, '$total_pelunasan')
+            ";
 
-        // Debugging: Print the query
-        echo "Query: $query<br>";
-
-        // Eksekusi query
-        if (mysqli_query($koneksi, $query)) {
-            echo "Data berhasil disimpan.<br>";
-            header("Location: transaksi_pendapatan.php?success=1"); // Redirect dengan pesan sukses
-            exit();
-        } else {
-            echo "Error: " . mysqli_error($koneksi) . "<br>";
-            echo "Query: $query<br>";
-            exit();
-        }
+    // Eksekusi query
+    if (mysqli_query($koneksi, $query_jurnal_debit) && mysqli_query($koneksi, $query_jurnal_kredit)) {
+        echo "<script>alert('Data berhasil ditambahkan!'); window.location.href='pelunasan_hutang.php';</script>";
     } else {
-        echo "Semua field wajib diisi.";
+        echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
     }
 }
-   
 }
 ?>
-
-
 
 
 <!DOCTYPE html>
@@ -73,6 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -150,23 +137,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </nav>
                         </div>
                         <div class="sb-sidenav-menu-heading">Revenue Cycle</div>
-                        <a class="nav-link" href="transaksi_pendapatan.php">
+                        <a class="nav-link" href="charts.html">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Pendapatan
                         </a>
-                        <a class="nav-link" href="transaksi_pembayaran.php">
+                        <a class="nav-link" href="pelunasan_piutang.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Pembayaran
+                            Pelunasan Piutang
                         </a>
+                        <a class="nav-link" href="transaksi_pendapatan_lain.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Pendapatan Lain
+                        </a>   
                         <div class="sb-sidenav-menu-heading">Expenditure Cycle</div>
                         <a class="nav-link" href="charts.html">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Pengeluaran
                         </a>
                         <a class="nav-link" href="pelunasan_hutang.php">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Pelunasan Hutang
-                        </a>
+                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                                Pelunasan Hutang
+                            </a>
                         <div class="sb-sidenav-menu-heading">Payroll Cycle</div>
                         <a class="nav-link" href="charts.html">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
@@ -242,102 +233,79 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div id="layoutSidenav_content">
             <main>
             <div class="container mt-5">
-                <h1 class="mb-4">Form Transaksi Pendapatan</h1>
-                <form method="POST" action="add_transaksi_pendapatan.php">
+                <h1 class="mb-4">Form Pelunasan Hutang</h1>
+                <form method="POST" action="add_pelunasan_hutang.php">
                     <div class="mb-3">
-                        <label for="id_customer" class="form-label">Nama Customer</label>
-                        <select class="form-select" id="id_customer" name="id_customer" required>
-                            <option value="">Pilih Customer</option>
-                            <?php
-                            $customers = mysqli_query($koneksi, "SELECT id_customer, nama_customer FROM master_customer");
-                            while ($customer = mysqli_fetch_assoc($customers)) {
-                                echo "<option value='{$customer['id_customer']}'>{$customer['nama_customer']}</option>";
-                            }
-                            ?>
-                        </select>
+                        <label for="id_transaksi" class="form-label">ID Transaksi</label>
+                        <input type="text" class="form-control" id="id_transaksi" name="id_transaksi" required>
                     </div>
                     <div class="mb-3">
-                        <label for="tgl_transaksi" class="form-label">Tanggal Transaksi</label>
-                        <input type="date" class="form-control" id="tgl_transaksi" name="tgl_transaksi" required>
+                        <label for="nota_pelunasan" class="form-label">Nota Pelunasan</label>
+                        <input type="text" class="form-control" id="nota_pelunasan"  name="nota_pelunasan" value="<?php echo $nota_pelunasan; ?>" readonly>
                     </div>
                     <div class="mb-3">
-                        <label for="id_metode" class="form-label">Metode Pembayaran</label>
-                        <select class="form-select" id="id_metode" name="id_metode" required>
-                            <option value="">Pilih Metode</option>
-                            <?php
-                            $metode = mysqli_query($koneksi, "SELECT id_metode, nama_metode FROM master_metode_pembayaran");
-                            while ($met = mysqli_fetch_assoc($metode)) {
-                                echo "<option value='{$met['id_metode']}'>{$met['nama_metode']}</option>";
-                            }
-                            ?>
-                        </select>
+                        <label for="tanggal_pelunasan" class="form-label">Tanggal Pelunasan</label>
+                        <input type="date" class="form-control" id="tanggal_pelunasan" name="tanggal_pelunasan" required>
                     </div>
                     <div class="mb-3">
-                        <label for="id_produk" class="form-label">Nama Produk</label>
-                        <select class="form-select" id="id_produk" name="id_produk" required onchange="updateHargaSatuan()">
-                            <option value="">Pilih Produk</option>
-                            <?php
-                            $produk = mysqli_query($koneksi, "SELECT id_produk, nama_produk, harga_satuan FROM master_produk");
-                            while ($prod = mysqli_fetch_assoc($produk)) {
-                                echo "<option value='{$prod['id_produk']}' data-harga='{$prod['harga_satuan']}'>{$prod['nama_produk']}</option>";
-                            }
-                            ?>
-                        </select>
+                        <label for="id_supplier" class="form-label">Nama Supplier</label>
+                        <input type="text" class="form-control" id="id_supplier" name="id_supplier" readonly>
                     </div>
                     <div class="mb-3">
-                        <label for="jumlah_produk" class="form-label">Jumlah Produk</label>
-                        <input type="number" class="form-control" id="jumlah_produk" name="jumlah_produk" required>
+                        <label for="saldo_hutang_pl" class="form-label">Saldo Hutang</label>
+                        <input type="text" class="form-control" id="saldo_hutang_pl" name="saldo_hutang_pl" readonly>
                     </div>
                     <div class="mb-3">
-                        <label for="harga_satuan" class="form-label">Harga Satuan</label>
-                        <input type="number" class="form-control" id="harga_satuan" name="harga_satuan" readonly required>
+                        <label for="total_pelunasan" class="form-label">Total Pelunasan</label>
+                        <input type="number" class="form-control" id="total_pelunasan" name="total_pelunasan" readonly>
                     </div>
-                    <div class="mb-3">
-                        <label for="subtotal" class="form-label">Subtotal</label>
-                        <input type="number" class="form-control" id="subtotal" name="subtotal" readonly required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="jumlah_dibayar" class="form-label">Jumlah Dibayar</label>
-                        <input type="number" class="form-control" id="jumlah_dibayar" name="jumlah_dibayar" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="sisa_pembayaran" class="form-label">Sisa Pembayaran</label>
-                        <input type="number" class="form-control" id="sisa_pembayaran" name="sisa_pembayaran" readonly required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="status_pembayaran" class="form-label">Status Pembayaran</label>
-                        <select class="form-select" id="status_pembayaran" name="status_pembayaran" required>
-                            <option value="Lunas">Lunas</option>
-                            <option value="Belum Lunas">Belum Lunas</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Simpan Transaksi</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <a href="pelunasan_hutang.php" class="btn btn-secondary">Kembali</a>
                 </form>
             </div>
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script>
-                function updateHargaSatuan() {
-                    var produkSelect = document.getElementById('id_produk');
-                    var hargaSatuanInput = document.getElementById('harga_satuan');
-                    var selectedOption = produkSelect.options[produkSelect.selectedIndex];
-                    var hargaSatuan = selectedOption.getAttribute('data-harga');
-                    hargaSatuanInput.value = hargaSatuan;
-
-                    var jumlahProduk = document.getElementById('jumlah_produk').value;
-                    var subtotal = hargaSatuan * jumlahProduk;
-                    document.getElementById('subtotal').value = subtotal;
-
-                    var jumlahDibayar = document.getElementById('jumlah_dibayar').value;
-                    var sisaPembayaran = subtotal - jumlahDibayar;
-                    document.getElementById('sisa_pembayaran').value = sisaPembayaran;
-                }
-
-                // Event listener untuk menghitung subtotal dan sisa pembayaran ketika jumlah produk atau jumlah dibayar diubah
-                document.getElementById('jumlah_produk').addEventListener('input', updateHargaSatuan);
-                document.getElementById('jumlah_dibayar').addEventListener('input', updateHargaSatuan);
+                $(document).ready(function () {
+                    // Ketika dropdown id_transaksi berubah
+                    $('#id_transaksi').on('change', function () {
+                        let idTransaksi = $(this).val(); // Ambil nilai dari dropdown
+                        if (idTransaksi !== '') {
+                            // AJAX untuk mengambil data dari server
+                            $.ajax({
+                                url: 'get_supplier.php',
+                                type: 'GET',
+                                data: { id_transaksi: idTransaksi },
+                                success: function (response) {
+                                    let data = JSON.parse(response); // Parse response JSON
+                                    
+                                    if (data.id_supplier && data.nama_supplier && data.saldo_hutang_pl) {
+                                        // Set nilai id_supplier dan saldo_hutang_pl
+                                        $('#id_supplier').val(data.id_supplier);
+                                        $('#saldo_hutang_pl').val(data.saldo_hutang_pl);
+                                        
+                                        // Otomatis set nilai total_pelunasan sama dengan saldo_hutang_pl
+                                        $('#total_pelunasan').val(data.saldo_hutang_pl);
+                                    } else {
+                                        alert('ID Transaksi tidak valid!');
+                                        
+                                        // Kosongkan field jika data tidak valid
+                                        $('#id_supplier').val('');
+                                        $('#saldo_hutang_pl').val('');
+                                        $('#total_pelunasan').val('');
+                                    }
+                                },
+                                error: function () {
+                                    alert('Terjadi kesalahan saat mengambil data!');
+                                }
+                            });
+                        } else {
+                            // Reset field jika tidak ada ID Transaksi yang dipilih
+                            $('#id_supplier').val('');
+                            $('#saldo_hutang_pl').val('');
+                            $('#total_pelunasan').val('');
+                        }
+                    });
+                });
             </script>
-
-            </main>
-        </div>
-    </div>
-</body>
-</html>
+            </body>
+            </html>
