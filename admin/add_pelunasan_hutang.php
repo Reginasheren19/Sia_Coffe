@@ -31,12 +31,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         VALUES ('$id_transaksi', '$nota_pelunasan', '$tanggal_pelunasan', '$id_supplier', '$saldo_hutang_pl', '$total_pelunasan')
     ";
 
+        // Eksekusi query pelunasan hutang
+        if (mysqli_query($koneksi, $sql)) {
+            // Insert jurnal umum untuk pelunasan hutang
+            // Debit Hutang (id_akun hutang) dan Kredit Kas (id_akun kas)
+            $query_jurnal_debit = "
+                INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
+                VALUES ('$tanggal_pelunasan', 'Hutang', '10', '$total_pelunasan', 0)
+            ";
+    
+            $query_jurnal_kredit = "
+                INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
+                VALUES ('$tanggal_pelunasan', 'Kas', '2', 0, '$total_pelunasan')
+            ";
+
     // Eksekusi query
-    if (mysqli_query($koneksi, $sql)) {
+    if (mysqli_query($koneksi, $query_jurnal_debit) && mysqli_query($koneksi, $query_jurnal_kredit)) {
         echo "<script>alert('Data berhasil ditambahkan!'); window.location.href='pelunasan_hutang.php';</script>";
     } else {
         echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
     }
+}
 }
 ?>
 
