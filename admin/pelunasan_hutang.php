@@ -208,15 +208,16 @@ ini_set('display_errors', 1);
                 // Query untuk mengambil data hutang dan bergabung dengan tabel master_supplier dan transaksi_pengeluaran
                 $query =
                     "SELECT th.id_hutang, 
-                            tp.id_transaksi, 
+                            tp.no_nota AS id_transaksi, 
                             th.nota_pelunasan, 
                             th.tanggal_pelunasan, 
                             ms.nama_supplier, 
                             th.saldo_hutang_pl, 
                             th.total_pelunasan
-                        FROM    transaksi_hutang th
-                        JOIN transaksi_pengeluaran tp ON th.id_transaksi = tp.id_transaksi
-                        JOIN master_supplier ms ON th.id_supplier = ms.id_supplier";
+                    FROM transaksi_hutang th
+                    JOIN transaksi_pengeluaran tp ON th.id_transaksi = tp.id_transaksi
+                    JOIN master_supplier ms ON th.id_supplier = ms.id_supplier";
+
 
                 // Menampilkan data hutang
                 $result = mysqli_query($koneksi, $query);
