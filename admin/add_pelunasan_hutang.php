@@ -25,19 +25,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Query untuk menyimpan data ke database
-    $sql = "
-        INSERT INTO transaksi_hutang (id_transaksi, nota_pelunasan, tanggal_pelunasan, id_supplier, saldo_hutang_pl, total_pelunasan)
-        VALUES ('$id_transaksi', '$nota_pelunasan', '$tanggal_pelunasan', '$id_supplier', '$saldo_hutang_pl', '$total_pelunasan')
-    ";
+    // Periksa status transaksi sebelum update
+    $checkStatus = mysqli_query($koneksi, "SELECT status FROM transaksi_pengeluaran WHERE id_transaksi = '$id_transaksi'");
+    $statusRow = mysqli_fetch_assoc($checkStatus);
 
-    // Eksekusi query
-    if (mysqli_query($koneksi, $sql)) {
-        echo "<script>alert('Data berhasil ditambahkan!'); window.location.href='pelunasan_hutang.php';</script>";
+    if ($statusRow && $statusRow['status'] === 'Belum Lunas') {
+        // Lanjutkan jika masih "Belum Lunas"
+        $sql = "
+            INSERT INTO transaksi_hutang (id_transaksi, nota_pelunasan, tanggal_pelunasan, id_supplier, saldo_hutang_pl, total_pelunasan)
+            VALUES ('$id_transaksi', '$nota_pelunasan', '$tanggal_pelunasan', '$id_supplier', '$saldo_hutang_pl', '$total_pelunasan')
+        ";
+
+        if (mysqli_query($koneksi, $sql)) {
+            $updateStatus = mysqli_query($koneksi, "UPDATE transaksi_pengeluaran SET status = 'Lunas' WHERE id_transaksi = '$id_transaksi'");
+            if ($updateStatus) {
+                echo "<script>alert('Data berhasil ditambahkan dan status transaksi diperbarui menjadi Lunas!'); window.location.href='pelunasan_hutang.php';</script>";
+            } else {
+                echo "<script>alert('Data berhasil ditambahkan, tetapi gagal memperbarui status transaksi: " . mysqli_error($koneksi) . "');</script>";
+            }
+        } else {
+            echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
+        }
     } else {
-        echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
+        echo "<script>alert('Transaksi ini sudah dilunasi sebelumnya!'); window.location.href='pelunasan_hutang.php';</script>";
+        exit;
     }
 }
+
 ?>
 
 
@@ -234,7 +248,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="date" class="form-control" id="tanggal_pelunasan" name="tanggal_pelunasan" required>
                     </div>
                     <div class="mb-3">
-                        <label for="id_supplier" class="form-label">Nama Supplier</label>
+                        <label for="id_supplier" class="form-label">Id Supplier</label>
                         <input type="text" class="form-control" id="id_supplier" name="id_supplier" readonly>
                     </div>
                     <div class="mb-3">
