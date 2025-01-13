@@ -9,12 +9,11 @@ $lastId = isset($row['last_id']) ? $row['last_id'] + 1 : 1; // Jika kosong, mula
 // Format no_nota
 $nota_pelunasan = 'PLH-' . date('Ymd') . '-' . $lastId;
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id_transaksi =  mysqli_real_escape_string($koneksi, $_POST['id_transaksi']);
+    $id_transaksi = mysqli_real_escape_string($koneksi, $_POST['id_transaksi']);
     $nota_pelunasan = mysqli_real_escape_string($koneksi, $_POST['nota_pelunasan']);
     $tanggal_pelunasan = mysqli_real_escape_string($koneksi, $_POST['tanggal_pelunasan']);
-    $id_supplier = mysqli_real_escape_string($koneksi, $_POST['id_supplier']); 
+    $id_supplier = mysqli_real_escape_string($koneksi, $_POST['id_supplier']);
     $saldo_hutang_pl = mysqli_real_escape_string($koneksi, $_POST['saldo_hutang_pl']);
     $total_pelunasan = mysqli_real_escape_string($koneksi, $_POST['total_pelunasan']);
 
@@ -36,15 +35,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             VALUES ('$id_transaksi', '$nota_pelunasan', '$tanggal_pelunasan', '$id_supplier', '$saldo_hutang_pl', '$total_pelunasan')
         ";
 
-    // Eksekusi query
-    if (mysqli_query($koneksi, $sql)) {
-        echo "<script>alert('Data berhasil ditambahkan!'); window.location.href='pelunasan_hutang.php';</script>";
+        // Eksekusi query pelunasan hutang
+        if (mysqli_query($koneksi, $sql)) {
+            // Update status transaksi menjadi "Lunas"
+            $updateStatus = "UPDATE transaksi_pengeluaran SET status = 'Lunas' WHERE id_transaksi = '$id_transaksi'";
+            if (mysqli_query($koneksi, $updateStatus)) {
+                // Insert jurnal umum untuk pelunasan hutang
+                // Debit Hutang (id_akun hutang) dan Kredit Kas (id_akun kas)
+                $query_jurnal_debit = "
+                    INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
+                    VALUES ('$tanggal_pelunasan', 'Hutang', '10', '$total_pelunasan', 0)
+                ";
+
+                $query_jurnal_kredit = "
+                    INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
+                    VALUES ('$tanggal_pelunasan', 'Kas', '2', 0, '$total_pelunasan')
+                ";
+
+                // Eksekusi query jurnal umum
+                if (mysqli_query($koneksi, $query_jurnal_debit) && mysqli_query($koneksi, $query_jurnal_kredit)) {
+                    echo "<script>alert('Data berhasil ditambahkan dan jurnal umum tercatat!'); window.location.href='pelunasan_hutang.php';</script>";
+                } else {
+                    echo "<script>alert('Error mencatat jurnal umum: " . mysqli_error($koneksi) . "');</script>";
+                }
+            } else {
+                echo "<script>alert('Error memperbarui status: " . mysqli_error($koneksi) . "');</script>";
+            }
+        } else {
+            echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
+        }
     } else {
-        echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
+        echo "<script>alert('Transaksi sudah lunas!'); window.location.href='pelunasan_hutang.php';</script>";
     }
 }
-
 ?>
+
 
 
 <!DOCTYPE html>
