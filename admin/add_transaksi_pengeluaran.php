@@ -91,9 +91,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <option value="">Pilih Supplier</option>
                             <?php
                             // Fetch supplier data from the database
-                            $suppliers = mysqli_query($koneksi, "SELECT id_supplier, nama_supplier, saldo_hutang FROM master_supplier");
+                            $suppliers = mysqli_query($koneksi, "SELECT id_supplier, nama_supplier FROM master_supplier");
                             while ($supplier = mysqli_fetch_assoc($suppliers)) {
-                                echo "<option value='{$supplier['id_supplier']}' data-saldo='{$supplier['saldo_hutang']}'>{$supplier['nama_supplier']}</option>";
+                                echo "<option value='{$supplier['id_supplier']}'>{$supplier['nama_supplier']}</option>";
                             }
                             ?>
                         </select>
@@ -125,7 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div class="mb-3">
                         <label for="total" class="form-label">Total</label>
-                        <input type="number" class="form-control" id="total" name="total" disabled>
+                        <input type="number" class="form-control" id="total" name="total" required>
                     </div>
                     <div class="mb-3">
                         <label for="total_bayar" class="form-label">Total Bayar</label>

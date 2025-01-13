@@ -1,25 +1,28 @@
 <?php
-include("../config/koneksi_mysql.php"); // Pastikan koneksi PDO sudah diinisialisasi di sini
+include("../config/koneksi_mysql.php");
 
-if (isset($_GET['id_transaksi'])) { // Menggunakan id_transaksi
-    $id_transaksi = $_GET['id_transaksi'];
+if (isset($_GET['id_transaksi'])) {
+    $id_transaksi = mysqli_real_escape_string($koneksi, $_GET['id_transaksi']);
 
-    // Query untuk mendapatkan nama supplier berdasarkan id_transaksi
-    $query = "SELECT master_supplier.nama_supplier FROM transaksi_pengeluaran 
-              JOIN master_supplier ON transaksi_pengeluaran.id_supplier = master_supplier.id_supplier 
-              WHERE transaksi_pengeluaran.id_transaksi = :id_transaksi"; // Menggunakan parameter named
+    // Query untuk menghitung saldo hutang dengan benar
+    $query = "
+        SELECT 
+            tp.id_supplier, 
+            ms.nama_supplier, 
+            (tp.total - tp.total_bayar) AS saldo_hutang_pl
+        FROM transaksi_pengeluaran tp
+        JOIN master_supplier ms 
+            ON tp.id_supplier = ms.id_supplier
+        WHERE tp.id_transaksi = '$id_transaksi'
+    ";
 
-    $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':id_transaksi', $id_transaksi); // Binding parameter
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    $result = mysqli_query($koneksi, $query);
 
     if ($result) {
-        echo json_encode(['nama_supplier' => $result['nama_supplier']]);
+        $data = mysqli_fetch_assoc($result);
+        echo json_encode($data);
     } else {
-        echo json_encode(['nama_supplier' => null]);
+        echo json_encode(['error' => 'Query gagal: ' . mysqli_error($koneksi)]);
     }
-} else {
-    echo json_encode(['error' => 'ID Transaksi tidak diberikan']);
 }
 ?>

@@ -18,18 +18,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $saldo_hutang_pl = mysqli_real_escape_string($koneksi, $_POST['saldo_hutang_pl']);
     $total_pelunasan = mysqli_real_escape_string($koneksi, $_POST['total_pelunasan']);
 
+    // Validasi ID Transaksi
+    $cekTransaksi = mysqli_query($koneksi, "SELECT id_transaksi FROM transaksi_pengeluaran WHERE id_transaksi = '$id_transaksi'");
+    if (mysqli_num_rows($cekTransaksi) === 0) {
+        echo "<script>alert('ID Transaksi tidak valid!'); window.location.href='pelunasan_hutang.php';</script>";
+        exit;
+    }
+
     // Query untuk menyimpan data ke database
     $sql = "
         INSERT INTO transaksi_hutang (id_transaksi, nota_pelunasan, tanggal_pelunasan, id_supplier, saldo_hutang_pl, total_pelunasan)
         VALUES ('$id_transaksi', '$nota_pelunasan', '$tanggal_pelunasan', '$id_supplier', '$saldo_hutang_pl', '$total_pelunasan')
     ";
 
+        // Eksekusi query pelunasan hutang
+        if (mysqli_query($koneksi, $sql)) {
+            // Insert jurnal umum untuk pelunasan hutang
+            // Debit Hutang (id_akun hutang) dan Kredit Kas (id_akun kas)
+            $query_jurnal_debit = "
+                INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
+                VALUES ('$tanggal_pelunasan', 'Hutang', '10', '$total_pelunasan', 0)
+            ";
+    
+            $query_jurnal_kredit = "
+                INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
+                VALUES ('$tanggal_pelunasan', 'Kas', '2', 0, '$total_pelunasan')
+            ";
+
     // Eksekusi query
-    if (mysqli_query($koneksi, $sql)) {
+    if (mysqli_query($koneksi, $query_jurnal_debit) && mysqli_query($koneksi, $query_jurnal_kredit)) {
         echo "<script>alert('Data berhasil ditambahkan!'); window.location.href='pelunasan_hutang.php';</script>";
     } else {
         echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
     }
+}
 }
 ?>
 
@@ -236,7 +258,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div class="mb-3">
                         <label for="total_pelunasan" class="form-label">Total Pelunasan</label>
-                        <input type="number" class="form-control" id="total_pelunasan" name="total_pelunasan" required>
+                        <input type="number" class="form-control" id="total_pelunasan" name="total_pelunasan" readonly>
                     </div>
                     <button type="submit" class="btn btn-primary">Simpan</button>
                     <a href="pelunasan_hutang.php" class="btn btn-secondary">Kembali</a>
@@ -245,26 +267,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
             <script>
                 $(document).ready(function () {
-                    $('#id_transaksi').on('change', function () { // Menggunakan id_transaksi
-                        let idTransaksi = $(this).val(); // Mengambil nilai dari id_transaksi
+                    // Ketika dropdown id_transaksi berubah
+                    $('#id_transaksi').on('change', function () {
+                        let idTransaksi = $(this).val(); // Ambil nilai dari dropdown
                         if (idTransaksi !== '') {
+                            // AJAX untuk mengambil data dari server
                             $.ajax({
                                 url: 'get_supplier.php',
                                 type: 'GET',
-                                data: { id_transaksi: idTransaksi }, // Mengirimkan id_transaksi ke get_supplier.php
+                                data: { id_transaksi: idTransaksi },
                                 success: function (response) {
-                                    let data = JSON.parse(response);
-                                    if (data.nama_supplier) {
-                                        $('#id_supplier').val(data.nama_supplier); // Mengisi nama supplier
+                                    let data = JSON.parse(response); // Parse response JSON
+                                    
+                                    if (data.id_supplier && data.nama_supplier && data.saldo_hutang_pl) {
+                                        // Set nilai id_supplier dan saldo_hutang_pl
+                                        $('#id_supplier').val(data.id_supplier);
+                                        $('#saldo_hutang_pl').val(data.saldo_hutang_pl);
+                                        
+                                        // Otomatis set nilai total_pelunasan sama dengan saldo_hutang_pl
+                                        $('#total_pelunasan').val(data.saldo_hutang_pl);
                                     } else {
-                                        alert('ID Transaksi tidak ditemukan atau tidak valid!');
+                                        alert('ID Transaksi tidak valid!');
+                                        
+                                        // Kosongkan field jika data tidak valid
                                         $('#id_supplier').val('');
+                                        $('#saldo_hutang_pl').val('');
+                                        $('#total_pelunasan').val('');
                                     }
                                 },
                                 error: function () {
                                     alert('Terjadi kesalahan saat mengambil data!');
                                 }
                             });
+                        } else {
+                            // Reset field jika tidak ada ID Transaksi yang dipilih
+                            $('#id_supplier').val('');
+                            $('#saldo_hutang_pl').val('');
+                            $('#total_pelunasan').val('');
                         }
                     });
                 });
