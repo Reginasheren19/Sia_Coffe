@@ -46,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Menjalankan query untuk menyimpan data
     if (mysqli_query($koneksi, $query)) {
       // Jika berhasil, masukkan data ke jurnal umum
+      $id_transaksi = mysqli_insert_id($koneksi);
       $tanggal_penggajian = date('Y-m-d'); // Ambil tanggal saat ini
   
       // Query untuk mendapatkan nama akun dan kode akun berdasarkan id_akun
@@ -60,31 +61,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
           $query_jurnal_debit = "INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
                                  VALUES ('$tanggal_penggajian', 'Beban Gaji', '1', '$gaji_bersih', 0)";
           
-          // Query untuk jurnal kredit (kas)
+        // Eksekusi query jurnal debit
+        if (mysqli_query($koneksi, $query_jurnal_debit)) {
+          // Setelah jurnal debit berhasil, lanjutkan dengan jurnal kredit (Kas)
           $query_jurnal_kredit = "INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
                                   VALUES ('$tanggal_penggajian', 'Kas', '2', 0, '$gaji_bersih')";
           
-          // Eksekusi kedua query jurnal umum
-          if (mysqli_query($koneksi, $query_jurnal_debit) && mysqli_query($koneksi, $query_jurnal_kredit)) {
+          // Eksekusi query jurnal kredit
+          if (mysqli_query($koneksi, $query_jurnal_kredit)) {
               echo "<script>
                       alert('Data gaji dan jurnal umum berhasil disimpan');
                       window.location.href = 'transaksi_penggajian.php';  // Sesuaikan halaman tujuan
                     </script>";
           } else {
               echo "<script>
-                      alert('Data gaji berhasil disimpan, tetapi terjadi kesalahan pada jurnal umum');
+                      alert('Data gaji berhasil disimpan, tetapi terjadi kesalahan pada jurnal kredit');
                     </script>";
           }
-      } else {
+        } else {
           echo "<script>
-                  alert('Data gaji berhasil disimpan, tetapi akun tidak ditemukan');
+                  alert('Data gaji berhasil disimpan, tetapi terjadi kesalahan pada jurnal debit');
                 </script>";
+        }
       }
-  } else {
-      // Jika query penggajian gagal
-      echo "<script>
-              alert('Terjadi kesalahan saat menyimpan data: " . mysqli_error($koneksi) . "');
-            </script>";
+    }
   }
-}
-?>
+        ?>
