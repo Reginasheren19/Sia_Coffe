@@ -213,6 +213,9 @@ ini_set('display_errors', 1);
                                             <th>Jumlah Produk</th>
                                             <th>Harga Satuan</th>
                                             <th>Subtotal</th>
+                                            <th>Status Pembayaran</th>
+                                            <th>Jumlah Di Bayar</th>
+                                            <th>Sisa Pembayaran</th>
                                         </tr>
                                     </thead>
                                     <tbody id="data_transaksi_pemesanan">
@@ -235,7 +238,10 @@ ini_set('display_errors', 1);
                                         (tp.jumlah_produk * tp.harga_satuan) AS subtotal,
                                         mc.nama_customer,
                                         mp.nama_produk,
-                                        mm.nama_metode
+                                        mm.nama_metode,
+                                        tp.status_pembayaran,
+                                        tp.jumlah_dibayar,
+                                        ((tp.jumlah_produk * tp.harga_satuan) - tp.jumlah_dibayar)
                                     FROM 
                                         transaksi_pemesanan tp
                                     LEFT JOIN 
@@ -253,7 +259,11 @@ ini_set('display_errors', 1);
                                         if ($result) {
                                             // Menampilkan data hasil query
                                             while ($row = mysqli_fetch_assoc($result)) {
-                                                echo "<tr>
+                                            // Menentukan status pembayaran
+                                            $statusPembayaran = ($row['status_pembayaran'] == 1) ? "Lunas" : "Belum Lunas"; // Misal 1 = Lunas, 0 = Belum Lunas
+                                            // Menentukan sisa pembayaran
+                                            $sisaPembayaran = !empty($row['sisa_pembayaran']) && $row['sisa_pembayaran'] > 0 ? number_format($row['sisa_pembayaran'], 2) : "Lunas";
+                                            echo "<tr>
                                             <td>{$row['id_transaksi_pemesanan']}</td>
                                             <td>{$row['nama_customer']}</td>
                                             <td>{$row['tgl_transaksi']}</td>
@@ -262,6 +272,8 @@ ini_set('display_errors', 1);
                                             <td>{$row['jumlah_produk']}</td>
                                             <td>" . number_format($row['harga_satuan'], 2) . "</td>
                                             <td>" . number_format($row['subtotal'], 2) . "</td>
+                                            <td>{$statusPembayaran}</td>
+                                            <td>{$sisaPembayaran}</td>
                                         </tr>";
                                             }
                                         } else {

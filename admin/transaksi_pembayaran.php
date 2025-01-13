@@ -219,7 +219,7 @@ ini_set('display_errors', 1);
                                     SELECT 
                                         tp.id_transaksi_pembayaran,
                                         tp.id_transaksi_pemesanan,
-                                        tp.tanggal_pembayaran,
+                                        tp.tgl_pembayaran,
                                         mm.nama_metode AS metode_pembayaran,
                                         tps.subtotal,
                                         CASE 
@@ -238,13 +238,17 @@ ini_set('display_errors', 1);
                                     JOIN master_akun ma ON tp.id_akun = ma.id_akun
                                 ";
 
-                                    // Menampilkan data hasil query
+                                    // Eksekusi query
+                                    $result = mysqli_query($koneksi, $query);
+
+                                    //Perisa apakah query berhasil
                                     if ($result) {
+                                        //Menampilkan data hasil query
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>
                                                 <td>{$row['id_transaksi_pembayaran']}</td>
                                                 <td>{$row['id_transaksi_pemesanan']}</td>
-                                                <td>{$row['tanggal_pembayaran']}</td>
+                                                <td>{$row['tgl_pembayaran']}</td>
                                                 <td>{$row['metode_pembayaran']}</td>
                                                 <td>" . number_format($row['subtotal'], 2) . "</td>
                                                 <td>" . number_format($row['saldo_piutang'], 2) . "</td>
@@ -254,6 +258,9 @@ ini_set('display_errors', 1);
                                             </tr>";
                                         }
                                     }
+
+                                    //Tutup koneksi
+                                    mysqli_close($koneksi);
                                     ?>
                                 </tbody>
                             </table>
