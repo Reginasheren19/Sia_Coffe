@@ -35,15 +35,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             VALUES 
                 ('$no_nota', '$kategori_pengeluaran', '$id_supplier', '$id_akun', '$tanggal_transaksi', '$harga', '$jumlah', '$total', '$total_bayar', '$status')";
 
-    // Eksekusi query
+    // Eksekusi query transaksi
     if (mysqli_query($koneksi, $sql)) {
+        // Logika jurnal umum
+        // Ambil nama akun berdasarkan id_akun
+        $query_akun = "SELECT nama_akun FROM master_akun WHERE id_akun = '$id_akun'";
+        $result_akun = mysqli_query($koneksi, $query_akun);
+
+        if ($result_akun && mysqli_num_rows($result_akun) > 0) {
+            $row_akun = mysqli_fetch_assoc($result_akun);
+            $nama_akun = $row_akun['nama_akun']; // Mengambil nama akun
+        } else {
+            $nama_akun = 'Akun Tidak Ditemukan'; // Default jika akun tidak ditemukan
+        }
+
+        // Jurnal berdasarkan status
+        if ($status === 'Lunas') {
+            // Jurnal untuk lunas
+            $query_jurnal_debit = "INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
+                                   VALUES ('$tanggal_transaksi', '$nama_akun', '$id_akun', '$total', 0)";
+            $query_jurnal_kredit = "INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
+                                    VALUES ('$tanggal_transaksi', 'Kas', '2', 0, '$total')";
+
+            mysqli_query($koneksi, $query_jurnal_debit);
+            mysqli_query($koneksi, $query_jurnal_kredit);
+        } elseif ($total_bayar > 0 && $total_bayar < $total) {
+            // Jurnal untuk pengeluaran kredit (cicilan)
+            $query_jurnal_debit = "INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
+                                   VALUES ('$tanggal_transaksi', '$nama_akun', '$id_akun', '$total', 0)";
+            $query_jurnal_kredit1 = "INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
+                                     VALUES ('$tanggal_transaksi', 'Kas', '2', 0, '$total_bayar')";
+            $query_jurnal_kredit2 = "INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
+                                     VALUES ('$tanggal_transaksi', 'Hutang', '10', 0, '" . ($total - $total_bayar) . "')";
+
+            mysqli_query($koneksi, $query_jurnal_debit);
+            mysqli_query($koneksi, $query_jurnal_kredit1);
+            mysqli_query($koneksi, $query_jurnal_kredit2);
+        } else {
+            // Jurnal untuk debit tanpa DP
+            $query_jurnal_debit = "INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
+                                   VALUES ('$tanggal_transaksi', '$nama_akun', '$id_akun', '$total', 0)";
+            $query_jurnal_kredit = "INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
+                                    VALUES ('$tanggal_transaksi', 'Hutang', '10', 0, '$total')";
+
+            mysqli_query($koneksi, $query_jurnal_debit);
+            mysqli_query($koneksi, $query_jurnal_kredit);
+        }
+
         echo "<script>alert('Data berhasil ditambahkan!'); window.location.href='transaksi_pengeluaran.php';</script>";
     } else {
         echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
     }
-
 }
 ?>
+
 
 
 
