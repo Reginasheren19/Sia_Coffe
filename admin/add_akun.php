@@ -6,13 +6,11 @@ ini_set('display_errors', 1);
 // Include koneksi ke database
 include("../config/koneksi_mysql.php");
 
-echo '<pre>';
 print_r($_POST);
-echo '</pre>';
+
 
 // Jika form disubmit melalui POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $id_akun = mysqli_real_escape_string($koneksi, $_POST['id_akun']);
     $kode_akun = mysqli_real_escape_string($koneksi, $_POST['kode_akun']);
     $nama_akun = mysqli_real_escape_string($koneksi, $_POST['nama_akun']);
     $kategori = mysqli_real_escape_string($koneksi, $_POST['kategori']);

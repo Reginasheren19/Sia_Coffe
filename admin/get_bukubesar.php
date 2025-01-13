@@ -1,12 +1,90 @@
 <?php
 include("../config/koneksi_mysql.php");
 
-// Inisialisasi variabel $data
-$data = null;
-
+// Inisialisasi variabel
 $bulan_bb = isset($_GET['bulan']) ? $_GET['bulan'] : '';
 $tahun_bb = isset($_GET['tahun']) ? $_GET['tahun'] : '';
+$akun_bb = isset($_GET['akun']) ? $_GET['akun'] : '';
 $nama_akun = isset($_GET['nama_akun']) ? $_GET['nama_akun'] : '';
+$data = [];
+$total_debitbb = 0;
+$total_kreditbb = 0;
+foreach ($data as $row) {
+    $total_debitbb += $row['debit'];
+    $total_kreditbb += $row['kredit'];
+}
+
+// Query untuk mendapatkan data transaksi karyawan yang terdaftar, lengkap dengan jabatan dan absensi
+$query = "SELECT 
+    ju.tanggal,
+    ma.kode_akun,
+    ma.nama_akun,
+    ju.debit,
+    ju.kredit,
+    CASE
+        WHEN EXISTS (
+            SELECT 1
+            FROM jurnal_umum ju2
+            JOIN master_akun ma2 ON ju2.id_akun = ma2.id_akun
+            WHERE ju2.tanggal = ju.tanggal
+              AND ju2.kredit > 0
+              AND ma2.nama_akun IN ('Kas', 'Hutang')
+        ) AND ma.nama_akun IN ('Peralatan', 'Perlengkapan') AND ju.debit > 0 
+            THEN CONCAT('Pembelian ', ma.nama_akun, ' Kredit')
+
+
+        WHEN ma.nama_akun IN ('Beban Gaji', 'Beban Listrik', 'Beban Air') AND ju.kredit = 0 
+            THEN CONCAT('Membayar Beban ', IFNULL(ma.nama_akun, ''))
+        WHEN ma.nama_akun IN ('Peralatan', 'Perlengkapan') AND ju.kredit = 0 
+            THEN CONCAT('Pembelian ', IFNULL(ma.nama_akun, ''))
+
+        /*WHEN ma.nama_akun IN ('Peralatan', 'Perlengkapan') AND (ju.kredit = 0 OR ju.debit > 0) AND (ma.nama_akun = 'Kas' OR ma.nama_akun = 'Hutang') 
+            THEN CONCAT('Pembelian ', IFNULL(ma.nama_akun, ''), ' Kredit')*/
+
+        WHEN ma.nama_akun = 'Hutang' AND ju.kredit = 0 
+            THEN 'Membayar Hutang'
+        WHEN ma.nama_akun = 'Pendapatan' AND ju.debit = 0 
+            THEN 'Menerima Pendapatan'
+        WHEN ma.nama_akun IN ('Piutang', 'Pendapatan') AND ju.debit = 0 
+            THEN 'Menerima Pendapatan Piutang'
+        WHEN ma.nama_akun = 'Pendapatan Lain-lain' AND ju.kredit = 0 
+            THEN 'Menerima Pendapatan Lain-lain'
+        ELSE 'Transaksi Tidak Dikenali'
+    END AS keterangan
+FROM 
+    jurnal_umum ju
+JOIN 
+    master_akun ma ON ju.id_akun = ma.id_akun
+WHERE 
+    MONTH(ju.tanggal) = '$bulan_bb' 
+    AND YEAR(ju.tanggal) = '$tahun_bb'
+    AND ma.id_akun = '$nama_akun'
+ORDER BY 
+    ju.tanggal ASC";
+
+$result = mysqli_query($koneksi, $query);
+
+if (!$result) {
+    echo "Query Error: " . mysqli_error($koneksi) . "<br>";
+} else {
+    echo "Number of rows: " . mysqli_num_rows($result) . "<br>";
+}
+
+    // Output hasil query dalam format HTML
+    if ($result) {
+        if (mysqli_num_rows($result) > 0) {
+            $data = [];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $data[] = $row;
+                $total_debitbb += $row['debit'];
+                $total_kreditbb += $row['kredit'];
+            }
+        } else {
+            $data = [];
+        }
+    } else {
+        $data = null;
+    }
 
 
 ?>
@@ -184,23 +262,23 @@ $nama_akun = isset($_GET['nama_akun']) ? $_GET['nama_akun'] : '';
         <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">Jurnal Umum</h1>
+                <h1 class="mt-4">Buku Besar</h1>
                 <ol class="breadcrumb mb-4">
                     <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Jurnal Umum</li>
+                    <li class="breadcrumb-item active">Buku Besar</li>
                 </ol>
 
                 <!-- Form untuk memilih bulan dan tahun -->
                 <div class="card mb-4">
                     <div class="card-header">
-                        <i class="fas fa-table me-1"></i> Filter Data Absensi
+                        <i class="fas fa-table me-1"></i> Filter Buku Besar
                     </div>
                     <div class="card-body">
                         <form class="form-inline">
                             <div class="form-group mb-3">
                                 <label for="bulan">Bulan</label>
                                 <select class="form-control ml-3" name="bulan" id="bulan">
-                                    <option value="">Pilih Bulan</option>
+                                <option value="">Pilih Bulan</option>
                                     <option value="01" <?php echo ($bulan_bb == '01') ? 'selected' : ''; ?>>Januari</option>
                                     <option value="02" <?php echo ($bulan_bb == '02') ? 'selected' : ''; ?>>Februari</option>
                                     <option value="03" <?php echo ($bulan_bb == '03') ? 'selected' : ''; ?>>Maret</option>
@@ -247,7 +325,7 @@ $nama_akun = isset($_GET['nama_akun']) ? $_GET['nama_akun'] : '';
                             </div>
                             <div class="mb-3
                              d-flex justify-content-end">
-                                <button type="submit" class="btn btn-success" formaction="get_bukubesar.php?bulan=<?php echo $bulan_bb; ?>&tahun=<?php echo $tahun_bb; ?>&nama_akun=<?php echo $nama_akun; ?>">
+                                <button type="submit" class="btn btn-success" formaction="get_bukubesar.php?bulan=<?php echo $bulan_bb; ?>&tahun=<?php echo $tahun_bb; ?>">
                                     Tampilkan Data
                                 </button>
                                 <button type="submit" class="btn btn-success ms-2" formaction="add_absensi.php?bulan=<?php echo $bulan_bb; ?>&tahun=<?php echo $tahun_bb; ?>">
@@ -257,6 +335,75 @@ $nama_akun = isset($_GET['nama_akun']) ? $_GET['nama_akun'] : '';
                         </form>
                     </div>
                 </div>
+                <!-- Menampilkan data absensi -->
+                <?php if ($data !== null): ?>
+                    <div class="alert alert-info">
+                        Menampilkan Data Buku Besar Bulan: <strong><?php echo $bulan_bb; ?></strong> Tahun: <strong><?php echo $tahun_bb; ?></strong>
+                    </div>
+                    <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-table me-1"></i> Filter Buku Besar
+                    </div>
+                    <div class="card-body">
+                            <!-- Menambahkan judul Buku Besar Akun -->
+                    <h4>Buku Besar Akun: <?php echo htmlspecialchars($nama_akun); ?></h4>
+    
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="table-absensi">
+                            <thead>
+                                <tr>
+                                    <th>Tanggal</th>
+                                    <th>Kode Akun</th>
+                                    <th>Keterangan</th>
+                                    <th>Debit</th>
+                                    <th>Kredit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if ($data): ?>
+                                    <?php foreach ($data as $row): ?>
+                                        <tr>
+                                        <td><?php echo $row['tanggal']; ?></td>
+                                        <td><?php echo $row['kode_akun']; ?></td>
+                                        <td><?php echo $row['keterangan']; ?></td>
+                                        <td><?php echo number_format($row['debit'], 2); ?></td>
+                                        <td><?php echo number_format($row['kredit'], 2); ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                        <!-- Baris total -->
+                                        <tr>
+                                            <td colspan="3" class="text-center"><strong></strong></td>
+                                            <td><strong><?php echo number_format($total_debitbb, 2); ?></strong></td>
+                                            <td><strong><?php echo number_format($total_kreditbb, 2); ?></strong></td>
+                                        </tr>
+
+                                        <!-- Baris untuk saldo -->
+                                        <tr>
+                                            <td colspan="3" class="text-center"><strong>Saldo</strong></td>
+                                            <td colspan="2" class="text-center">
+                                                <strong>
+                                                    <?php
+                                                    // Menghitung saldo berdasarkan kondisi debit dan kredit
+                                                    if ($total_debitbb > $total_kreditbb) {
+                                                        // Jika total debit lebih besar, saldo = debit - kredit
+                                                        $saldo = $total_debitbb - $total_kreditbb;
+                                                    } else {
+                                                        // Jika total kredit lebih besar, saldo = kredit - debit
+                                                        $saldo = $total_kreditbb - $total_debitbb;
+                                                    }
+                                                    echo number_format($saldo, 2);
+                                                    ?>
+                                                </strong>
+                                            </td>
+                                        </tr>
+                                <?php else: ?>
+                                    <tr><td colspan="6">Data Buku Besar tidak ditemukan.</td></tr>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endif; ?>
             </div>
         </main>
     </div>
