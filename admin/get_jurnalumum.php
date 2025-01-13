@@ -5,6 +5,8 @@ include("../config/koneksi_mysql.php");
 $bulan_jurnal = isset($_GET['bulan']) ? $_GET['bulan'] : '';
 $tahun_jurnal = isset($_GET['tahun']) ? $_GET['tahun'] : '';
 $data = [];
+$total_debit = 0;  // Variabel untuk menghitung total debit
+$total_kredit = 0;
 
 // Query untuk mendapatkan data transaksi karyawan yang terdaftar, lengkap dengan jabatan dan absensi
 $query = "SELECT 
@@ -19,10 +21,10 @@ FROM
 JOIN 
     master_akun ma ON ju.id_akun = ma.id_akun
 WHERE 
-    MONTH(ju.tanggal) = '01' 
-    AND YEAR(ju.tanggal) = '2024'
+    MONTH(ju.tanggal) = '$bulan_jurnal' 
+    AND YEAR(ju.tanggal) = '$tahun_jurnal'
 ORDER BY 
-    ju.tanggal ASC;"
+    ju.id_jurnal_umum ASC";
 
 $result = mysqli_query($koneksi, $query);
 
@@ -31,6 +33,8 @@ $result = mysqli_query($koneksi, $query);
         if (mysqli_num_rows($result) > 0) {
             $data = [];
             while ($row = mysqli_fetch_assoc($result)) {
+                $total_debit += $row['debit'];
+                $total_kredit += $row['kredit'];
                 $data[] = $row;
             }
         } else {
@@ -283,7 +287,6 @@ $result = mysqli_query($koneksi, $query);
                         <table class="table table-bordered" id="table-absensi">
                             <thead>
                                 <tr>
-                                    <th>ID Jurnal</th>
                                     <th>Tanggal</th>
                                     <th>Keterangan</th>
                                     <th>Akun</th>
@@ -295,14 +298,20 @@ $result = mysqli_query($koneksi, $query);
                                 <?php if ($data): ?>
                                     <?php foreach ($data as $row): ?>
                                         <tr>
-                                            <td><?php echo $row['id_jurnal']; ?></td>
-                                            <td><?php echo $row['tanggal']; ?></td>
-                                            <td><?php echo $row['keterangan']; ?></td>
-                                            <td><?php echo $row['nama_akun']; ?></td>
-                                            <td><?php echo number_format($row['debit'], 2); ?></td>
-                                            <td><?php echo number_format($row['kredit'], 2); ?></td>
-                                            </tr>
+                                        <td><?php echo ($row['kredit'] > 0) ? '' : $row['tanggal']; ?></td> <!-- Tanggal hanya ditampilkan jika debit bukan 0 -->
+                                        <td style="text-align: <?php echo ($row['kredit'] > 0) ? 'right' : 'left'; ?>;">
+                                            <?php echo $row['nama_akun']; ?>
+                                        </td>                                            <td><?php echo $row['kode_akun']; ?></td>
+                                        <td><?php echo ($row['debit'] > 0) ? number_format($row['debit'], 2) : ''; ?></td> <!-- Kolom debit hanya diisi jika ada nilai debit -->
+                                        <td><?php echo ($row['kredit'] > 0) ? number_format($row['kredit'], 2) : ''; ?></td> <!-- Kolom kredit hanya diisi jika ada nilai kredit -->
+                                        </tr>
                                     <?php endforeach; ?>
+                                        <!-- Baris total -->
+                                        <tr>
+                                            <td colspan="3" class="text-center"><strong>Total</strong></td>
+                                            <td><strong><?php echo number_format($total_debit, 2); ?></strong></td>
+                                            <td><strong><?php echo number_format($total_kredit, 2); ?></strong></td>
+                                        </tr>
                                 <?php else: ?>
                                     <tr><td colspan="6">Data Jurnal Umum tidak ditemukan.</td></tr>
                                 <?php endif; ?>
