@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             tp.bonus,
             (COALESCE(SUM(ak.alpha), 0) * mj.potongan) AS potongan,
             (COALESCE(SUM(ak.jam_lembur), 0) * mj.upah_lembur) AS gaji_lembur,
-            (mj.gaji_pokok + mj.tunjangan + tp.bonus - (COALESCE(SUM(ak.alpha), 0) * mj.potongan) + (COALESCE(SUM(ak.jam_lembur), 0) * mj.upah_lembur)) AS gaji_bersih
+            (mj.gaji_pokok + mj.tunjangan + COALESCE(tp.bonus, 0) - (COALESCE(SUM(ak.alpha), 0) * mj.potongan) + (COALESCE(SUM(ak.jam_lembur), 0) * mj.upah_lembur)) AS gaji_bersih
         FROM 
             transaksi_karyawan tk
         JOIN 

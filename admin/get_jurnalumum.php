@@ -10,8 +10,8 @@ $data = [];
 $query = "SELECT 
     ju.id_jurnal_umum,
     ju.tanggal,
-    ju.keterangan,
     ma.nama_akun,
+    ma.kode_akun,
     ju.debit,
     ju.kredit
 FROM 
@@ -22,7 +22,7 @@ WHERE
     MONTH(ju.tanggal) = '01' 
     AND YEAR(ju.tanggal) = '2024'
 ORDER BY 
-    ju.tanggal ASC;";
+    ju.tanggal ASC;"
 
 $result = mysqli_query($koneksi, $query);
 
