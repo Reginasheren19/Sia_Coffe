@@ -36,19 +36,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             VALUES ('$id_transaksi', '$nota_pelunasan', '$tanggal_pelunasan', '$id_supplier', '$saldo_hutang_pl', '$total_pelunasan')
         ";
 
-        if (mysqli_query($koneksi, $sql)) {
-            $updateStatus = mysqli_query($koneksi, "UPDATE transaksi_pengeluaran SET status = 'Lunas' WHERE id_transaksi = '$id_transaksi'");
-            if ($updateStatus) {
-                echo "<script>alert('Data berhasil ditambahkan dan status transaksi diperbarui menjadi Lunas!'); window.location.href='pelunasan_hutang.php';</script>";
-            } else {
-                echo "<script>alert('Data berhasil ditambahkan, tetapi gagal memperbarui status transaksi: " . mysqli_error($koneksi) . "');</script>";
-            }
-        } else {
-            echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
-        }
+    // Eksekusi query
+    if (mysqli_query($koneksi, $sql)) {
+        echo "<script>alert('Data berhasil ditambahkan!'); window.location.href='pelunasan_hutang.php';</script>";
     } else {
-        echo "<script>alert('Transaksi ini sudah dilunasi sebelumnya!'); window.location.href='pelunasan_hutang.php';</script>";
-        exit;
+        echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
     }
 }
 

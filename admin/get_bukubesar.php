@@ -34,7 +34,7 @@ $query = "SELECT
 
 
         WHEN ma.nama_akun IN ('Beban Gaji', 'Beban Listrik', 'Beban Air') AND ju.kredit = 0 
-            THEN CONCAT('Membayar Beban ', IFNULL(ma.nama_akun, ''))
+            THEN CONCAT('Membayar ', IFNULL(ma.nama_akun, ''))
         WHEN ma.nama_akun IN ('Peralatan', 'Perlengkapan') AND ju.kredit = 0 
             THEN CONCAT('Pembelian ', IFNULL(ma.nama_akun, ''))
 

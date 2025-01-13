@@ -96,10 +96,6 @@ session_start();
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Pendapatan
                             </a>
-                            <a class="nav-link" href="transaksi_pemesanan.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Pemesanan
-                            </a>
                             <a class="nav-link" href="transaksi_pembayaran.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Pembayaran
