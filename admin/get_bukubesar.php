@@ -22,25 +22,26 @@ $query = "SELECT
     ju.debit,
     ju.kredit,
     CASE
-        WHEN EXISTS (
-            SELECT 1
+        WHEN ma.nama_akun = 'Kas' AND ju.debit = 0 THEN 
+            (SELECT CONCAT(
+                CASE 
+                    WHEN ma2.nama_akun LIKE 'Beban Gaji' THEN 'Membayar Beban Gaji'
+                    WHEN ma2.nama_akun LIKE 'Beban Listrik' THEN 'Membayar Beban Listrik'
+                    WHEN ma2.nama_akun LIKE 'Beban Air' THEN 'Membayar Beban Air'
+                    WHEN ma2.nama_akun = 'Hutang' THEN 'Membayar Hutang'
+                    WHEN ma2.nama_akun = 'Perlengkapan' THEN 'Pembelian Perlengkapan'
+                    ELSE 'Transaksi Tidak Dikenali'
+                END)
             FROM jurnal_umum ju2
             JOIN master_akun ma2 ON ju2.id_akun = ma2.id_akun
-            WHERE ju2.tanggal = ju.tanggal
-              AND ju2.kredit > 0
-              AND ma2.nama_akun IN ('Kas', 'Hutang')
-        ) AND ma.nama_akun IN ('Peralatan', 'Perlengkapan') AND ju.debit > 0 
-            THEN CONCAT('Pembelian ', ma.nama_akun, ' Kredit')
-
+            WHERE ju2.tanggal = ju.tanggal 
+              AND ju2.debit > 0
+              LIMIT 1)
 
         WHEN ma.nama_akun IN ('Beban Gaji', 'Beban Listrik', 'Beban Air') AND ju.kredit = 0 
             THEN CONCAT('Membayar ', IFNULL(ma.nama_akun, ''))
         WHEN ma.nama_akun IN ('Peralatan', 'Perlengkapan') AND ju.kredit = 0 
             THEN CONCAT('Pembelian ', IFNULL(ma.nama_akun, ''))
-
-        /*WHEN ma.nama_akun IN ('Peralatan', 'Perlengkapan') AND (ju.kredit = 0 OR ju.debit > 0) AND (ma.nama_akun = 'Kas' OR ma.nama_akun = 'Hutang') 
-            THEN CONCAT('Pembelian ', IFNULL(ma.nama_akun, ''), ' Kredit')*/
-
         WHEN ma.nama_akun = 'Hutang' AND ju.kredit = 0 
             THEN 'Membayar Hutang'
         WHEN ma.nama_akun = 'Pendapatan' AND ju.debit = 0 
@@ -85,8 +86,6 @@ if (!$result) {
     } else {
         $data = null;
     }
-
-
 ?>
 
 <!DOCTYPE html>
