@@ -27,12 +27,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo $query;
 
 
+        // Debugging: Print the query
+        echo "Query: $query<br>";
+
         // Eksekusi query
         if (mysqli_query($koneksi, $query)) {
+            echo "Data berhasil disimpan.<br>";
             header("Location: transaksi_pendapatan.php?success=1"); // Redirect dengan pesan sukses
             exit();
         } else {
-            echo "Error: " . mysqli_error($koneksi);
+            echo "Error: " . mysqli_error($koneksi) . "<br>";
+            echo "Query: $query<br>";
             exit();
         }
     } else {
