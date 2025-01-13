@@ -24,38 +24,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tanggal_pengeluaran_lain = mysqli_real_escape_string($koneksi, $_POST['tanggal_pengeluaran_lain']);
     $total = (float)$_POST['total']; // Menggunakan float untuk total
 
-        // Query untuk mendapatkan nama akun berdasarkan id_akun
-        $query_akun = "SELECT nama_akun FROM master_akun WHERE id_akun = '$id_akun'";
-        $result_akun = mysqli_query($koneksi, $query_akun);
-    
-        if ($result_akun && mysqli_num_rows($result_akun) > 0) {
-            $row_akun = mysqli_fetch_assoc($result_akun);
-            $nama_akun = $row_akun['nama_akun']; 
-        }// Mengambil nama akun
+    // Query untuk mendapatkan nama akun berdasarkan id_akun
+    $query_akun = "SELECT nama_akun FROM master_akun WHERE id_akun = '$id_akun'";
+    $result_akun = mysqli_query($koneksi, $query_akun);
+
+    if ($result_akun && mysqli_num_rows($result_akun) > 0) {
+        $row_akun = mysqli_fetch_assoc($result_akun);
+        $nama_akun = $row_akun['nama_akun']; // Mengambil nama akun
+    }
 
     // Query untuk menyimpan data ke tabel transaksi_pengeluaran_lain
     $sql = "INSERT INTO transaksi_pengeluaran_lain (nota_pengeluaran_lain, id_akun, tanggal_pengeluaran_lain, total) 
             VALUES ('$nota_pengeluaran_lain', '$id_akun', '$tanggal_pengeluaran_lain', '$total')";
 
-            // Eksekusi query pengeluaran lain
-            if (mysqli_query($koneksi, $sql)) {
-                // Insert jurnal umum (debit: beban, kredit: kas)
-                $query_jurnal_debit = "INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
-                                       VALUES ('$tanggal_pengeluaran_lain', '$nama_akun', '$id_akun', '$total', 0)";
-    
-                $query_jurnal_kredit = "INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
-                                        VALUES ('$tanggal_pengeluaran_lain', 'Kas', '2', 0, '$total')";
+    // Eksekusi query pengeluaran lain
+    if (mysqli_query($koneksi, $sql)) {
+        // Insert jurnal umum (debit: beban, kredit: kas)
+        $query_jurnal_debit = "INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
+                               VALUES ('$tanggal_pengeluaran_lain', '$nama_akun', '$id_akun', '$total', 0)";
 
+        $query_jurnal_kredit = "INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
+                                VALUES ('$tanggal_pengeluaran_lain', 'Kas', '2', 0, '$total')";
 
-    // Eksekusi query
-    if (mysqli_query($koneksi, $query_jurnal_debit) && mysqli_query($koneksi, $query_jurnal_kredit)) {
-        echo "<script>alert('Data berhasil ditambahkan!'); window.location.href='transaksi_pengeluaran_lain.php';</script>";
-    } else {
-        echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
+        // Eksekusi query
+        if (mysqli_query($koneksi, $query_jurnal_debit) && mysqli_query($koneksi, $query_jurnal_kredit)) {
+            echo "<script>alert('Data berhasil ditambahkan!'); window.location.href='transaksi_pengeluaran_lain.php';</script>";
+        } else {
+            echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
+        }
     }
 }
-}
 ?>
+
 
 
 
