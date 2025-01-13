@@ -238,8 +238,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="nama_customer" class="form-label">Nama Customer</label>
-                    <input type="text" class="form-control" id="nama_customer" name="nama_customer" readonly>
+                    <label for="id_customer" class="form-label">Nama Customer</label>
+                    <select class="form-select" id="id_customer" name="id_customer" required>
+                        <option value="">Pilih Customer</option>
+                        <?php
+                        $customers = mysqli_query($koneksi, "SELECT id_customer, nama_customer FROM master_customer");
+                        while ($customer = mysqli_fetch_assoc($customers)) {
+                            echo "<option value='{$customer['id_customer']}'>{$customer['nama_customer']}</option>";
+                        }
+                        ?>
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label for="produk" class="form-label">Produk</label>
