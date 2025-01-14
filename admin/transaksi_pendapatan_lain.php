@@ -215,24 +215,24 @@ error_reporting(0)
                        ma.nama_akun, 
                        tpl.tanggal_pendapatan_lain, 
                        tpl.total
-                FROM transaksi_pengeluaran_lain tpl
+                FROM transaksi_pendapatan_lain tpl
                 JOIN master_akun ma ON tpl.id_akun = ma.id_akun
             ");
 
             // Display transaction data
             while ($row = mysqli_fetch_assoc($result)) {
                 echo "<tr>
-                    <td>{$row['id_pengeluaran_lain']}</td>
-                    <td>{$row['nota_pengeluaran_lain']}</td>
+                    <td>{$row['id_pendapatan_lain']}</td>
+                    <td>{$row['nama_kategori']}</td>
                     <td>{$row['nama_akun']}</td>
-                    <td>{$row['tanggal_pengeluaran_lain']}</td>
+                    <td>{$row['tanggal_pendapatan_lain']}</td>
                     <td>" . number_format($row['total'], 2) . "</td>
                 </tr>";
             }
             ?>
             <?php
                 // Query untuk mendapatkan ID transaksi terakhir
-                $result_last_id = mysqli_query($koneksi, "SELECT MAX(id_pengeluaran_lain) AS last_id FROM transaksi_pengeluaran_lain");
+                $result_last_id = mysqli_query($koneksi, "SELECT MAX(id_pendapatan_lain) AS last_id FROM transaksi_pendapatan_lain");
                 $row_last_id = mysqli_fetch_assoc($result_last_id);
                 $lastId = isset($row_last_id['last_id']) ? $row_last_id['last_id'] + 1 : 1; // Jika kosong, mulai dari 1
 
@@ -249,7 +249,7 @@ error_reporting(0)
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transaksi Pengeluaran</title>
+    <title>Transaksi Pendapatan Lain</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
