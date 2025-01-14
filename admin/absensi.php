@@ -154,7 +154,7 @@ $tahun = isset($_GET['tahun']) ? $_GET['tahun'] : '';
             <div class="container-fluid px-4">
                 <h1 class="mt-4">Presensi Karyawan</h1>
                 <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="dashboard_admin.php">Dashboard</a></li>
                     <li class="breadcrumb-item active">Presensi Karyawan</li>
                 </ol>
 
