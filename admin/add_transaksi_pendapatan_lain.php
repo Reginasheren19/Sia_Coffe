@@ -33,11 +33,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Eksekusi query pendapatan lain
     if (mysqli_query($koneksi, $sql)) {
         // Insert jurnal umum (debit: kas, kredit: pendapatan lain)
+         // Insert jurnal umum (debit: pendapatan lain, kredit: kas)
         $query_jurnal_debit = "INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
                                VALUES ('$tanggal_pendapatan_lain', '$nama_akun', '$id_akun', '$total', 0)";
 
+        // Jika ingin mencatatkan pembayaran lain ke Kas, gunakan tanggal_pendapatan_lain untuk kredit
         $query_jurnal_kredit = "INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
-                                VALUES ('$tanggal_pendapatan_lain', '$Kas', '2', 0, '$total')";
+                                VALUES ('$tanggal_pendapatan_lain', 'Kas', '2', 0, '$total')";
 
         // Eksekusi query
         if (mysqli_query($koneksi, $query_jurnal_debit) && mysqli_query($koneksi, $query_jurnal_kredit)) {
