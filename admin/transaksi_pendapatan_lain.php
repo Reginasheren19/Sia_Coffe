@@ -174,136 +174,96 @@ error_reporting(0)
                     </div>
                 </nav>
             </div>
-            <div id="layoutSidenav_content">
+            </div>
+        <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">Transaksi Pengeluaran Lain</h1>
+                    <h1 class="mt-4">Transaksi Pendapatan Lain</h1>
                     <ol class="breadcrumb mb-4">
-                        <li class="breadcrumb-item active">Data Pengeluaran Lain</li>
+                        <li class="breadcrumb-item active">Data Pendapatan Lain</li>
                     </ol>
                     <div class="card mb-4">
                         <div class="card-header">
                             <i class="fas fa-table me-1"></i>
-                            Tabel Transaksi Pengeluaran Lain
+                            Tabel Transaksi Pendapatan Lain
                         </div>
                         <div class="card-body">
-<!-- Tombol Tambah Data -->
-<div class="mb-3 d-flex justify-content-end">
-    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTransaksiPengeluaranLainModal">
-        Add Pendapatan Lain
-    </button>
-</div>
+                            <!-- Form Tambah Data -->
+                            <h5 class="mb-3">Tambah Pendapatan Lain</h5>
+                            <form method="POST" action="add_transaksi_pendapatan_lain.php">
+                                <div class="mb-3">
+                                    <label for="nama_kategori" class="form-label">Nama Kategori</label>
+                                    <select class="form-select" id="nama_kategori" name="nama_kategori" required>
+                                        <option value="">Pilih Kategori</option>
+                                        <option value="Sewa Tempat">Sewa Tempat</option>
+                                        <option value="Workshop">Workshop</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="id_akun" class="form-label">Nama Akun</label>
+                                    <select class="form-select" id="id_akun" name="id_akun" required>
+                                        <option value="">Pilih Akun</option>
+                                        <?php
+                                        $accounts = mysqli_query($koneksi, "SELECT id_akun, nama_akun FROM master_akun");
+                                        while ($account = mysqli_fetch_assoc($accounts)) {
+                                            echo "<option value='{$account['id_akun']}'>{$account['nama_akun']}</option>";
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="tanggal_pendapatan_lain" class="form-label">Tanggal Pendapatan</label>
+                                    <input type="date" class="form-control" id="tanggal_pendapatan_lain" name="tanggal_pendapatan_lain" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="total" class="form-label">Total</label>
+                                    <input type="number" class="form-control" id="total" name="total" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Tambah</button>
+                            </form>
 
-<!-- Table for Data Transactions -->
-<div class="table-responsive">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Id Pendapatan Lain</th>
-                <th>Nama Kategori</th>
-                <th>Nama Akun</th>
-                <th>Tanggal Pendapatan</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody id="data_pengeluaran">
-            <?php
-            // Query to fetch transaction data and join master_akun
-            $result = mysqli_query($koneksi, "
-                SELECT tpl.id_pendapatan_lain, 
-                       tpl.nama_kategori, 
-                       ma.nama_akun, 
-                       tpl.tanggal_pendapatan_lain, 
-                       tpl.total
-                FROM transaksi_pendapatan_lain tpl
-                JOIN master_akun ma ON tpl.id_akun = ma.id_akun
-            ");
-
-            // Display transaction data
-            while ($row = mysqli_fetch_assoc($result)) {
-                echo "<tr>
-                    <td>{$row['id_pendapatan_lain']}</td>
-                    <td>{$row['nama_kategori']}</td>
-                    <td>{$row['nama_akun']}</td>
-                    <td>{$row['tanggal_pendapatan_lain']}</td>
-                    <td>" . number_format($row['total'], 2) . "</td>
-                </tr>";
-            }
-            ?>
-            <?php
-                // Query untuk mendapatkan ID transaksi terakhir
-                $result_last_id = mysqli_query($koneksi, "SELECT MAX(id_pendapatan_lain) AS last_id FROM transaksi_pendapatan_lain");
-                $row_last_id = mysqli_fetch_assoc($result_last_id);
-                $lastId = isset($row_last_id['last_id']) ? $row_last_id['last_id'] + 1 : 1; // Jika kosong, mulai dari 1
-
-                // Format no_nota
-                $nota_pengeluaran_lain = 'TRPL-' . date('Ymd') . '-' . $lastId;
-            ?>
-
-        </tbody>
-    </table>
-</div>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transaksi Pendapatan Lain</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-</head>
-<body>
-<!-- Modal for Adding Expense Transaction -->
-<div class="modal fade" id="addTransaksiPengeluaranLainModal" tabindex="-1" aria-labelledby="addTransaksiPengeluaranLainModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form method="POST" action="add_transaksi_pengeluaran_lain.php">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addTransaksiPengeluaranLainModalLabel">Tambah Pengeluaran Lain</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="nota_pengeluaran_lain" class="form-label">Nota Pengeluaran</label>
-                        <input type="text" class="form-control" id="nota_pengeluaran_lain"  name="nota_pengeluaran_lain" value="<?php echo $nota_pengeluaran_lain; ?>" readonly>
-                    </div>
-                    <!-- Dropdown for Account Name -->
-                    <div class="mb-3">
-                        <label for="id_akun" class="form-label">Nama Akun</label>
-                        <select class="form-select" id="id_akun" name="id_akun" required>
-                            <option value="">Pilih Akun</option>
-                            <?php
-                            $accounts = mysqli_query($koneksi, "SELECT id_akun, nama_akun FROM master_akun");
-                            while ($account = mysqli_fetch_assoc($accounts)) {
-                                echo "<option value='{$account['id_akun']}'>{$account['nama_akun']}</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="tanggal_pengeluaran_lain" class="form-label">Tanggal Pengeluaran</label>
-                        <input type="date" class="form-control" id="tanggal_pengeluaran_lain" name="tanggal_pengeluaran_lain" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="total" class="form-label">Total</label>
-                        <input type="number" class="form-control" id="total" name="total" required>
+                            <!-- Tabel Data Transaksi -->
+                            <div class="table-responsive mt-4">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Id Pendapatan Lain</th>
+                                            <th>Nama Kategori</th>
+                                            <th>Nama Akun</th>
+                                            <th>Tanggal Pendapatan</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        $result = mysqli_query($koneksi, "
+                                            SELECT tpl.id_pendapatan_lain, 
+                                                   tpl.nama_kategori, 
+                                                   ma.nama_akun, 
+                                                   tpl.tanggal_pendapatan_lain, 
+                                                   tpl.total
+                                            FROM transaksi_pendapatan_lain tpl
+                                            JOIN master_akun ma ON tpl.id_akun = ma.id_akun
+                                        ");
+                                        while ($row = mysqli_fetch_assoc($result)) {
+                                            echo "<tr>
+                                                <td>{$row['id_pendapatan_lain']}</td>
+                                                <td>{$row['nama_kategori']}</td>
+                                                <td>{$row['nama_akun']}</td>
+                                                <td>{$row['tanggal_pendapatan_lain']}</td>
+                                                <td>" . number_format($row['total'], 2) . "</td>
+                                            </tr>";
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                </div>
-            </form>
+            </main>
         </div>
     </div>
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script src="js/scripts.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-<script src="js/datatables-simple-demo.js"></script>
-<script>
-
