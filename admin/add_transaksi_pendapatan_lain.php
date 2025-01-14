@@ -37,11 +37,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                VALUES ('$tanggal_pendapatan_lain', '$nama_akun', '$id_akun', '$total', 0)";
 
         $query_jurnal_kredit = "INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
-                                VALUES ('$tanggal_pengeluaran_lain', 'Kas', '2', 0, '$total')";
+                                VALUES ('$tanggal_pendapatan_lain', '$Kas', '2', 0, '$total')";
 
         // Eksekusi query
         if (mysqli_query($koneksi, $query_jurnal_debit) && mysqli_query($koneksi, $query_jurnal_kredit)) {
-            echo "<script>alert('Data berhasil ditambahkan!'); window.location.href='transaksi_pengeluaran_lain.php';</script>";
+            echo "<script>alert('Data berhasil ditambahkan!'); window.location.href='transaksi_pendapatan_lain.php';</script>";
         } else {
             echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
         }

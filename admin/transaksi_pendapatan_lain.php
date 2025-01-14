@@ -89,7 +89,7 @@ error_reporting(0)
                                 </nav>
                             </div>
                             <div class="sb-sidenav-menu-heading">Revenue Cycle</div>
-                            <a class="nav-link" href="charts.html">
+                            <a class="nav-link" href="transaksi_pendapatan.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Pendapatan
                             </a>
