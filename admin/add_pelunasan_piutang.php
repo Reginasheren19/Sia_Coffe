@@ -273,57 +273,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </form>
             </div>
            <script>
-                function getCustomerName() {
-                    const idTransaksiPendapatan = document.getElementById("id_transaksi_pendapatan").value;
+                function getCustomer() {
+    const idTransaksiPendapatan = document.getElementById("id_transaksi_pendapatan").value;
 
-                    if (idTransaksiPendapatan) {
-                        // Kirim permintaan ke server
-                        fetch(`get_customer_name.php?id_transaksi_pendapatan=${idTransaksiPendapatan}`)
-                            .then(response => response.json())
-                            .then(data => {
-                                // Isi field Nama Customer
-                                document.getElementById("nama_customer").value = data.nama_customer || "Tidak ditemukan";
-                            })
-                            .catch(error => {
-                                console.error("Error:", error);
-                            });
-                    } else {
-                        document.getElementById("nama_customer").value = "";
-                    }
-                }
-            function getCustomerNameAndSaldo() {
-                const idTransaksiPendapatan = document.getElementById("id_transaksi_pendapatan").value;
+    // Validasi input
+    if (!idTransaksiPendapatan) {
+        document.getElementById("nama_customer").value = "";
+        document.getElementById("saldo_piutang").value = "";
+        return;
+    }
 
-                if (idTransaksiPendapatan) {
-                    // Kirim permintaan ke server
-                    fetch(`get_customer_saldo.php?id_transaksi_pendapatan=${idTransaksiPendapatan}`)
-                        .then(response => response.json())
-                        .then(data => {
-                            // Isi field Nama Customer dan Saldo Piutang
-                            document.getElementById("nama_customer").value = data.nama_customer || "Tidak ditemukan";
-                            document.getElementById("saldo_piutang").value = data.saldo_piutang || 0;
-                        })
-                        .catch(error => {
-                            console.error("Error:", error);
-                        });
-                } else {
-                    document.getElementById("nama_customer").value = "";
-                    document.getElementById("saldo_piutang").value = "";
-                }
+    // Tampilkan indikator loading (opsional)
+    document.getElementById("nama_customer").value = "Loading...";
+    document.getElementById("saldo_piutang").value = "...";
+
+    // Kirim permintaan ke server
+    fetch(`get_customer.php?id_transaksi_pendapatan=${encodeURIComponent(idTransaksiPendapatan)}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Gagal mengambil data dari server.");
             }
-                // Fungsi untuk memperbarui total pelunasan piutang
-                function updateTotalPelunasan() {
-                    const saldoPiutang = parseFloat(document.getElementById("saldo_piutang").value) || 0;
-                    document.getElementById("total_pelunasan_piutang").value = saldoPiutang.toFixed(2);
-                }
-
-                // Pastikan fungsi dipanggil saat saldo piutang diperbarui
-                document.getElementById("saldo_piutang").addEventListener("input", updateTotalPelunasan);
-
-                // Panggil fungsi update saat ID Transaksi Pendapatan dipilih
-                document.getElementById("id_transaksi_pendapatan").addEventListener("change", () => {
-                    updateTotalPelunasan();
-                });
+            return response.json();
+        })
+        .then(data => {
+            // Periksa apakah data valid
+            if (data && typeof data === "object") {
+                document.getElementById("nama_customer").value = data.nama_customer || "Tidak ditemukan";
+                document.getElementById("saldo_piutang").value = data.saldo_piutang || 0;
+            } else {
+                throw new Error("Data yang diterima tidak valid.");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            document.getElementById("nama_customer").value = "Error";
+            document.getElementById("saldo_piutang").value = "Error";
+        });
+}
+);
             </script>
             </main>
         </div>
