@@ -22,6 +22,7 @@ $query = "SELECT
     ju.debit,
     ju.kredit,
     CASE
+        
         WHEN ma.nama_akun = 'Kas' AND ju.debit = 0 THEN 
             (SELECT CONCAT(
                 CASE 
@@ -30,12 +31,14 @@ $query = "SELECT
                     WHEN ma2.nama_akun LIKE 'Beban Air' THEN 'Membayar Beban Air'
                     WHEN ma2.nama_akun = 'Hutang' THEN 'Membayar Hutang'
                     WHEN ma2.nama_akun = 'Perlengkapan' THEN 'Pembelian Perlengkapan'
+                    WHEN ma2.nama_akun = 'Peralatan' THEN 'Pembelian Peralatan'
                     ELSE 'Transaksi Tidak Dikenali'
                 END)
             FROM jurnal_umum ju2
             JOIN master_akun ma2 ON ju2.id_akun = ma2.id_akun
             WHERE ju2.tanggal = ju.tanggal 
-              AND ju2.debit > 0
+                AND ju2.debit = ju.kredit -- Menyocokkan debit dan kredit pada transaksi yang sama
+                AND ju2.debit > 0
               LIMIT 1)
 
         WHEN ma.nama_akun IN ('Beban Gaji', 'Beban Listrik', 'Beban Air') AND ju.kredit = 0 
@@ -233,7 +236,7 @@ if (!$result) {
             <div class="container-fluid px-4">
                 <h1 class="mt-4">Buku Besar</h1>
                 <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="dashboard_admin.php">Dashboard</a></li>
                     <li class="breadcrumb-item active">Buku Besar</li>
                 </ol>
 
