@@ -219,16 +219,16 @@ $result = mysqli_query($koneksi, $query);
         <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
-                <h1 class="mt-4">Jurnal Uuum</h1>
+                <h1 class="mt-4">Jurnal Umum</h1>
                 <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                    <li class="breadcrumb-item active">jurnal Umum</li>
+                    <li class="breadcrumb-item"><a href="dashboard_admin.php">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Jurnal Umum</li>
                 </ol>
 
                 <!-- Form untuk memilih bulan dan tahun -->
                 <div class="card mb-4">
                     <div class="card-header">
-                        <i class="fas fa-table me-1"></i> Filter Data Absensi
+                        <i class="fas fa-table me-1"></i> Filter Data Jurnal Umum
                     </div>
                     <div class="card-body">
                         <form class="form-inline">
