@@ -1,50 +1,55 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 include("../config/koneksi_mysql.php");
 
+// Debugging untuk melihat data yang dikirimkan dari form
+echo '<pre>';
+print_r($_POST);
+echo '</pre>';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id_piutang =  mysqli_real_escape_string($koneksi, $_POST['id_piutang']);
-    $id_transaksi_pendapatan = mysqli_real_escape_string($koneksi, $_POST['id_transaksi_pendapatan']);
-    $id_customer = mysqli_real_escape_string($koneksi, $_POST['id_customer']);
-    $saldo_piutang = mysqli_real_escape_string($koneksi, $_POST['saldo_piutang']); 
-    $total_pembayaran_piutang = mysqli_real_escape_string($koneksi, $_POST['total_piutang']);
+    // Validasi setiap field dari form
+    $id_transaksi_pendapatan = isset($_POST['id_transaksi_pendapatan']) ? mysqli_real_escape_string($koneksi, $_POST['id_transaksi_pendapatan']) : null;
+    $tanggal_pembayaran = isset($_POST['tanggal_pembayaran']) ? mysqli_real_escape_string($koneksi, $_POST['tanggal_pembayaran']) : null;
+    $id_customer = isset($_POST['id_customer']) ? mysqli_real_escape_string($koneksi, $_POST['id_customer']) : null;
+    $saldo_piutang = isset($_POST['saldo_piutang']) ? mysqli_real_escape_string($koneksi, $_POST['saldo_piutang']) : null;
+    $total_pembayaran_piutang = isset($_POST['total_pembayaran_piutang']) ? mysqli_real_escape_string($koneksi, $_POST['total_pembayaran_piutang']) : null;
 
-    // Validasi ID Transaksi
-    $cekTransaksi = mysqli_query($koneksi, "SELECT id_transaksi FROM transaksi_pengeluaran WHERE id_transaksi = '$id_transaksi'");
-    if (mysqli_num_rows($cekTransaksi) === 0) {
-        echo "<script>alert('ID Transaksi tidak valid!'); window.location.href='pelunasan_hutang.php';</script>";
-        exit;
-    }
+    // Pastikan semua field yang wajib terisi tidak kosong
+    if ($id_transaksi_pendapatan && $tanggal_pembayaran && $id_customer && $saldo_piutang && $total_pembayaran_piutang) {
+        // Query untuk menyimpan data ke database
+        $query = "
+            INSERT INTO transaksi_pendapatan (
+                id_transaksi_pendapatan, tanggal_pembayaran, id_customer, saldo_piutang, total_pembayaran_piutang
+            ) VALUES (
+                '$id_transaksi_pendapatan', '$tanggal_pembayaran', '$id_customer', '$saldo_piutang', '$total_pembayaran_piutang'
+        )";
+        echo $query;
 
-    // Query untuk menyimpan data ke database
-    $sql = "
-        INSERT INTO transaksi_hutang (id_transaksi, nota_pelunasan, tanggal_pelunasan, id_supplier, saldo_hutang_pl, total_pelunasan)
-        VALUES ('$id_transaksi', '$nota_pelunasan', '$tanggal_pelunasan', '$id_supplier', '$saldo_hutang_pl', '$total_pelunasan')
-    ";
 
-        // Eksekusi query pelunasan hutang
-        if (mysqli_query($koneksi, $sql)) {
-            // Insert jurnal umum untuk pelunasan hutang
-            // Debit Hutang (id_akun hutang) dan Kredit Kas (id_akun kas)
-            $query_jurnal_debit = "
-                INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
-                VALUES ('$tanggal_pelunasan', 'Hutang', '10', '$total_pelunasan', 0)
-            ";
-    
-            $query_jurnal_kredit = "
-                INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
-                VALUES ('$tanggal_pelunasan', 'Kas', '2', 0, '$total_pelunasan')
-            ";
+        // Debugging: Print the query
+        echo "Query: $query<br>";
 
-    // Eksekusi query
-    if (mysqli_query($koneksi, $query_jurnal_debit) && mysqli_query($koneksi, $query_jurnal_kredit)) {
-        echo "<script>alert('Data berhasil ditambahkan!'); window.location.href='pelunasan_hutang.php';</script>";
+        // Eksekusi query
+        if (mysqli_query($koneksi, $query)) {
+            echo "Data berhasil disimpan.<br>";
+            header("Location: pelunasan_piutang.php?success=1"); // Redirect dengan pesan sukses
+            exit();
+        } else {
+            echo "Error: " . mysqli_error($koneksi) . "<br>";
+            echo "Query: $query<br>";
+            exit();
+        }
     } else {
-        echo "<script>alert('Error: " . mysqli_error($koneksi) . "');</script>";
+        echo "Semua field wajib diisi.";
     }
 }
-}
+   
+
 ?>
+
+
 
 
 <!DOCTYPE html>
@@ -59,7 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
     <link href="css/styles.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -137,27 +141,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </nav>
                         </div>
                         <div class="sb-sidenav-menu-heading">Revenue Cycle</div>
-                        <a class="nav-link" href="charts.html">
+                        <a class="nav-link" href="transaksi_pendapatan.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Pendapatan
                         </a>
-                        <a class="nav-link" href="pelunasan_piutang.php">
+                        <a class="nav-link" href="transaksi_pembayaran.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Pelunasan Piutang
+                            Pembayaran
                         </a>
-                        <a class="nav-link" href="transaksi_pendapatan_lain.php">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Pendapatan Lain
-                        </a>   
                         <div class="sb-sidenav-menu-heading">Expenditure Cycle</div>
                         <a class="nav-link" href="charts.html">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Pengeluaran
                         </a>
                         <a class="nav-link" href="pelunasan_hutang.php">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Pelunasan Hutang
-                            </a>
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Pelunasan Hutang
+                        </a>
                         <div class="sb-sidenav-menu-heading">Payroll Cycle</div>
                         <a class="nav-link" href="charts.html">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
@@ -233,79 +233,100 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div id="layoutSidenav_content">
             <main>
             <div class="container mt-5">
-                <h1 class="mb-4">Form Pelunasan Hutang</h1>
-                <form method="POST" action="add_pelunasan_hutang.php">
-                    <div class="mb-3">
-                        <label for="id_transaksi" class="form-label">ID Transaksi</label>
-                        <input type="text" class="form-control" id="id_transaksi" name="id_transaksi" required>
+                <h1 class="mb-4">Form Pelunasan Piutang</h1>
+                <form method="POST" action="add_pelunasan_piutang.php">
+                    <!-- ID Transaksi Pendapatan -->
+                        <div class="mb-3">
+                            <label for="id_transaksi_pendapatan" class="form-label">ID Transaksi Pendapatan</label>
+                            <select class="form-select" id="id_transaksi_pendapatan" name="id_transaksi_pendapatan" required>
+                                <option value="">Pilih ID Transaksi Pendapatan</option>
+                                <?php
+                                // Query untuk mendapatkan daftar transaksi pendapatan
+                                $transaksiPendapatan = mysqli_query($koneksi, "SELECT id_transaksi_pendapatan FROM transaksi_pendapatan");
+                                while ($transaksi = mysqli_fetch_assoc($transaksiPendapatan)) {
+                                    echo "<option value='{$transaksi['id_transaksi_pendapatan']}'>{$transaksi['id_transaksi_pendapatan']}</option>";
+                                }
+                                ?>
+                        </select>
                     </div>
+                    <!-- Tanggal Pembayaran -->
                     <div class="mb-3">
-                        <label for="nota_pelunasan" class="form-label">Nota Pelunasan</label>
-                        <input type="text" class="form-control" id="nota_pelunasan"  name="nota_pelunasan" value="<?php echo $nota_pelunasan; ?>" readonly>
+                        <label for="tanggal_pembayaran" class="form-label">Tanggal Pembayaran</label>
+                        <input type="date" class="form-control" id="tanggal_pembayaran" name="tanggal_pembayaran" required>
                     </div>
+                    <!-- Nama Customer -->
                     <div class="mb-3">
-                        <label for="tanggal_pelunasan" class="form-label">Tanggal Pelunasan</label>
-                        <input type="date" class="form-control" id="tanggal_pelunasan" name="tanggal_pelunasan" required>
+                        <label for="nama_customer" class="form-label">Nama Customer</label>
+                        <input type="text" class="form-control" id="nama_customer" name="nama_customer" readonly>
                     </div>
+                    <!-- Saldo Piutang -->
                     <div class="mb-3">
-                        <label for="id_supplier" class="form-label">Nama Supplier</label>
-                        <input type="text" class="form-control" id="id_supplier" name="id_supplier" readonly>
+                        <label for="saldo_piutang" class="form-label">Saldo Piutang</label>
+                        <input type="number" step="0.01" class="form-control" id="saldo_piutang" name="saldo_piutang" readonly>
                     </div>
+                   <!-- Total Pelunasan Piutang -->
                     <div class="mb-3">
-                        <label for="saldo_hutang_pl" class="form-label">Saldo Hutang</label>
-                        <input type="text" class="form-control" id="saldo_hutang_pl" name="saldo_hutang_pl" readonly>
+                        <label for="total_pelunasan_piutang" class="form-label">Total Pelunasan Piutang</label>
+                        <input type="number" step="0.01" class="form-control" id="total_pelunasan_piutang" name="total_pelunasan_piutang" readonly>
                     </div>
-                    <div class="mb-3">
-                        <label for="total_pelunasan" class="form-label">Total Pelunasan</label>
-                        <input type="number" class="form-control" id="total_pelunasan" name="total_pelunasan" readonly>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
-                    <a href="pelunasan_hutang.php" class="btn btn-secondary">Kembali</a>
+                    <button type="submit" class="btn btn-primary">Simpan Transaksi</button>
                 </form>
             </div>
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            <script>
-                $(document).ready(function () {
-                    // Ketika dropdown id_transaksi berubah
-                    $('#id_transaksi').on('change', function () {
-                        let idTransaksi = $(this).val(); // Ambil nilai dari dropdown
-                        if (idTransaksi !== '') {
-                            // AJAX untuk mengambil data dari server
-                            $.ajax({
-                                url: 'get_supplier.php',
-                                type: 'GET',
-                                data: { id_transaksi: idTransaksi },
-                                success: function (response) {
-                                    let data = JSON.parse(response); // Parse response JSON
-                                    
-                                    if (data.id_supplier && data.nama_supplier && data.saldo_hutang_pl) {
-                                        // Set nilai id_supplier dan saldo_hutang_pl
-                                        $('#id_supplier').val(data.id_supplier);
-                                        $('#saldo_hutang_pl').val(data.saldo_hutang_pl);
-                                        
-                                        // Otomatis set nilai total_pelunasan sama dengan saldo_hutang_pl
-                                        $('#total_pelunasan').val(data.saldo_hutang_pl);
-                                    } else {
-                                        alert('ID Transaksi tidak valid!');
-                                        
-                                        // Kosongkan field jika data tidak valid
-                                        $('#id_supplier').val('');
-                                        $('#saldo_hutang_pl').val('');
-                                        $('#total_pelunasan').val('');
-                                    }
-                                },
-                                error: function () {
-                                    alert('Terjadi kesalahan saat mengambil data!');
-                                }
+           <script>
+                function getCustomerName() {
+                    const idTransaksiPendapatan = document.getElementById("id_transaksi_pendapatan").value;
+
+                    if (idTransaksiPendapatan) {
+                        // Kirim permintaan ke server
+                        fetch(`get_customer_name.php?id_transaksi_pendapatan=${idTransaksiPendapatan}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                // Isi field Nama Customer
+                                document.getElementById("nama_customer").value = data.nama_customer || "Tidak ditemukan";
+                            })
+                            .catch(error => {
+                                console.error("Error:", error);
                             });
-                        } else {
-                            // Reset field jika tidak ada ID Transaksi yang dipilih
-                            $('#id_supplier').val('');
-                            $('#saldo_hutang_pl').val('');
-                            $('#total_pelunasan').val('');
-                        }
-                    });
+                    } else {
+                        document.getElementById("nama_customer").value = "";
+                    }
+                }
+            function getCustomerNameAndSaldo() {
+                const idTransaksiPendapatan = document.getElementById("id_transaksi_pendapatan").value;
+
+                if (idTransaksiPendapatan) {
+                    // Kirim permintaan ke server
+                    fetch(`get_customer_saldo.php?id_transaksi_pendapatan=${idTransaksiPendapatan}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            // Isi field Nama Customer dan Saldo Piutang
+                            document.getElementById("nama_customer").value = data.nama_customer || "Tidak ditemukan";
+                            document.getElementById("saldo_piutang").value = data.saldo_piutang || 0;
+                        })
+                        .catch(error => {
+                            console.error("Error:", error);
+                        });
+                } else {
+                    document.getElementById("nama_customer").value = "";
+                    document.getElementById("saldo_piutang").value = "";
+                }
+            }
+                // Fungsi untuk memperbarui total pelunasan piutang
+                function updateTotalPelunasan() {
+                    const saldoPiutang = parseFloat(document.getElementById("saldo_piutang").value) || 0;
+                    document.getElementById("total_pelunasan_piutang").value = saldoPiutang.toFixed(2);
+                }
+
+                // Pastikan fungsi dipanggil saat saldo piutang diperbarui
+                document.getElementById("saldo_piutang").addEventListener("input", updateTotalPelunasan);
+
+                // Panggil fungsi update saat ID Transaksi Pendapatan dipilih
+                document.getElementById("id_transaksi_pendapatan").addEventListener("change", () => {
+                    updateTotalPelunasan();
                 });
             </script>
-            </body>
-            </html>
+            </main>
+        </div>
+    </div>
+</body>
+</html>

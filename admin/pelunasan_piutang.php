@@ -85,7 +85,7 @@ ini_set('display_errors', 1);
                                 </nav>
                             </div>
                             <div class="sb-sidenav-menu-heading">Revenue Cycle</div>
-                            <a class="nav-link" href="charts.html">
+                            <a class="nav-link" href="transaksi_pendapatan.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Pendapatan
                             </a>
@@ -207,7 +207,7 @@ ini_set('display_errors', 1);
                     <th>Tanggal Pembayaran</th>
                     <th>Nama Customer</th>
                     <th>Saldo Piutang</th>
-                    <th>Total Pelunasan Piutang</th>
+                    <th>Total Pembayaran Piutang</th>
                 </tr>
             </thead>
             <tbody id="data_piutang">
@@ -238,7 +238,6 @@ ini_set('display_errors', 1);
                         <td>{$row['nama_customer']}</td>
                         <td>" . number_format($row['saldo_piutang'], 2) . "</td>
                         <td>" . number_format($row['total_pembayaran_piutang'], 2) . "</td>
-                        <td>{$row['detail_transaksi_pendapatan']}</td> <!-- Menampilkan detail transaksi pendapatan -->
                     </tr>";
                 } 
                 ?>
