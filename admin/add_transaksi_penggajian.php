@@ -48,6 +48,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $gaji_lembur += $total_jam_lembur * $tarif_lembur;
     }
     
+    // Hitung jumlah absensi alpha (tidak hadir)
+$query_alpha = "
+SELECT 
+    COUNT(*) AS jumlah_alpha 
+FROM 
+    absensi 
+WHERE 
+    status = 'Alpha' AND 
+    id_transaksi_karyawan = '$id_transaksi_karyawan' AND 
+    tanggal LIKE '$periode_gaji%'
+";
+$result_alpha = mysqli_query($koneksi, $query_alpha);
+$row_alpha = mysqli_fetch_assoc($result_alpha);
+$jumlah_alpha = $row_alpha['jumlah_alpha'];
+
+// Ambil tarif potongan per alpha dari master jabatan
+$query_tarif_alpha = "SELECT tarif_potongan_per_alpha FROM master_jabatan WHERE id = '$jabatan_id'";
+$result_tarif_alpha = mysqli_query($koneksi, $query_tarif_alpha);
+$row_tarif_alpha = mysqli_fetch_assoc($result_tarif_alpha);
+$tarif_potongan_per_alpha = $row_tarif_alpha['tarif_potongan_per_alpha'];
+
+// Hitung total potongan berdasarkan jumlah alpha dan tarif potongan per alpha
+$total_potongan = $jumlah_alpha * $tarif_potongan_per_alpha;
+
 
     // Hitung gaji bersih
     $gaji_bersih = $gaji_pokok + $tunjangan + $gaji_lembur - $potongan;
