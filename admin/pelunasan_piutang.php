@@ -215,19 +215,19 @@ ini_set('display_errors', 1);
                 // Query untuk mengambil data piutang
                 $query =
                     "SELECT 
-                        tp.id_piutang, 
-                        tp.id_transaksi_pendapatan, 
-                        tp.tanggal_pembayaran, 
-                        mc.nama_customer, 
-                        tp.saldo_piutang, 
-                        tp.total_pembayaran_piutang
-                    FROM 
-                        transaksi_piutang tp
-                    JOIN 
-                        master_customer mc ON tp.id_customer = mc.id_customer
-                    JOIN 
-                    transaksi_pendapatan tpend ON tp.id_transaksi_pendapatan = tpend.id_transaksi_pendapatan -- Join dengan transaksi_pendapatan
-                    ";
+    piutang.id_piutang, 
+    piutang.id_transaksi_pendapatan, 
+    piutang.tanggal_pembayaran, 
+    mc.nama_customer, 
+    piutang.saldo_piutang, 
+    piutang.total_pembayaran_piutang
+FROM 
+    transaksi_piutang piutang
+JOIN 
+    master_customer mc ON piutang.id_customer = mc.id_customer
+JOIN 
+    transaksi_pendapatan pendapatan ON piutang.id_transaksi_pendapatan = pendapatan.id_transaksi_pendapatan;
+";
                 // Menampilkan data pelunasan piutang
                 $result = mysqli_query($koneksi, $query);
                 while ($row = mysqli_fetch_assoc($result)) {
