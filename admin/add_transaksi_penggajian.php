@@ -75,6 +75,7 @@ $total_potongan = $jumlah_alpha * $tarif_potongan_per_alpha;
 
     // Hitung gaji bersih
     $gaji_bersih = $gaji_pokok + $tunjangan + $gaji_lembur - $potongan;
+    
 
     // Insert data penggajian ke tabel transaksi_penggajian
     $sql = "INSERT INTO transaksi_penggajian 
