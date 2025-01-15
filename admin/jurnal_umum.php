@@ -199,9 +199,6 @@ $tahun_jurnal = isset($_GET['tahun']) ? $_GET['tahun'] : '';
                                 <button type="submit" class="btn btn-success" formaction="get_jurnalumum.php?bulan=<?php echo $bulan_jurnal; ?>&tahun=<?php echo $tahun_jurnal; ?>">
                                     Tampilkan Data
                                 </button>
-                                <button type="submit" class="btn btn-success ms-2" formaction="add_absensi.php?bulan=<?php echo $bulan_jurnal; ?>&tahun=<?php echo $tahun_jurnal; ?>">
-                                    Cetak Data
-                                </button>
                             </div>
                         </form>
                     </div>

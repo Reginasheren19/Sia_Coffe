@@ -236,9 +236,6 @@ $result = mysqli_query($koneksi, $query);
                                 <button type="submit" class="btn btn-success">
                                     Tampilkan Data
                                 </button>
-                                <button type="submit" class="btn btn-success ms-2" formaction="add_absensi.php?bulan=<?php echo $bulan_jurnal; ?>&tahun=<?php echo $tahun_jurnal; ?>">
-                                    Cetak Data
-                                </button>
                             </div>
                         </form>
                     </div>

@@ -207,6 +207,7 @@ error_reporting(0)
                 FROM transaksi_pengeluaran tp
                 JOIN master_supplier ms ON tp.id_supplier = ms.id_supplier
                 JOIN master_akun ma ON tp.id_akun = ma.id_akun
+                ORDER BY tp.id_transaksi ASC
             ");
 
             // Display transaction data

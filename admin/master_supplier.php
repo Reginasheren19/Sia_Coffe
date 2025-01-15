@@ -180,7 +180,6 @@ error_reporting(0)
                                             <th>Alamat</th>
                                             <th>No Telepon</th>
                                             <th>Email</th>
-                                            <th>Saldo Hutang</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -195,7 +194,6 @@ error_reporting(0)
                                                 <td>{$row['alamat_supplier']}</td>
                                                 <td>{$row['no_telp_supplier']}</td>
                                                 <td>{$row['email_supplier']}</td>
-                                                <td>{$row['saldo_hutang']}</td>
                                                 <td>
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
                                                     <a href='delete_supplier.php?supplier={$row['id_supplier']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data supplier?')\">Delete</a>

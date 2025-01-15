@@ -220,9 +220,6 @@ $nama_akun = isset($_GET['nama_akun']) ? $_GET['nama_akun'] : '';
                                 <button type="submit" class="btn btn-success" formaction="get_bukubesar.php?bulan=<?php echo $bulan_bb; ?>&tahun=<?php echo $tahun_bb; ?>&nama_akun=<?php echo $nama_akun; ?>">
                                     Tampilkan Data
                                 </button>
-                                <button type="submit" class="btn btn-success ms-2" formaction="add_absensi.php?bulan=<?php echo $bulan_bb; ?>&tahun=<?php echo $tahun_bb; ?>">
-                                    Cetak Data
-                                </button>
                             </div>
                         </form>
                     </div>

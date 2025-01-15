@@ -43,7 +43,7 @@ $query = "SELECT
 
         WHEN ma.nama_akun IN ('Beban Gaji', 'Beban Listrik', 'Beban Air') AND ju.kredit = 0 
             THEN CONCAT('Membayar ', IFNULL(ma.nama_akun, ''))
-        WHEN ma.nama_akun IN ('Peralatan', 'Perlengkapan') AND ju.kredit = 0 
+        WHEN ma.nama_akun IN ('Peralatan', 'Perlengkapan') AND ju.kredit > 0 
             THEN CONCAT('Pembelian ', IFNULL(ma.nama_akun, ''))
         WHEN ma.nama_akun = 'Hutang' AND ju.kredit = 0 
             THEN 'Membayar Hutang'
@@ -53,7 +53,7 @@ $query = "SELECT
             THEN 'Menerima Pendapatan Piutang'
         WHEN ma.nama_akun = 'Pendapatan Lain-lain' AND ju.kredit = 0 
             THEN 'Menerima Pendapatan Lain-lain'
-        ELSE 'Transaksi Tidak Dikenali'
+        ELSE 'Pembelian Kredit'
     END AS keterangan
 FROM 
     jurnal_umum ju
@@ -299,9 +299,6 @@ if (!$result) {
                              d-flex justify-content-end">
                                 <button type="submit" class="btn btn-success" formaction="get_bukubesar.php?bulan=<?php echo $bulan_bb; ?>&tahun=<?php echo $tahun_bb; ?>">
                                     Tampilkan Data
-                                </button>
-                                <button type="submit" class="btn btn-success ms-2" formaction="add_absensi.php?bulan=<?php echo $bulan_bb; ?>&tahun=<?php echo $tahun_bb; ?>">
-                                    Cetak Data
                                 </button>
                             </div>
                         </form>
