@@ -1,62 +1,56 @@
 <?php
+
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include("../config/koneksi_mysql.php");
 
-// Debugging untuk melihat data yang dikirimkan dari form
-echo '<pre>';
-print_r($_POST);
-echo '</pre>';
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Validasi setiap field dari form
-    $id_customer = isset($_POST['id_customer']) ? mysqli_real_escape_string($koneksi, $_POST['id_customer']) : null;
-    $tgl_transaksi = isset($_POST['tgl_transaksi']) ? mysqli_real_escape_string($koneksi, $_POST['tgl_transaksi']) : null;
-    $id_metode = isset($_POST['id_metode']) ? mysqli_real_escape_string($koneksi, $_POST['id_metode']) : null;
-    $id_produk = isset($_POST['id_produk']) ? mysqli_real_escape_string($koneksi, $_POST['id_produk']) : null;
-    $jumlah_produk = isset($_POST['jumlah_produk']) ? mysqli_real_escape_string($koneksi, $_POST['jumlah_produk']) : null;
-    $harga_satuan = isset($_POST['harga_satuan']) ? mysqli_real_escape_string($koneksi, $_POST['harga_satuan']) : null;
-    $subtotal = isset($_POST['subtotal']) ? mysqli_real_escape_string($koneksi, $_POST['subtotal']) : null;
-    $jumlah_dibayar = isset($_POST['jumlah_dibayar']) ? mysqli_real_escape_string($koneksi, $_POST['jumlah_dibayar']) : null;
-    $sisa_pembayaran = isset($_POST['sisa_pembayaran']) ? mysqli_real_escape_string($koneksi, $_POST['sisa_pembayaran']) : null;
-    $status_pembayaran = isset($_POST['status_pembayaran']) ? mysqli_real_escape_string($koneksi, $_POST['status_pembayaran']) : null;
+    // Ambil data dari form dengan validasi
+    $id_customer = $_POST['id_customer'] ?? null;
+    $tgl_transaksi = $_POST['tgl_transaksi'] ?? null;
+    $id_metode = $_POST['id_metode'] ?? null;
+    $id_produk = $_POST['id_produk'] ?? null;
+    $jumlah_produk = $_POST['jumlah_produk'] ?? null;
+    $harga_satuan = $_POST['harga_satuan'] ?? null;
+    $subtotal = $_POST['subtotal'] ?? null;
+    $jumlah_dibayar = $_POST['jumlah_dibayar'] ?? null;
+    $sisa_pembayaran = $_POST['sisa_pembayaran'] ?? null;
+    $status_pembayaran = $_POST['status_pembayaran'] ?? null;
 
-    // Pastikan semua field yang wajib terisi tidak kosong
-    if ($id_customer && $tgl_transaksi && $id_metode && $id_produk && $jumlah_produk && $harga_satuan && $subtotal && $jumlah_dibayar && $sisa_pembayaran && $status_pembayaran) {
-        // Pastikan jumlah_produk, harga_satuan, subtotal, jumlah_dibayar, dan sisa_pembayaran adalah angka
-        if (is_numeric($jumlah_produk) && is_numeric($harga_satuan) && is_numeric($subtotal) && is_numeric($jumlah_dibayar) && is_numeric($sisa_pembayaran)) {
-            // Query untuk menyimpan data ke database
+    // Validasi data wajib dan tipe data
+    if (
+        $id_customer && $tgl_transaksi && $id_metode && $id_produk &&
+        is_numeric($jumlah_produk) && is_numeric($harga_satuan) &&
+        is_numeric($subtotal) && is_numeric($jumlah_dibayar) &&
+        is_numeric($sisa_pembayaran) && $status_pembayaran
+    ) {
+        // Query dengan prepared statement
+        $query = "INSERT INTO transaksi_pendapatan (
+            id_customer, tgl_transaksi, id_metode, id_produk, jumlah_produk, 
+            harga_satuan, subtotal, status_pembayaran, sisa_pembayaran, jumlah_dibayar
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        $query = "
-            INSERT INTO transaksi_pendapatan (
-                id_customer, tgl_transaksi, id_metode, id_produk, jumlah_produk, harga_satuan, subtotal, status_pembayaran, sisa_pembayaran, jumlah_dibayar
-            ) VALUES (
-                '$id_customer', '$tgl_transaksi', '$id_metode', '$id_produk', '$jumlah_produk', '$harga_satuan', '$subtotal', '$status_pembayaran', '$sisa_pembayaran', '$jumlah_dibayar'
-            )
-        ";
-        echo $query;
+        $stmt = $koneksi->prepare($query);
+        $stmt->bind_param(
+            'issiiddsds',
+            $id_customer, $tgl_transaksi, $id_metode, $id_produk,
+            $jumlah_produk, $harga_satuan, $subtotal, $status_pembayaran,
+            $sisa_pembayaran, $jumlah_dibayar
+        );
 
-
-        // Debugging: Print the query
-        echo "Query: $query<br>";
-
-        // Eksekusi query
-        if (mysqli_query($koneksi, $query)) {
-            echo "Data berhasil disimpan.<br>";
-            header("Location: transaksi_pendapatan.php?success=1"); // Redirect dengan pesan sukses
+        if ($stmt->execute()) {
+            header("Location: transaksi_pendapatan.php?success=1");
             exit();
         } else {
-            echo "Error: " . mysqli_error($koneksi) . "<br>";
-            echo "Query: $query<br>";
-            exit();
+            error_log("Database Error: " . $stmt->error);
+            echo "Terjadi kesalahan saat menyimpan data.";
         }
     } else {
-        echo "Semua field wajib diisi.";
+        echo "Pastikan semua data terisi dengan benar.";
     }
 }
-   
-}
 ?>
+
 
 
 
