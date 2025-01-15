@@ -36,10 +36,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     while ($row_lembur = mysqli_fetch_assoc($result_lembur)) {
         // Ambil total jam lembur
         $total_jam_lembur = $row_lembur['total_jam_lembur'];
+        $jabatan_id = $row_lembur['jabatan_id'];
 
-        // Hitung gaji lembur (misalkan 1 jam lembur = 25.000 IDR)
-        $gaji_lembur += $total_jam_lembur * 25000;  // 25.000 adalah tarif per jam lembur
+        // Ambil tarif lembur per jam dari master jabatan
+        $query_tarif = "SELECT tarif_lembur FROM master_jabatan WHERE id = '$jabatan_id'";
+        $result_tarif = mysqli_query($conn, $query_tarif);
+        $row_tarif = mysqli_fetch_assoc($result_tarif);
+        $tarif_lembur = $row_tarif['tarif_lembur'];
+    
+        // Hitung gaji lembur berdasarkan tarif lembur sesuai jabatan
+        $gaji_lembur += $total_jam_lembur * $tarif_lembur;
     }
+    
 
     // Hitung gaji bersih
     $gaji_bersih = $gaji_pokok + $tunjangan + $gaji_lembur - $potongan;
