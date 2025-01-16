@@ -283,46 +283,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </form>
 
                     <!-- Table to display transactions -->
-                    <div class="table-responsive mt-4">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Id Pendapatan Lain</th>
-                                    <th>Nama Kategori</th>
-                                    <th>Nama Akun</th>
-                                    <th>Tanggal Pendapatan</th>
-                                    <th>Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $result = mysqli_query($koneksi, "
-                                    SELECT tpl.id_pendapatan_lain, 
-                                           tpl.nama_kategori, 
-                                           ma.nama_akun, 
-                                           tpl.tanggal_pendapatan_lain, 
-                                           tpl.total
-                                    FROM transaksi_pendapatan_lain tpl
-                                    JOIN master_akun ma ON tpl.id_akun = ma.id_akun
-                                ");
-                                while ($row = mysqli_fetch_assoc($result)) {
-                                    echo "<tr>
-                                        <td>{$row['id_pendapatan_lain']}</td>
-                                        <td>{$row['nama_kategori']}</td>
-                                        <td>{$row['nama_akun']}</td>
-                                        <td>{$row['tanggal_pendapatan_lain']}</td>
-                                        <td>" . number_format($row['total'], 2) . "</td>
-                                    </tr>";
-                                }
-                                ?>
-                            </tbody>
-                        </table>
-                    </div>
+                    
                 </div>
             </main>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/scripts.js"></script>
 </body>
 </html>

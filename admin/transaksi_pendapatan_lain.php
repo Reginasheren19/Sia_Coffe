@@ -1,14 +1,11 @@
 <?php
 include("../config/koneksi_mysql.php");
 
-$sql = mysqli_query($koneksi,"SELECT * FROM transaksi_pendapatan_lain");
+// Mengatur error reporting
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 ?>
-
-<?php
-error_reporting(0)
-?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -94,7 +91,7 @@ error_reporting(0)
                             </a>
                                 <a class="nav-link" href="pelunasan_piutang.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Pelunasan Piutang
+                                Pelunasan Piutang
                             </a>
                             <a class="nav-link" href="transaksi_pendapatan_lain.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
@@ -194,43 +191,14 @@ error_reporting(0)
                             <i class="fas fa-table me-1"></i>
                             Tabel Transaksi Pendapatan Lain
                         </div>
-                        <div class="card-body">
-                            <!-- Form Tambah Data -->
-                            <h5 class="mb-3">Tambah Pendapatan Lain</h5>
-                            <form method="POST" action="add_transaksi_pendapatan_lain.php">
-                                <div class="mb-3">
-                                    <label for="nama_kategori" class="form-label">Nama Kategori</label>
-                                    <select class="form-select" id="nama_kategori" name="nama_kategori" required>
-                                        <option value="">Pilih Kategori</option>
-                                        <option value="Sewa Tempat">Sewa Tempat</option>
-                                        <option value="Workshop">Workshop</option>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="id_akun" class="form-label">Nama Akun</label>
-                                    <select class="form-select" id="id_akun" name="id_akun" required>
-                                        <option value="">Pilih Akun</option>
-                                        <?php
-                                        $accounts = mysqli_query($koneksi, "SELECT id_akun, nama_akun FROM master_akun");
-                                        while ($account = mysqli_fetch_assoc($accounts)) {
-                                            echo "<option value='{$account['id_akun']}'>{$account['nama_akun']}</option>";
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="tanggal_pendapatan_lain" class="form-label">Tanggal Pendapatan</label>
-                                    <input type="date" class="form-control" id="tanggal_pendapatan_lain" name="tanggal_pendapatan_lain" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="total" class="form-label">Total</label>
-                                    <input type="number" class="form-control" id="total" name="total" required>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Tambah</button>
-                            </form>
-
-                            <!-- Tabel Data Transaksi -->
-                            <div class="table-responsive mt-4">
+                        <!-- Tombol Tambah Data -->
+                        <div class="mb-3 d-flex justify-content-end">
+                            <a href="add_transaksi_pendapatan_lain.php" class="btn btn-success">
+                                Add Pendapatan Lain
+                            </a>
+                        </div>
+                            <!-- Tabel for Data Transaksi -->
+                            <div class="table-responsive">
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
@@ -241,8 +209,9 @@ error_reporting(0)
                                             <th>Total</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="data_transaksi_pendapatan_lain">
                                         <?php
+                                        // Query untuk mengambil data transaksi_pendapatan_lain
                                         $result = mysqli_query($koneksi, "
                                             SELECT tpl.id_pendapatan_lain, 
                                                    tpl.nama_kategori, 
@@ -252,6 +221,7 @@ error_reporting(0)
                                             FROM transaksi_pendapatan_lain tpl
                                             JOIN master_akun ma ON tpl.id_akun = ma.id_akun
                                         ");
+                                        // menampilkan data 
                                         while ($row = mysqli_fetch_assoc($result)) {
                                             echo "<tr>
                                                 <td>{$row['id_pendapatan_lain']}</td>
@@ -265,13 +235,4 @@ error_reporting(0)
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </main>
-        </div>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-</body>
-</html>
+                        
