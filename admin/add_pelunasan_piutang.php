@@ -1,5 +1,4 @@
 <?php
-// Aktifkan error reporting untuk debugging
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -11,7 +10,7 @@ if (!$koneksi) {
     die("Koneksi database gagal: " . mysqli_connect_error());
 }
 
-// Variabel pesan untuk notifikasi (hanya akan digunakan jika ada POST)
+// Variabel pesan untuk notifikasi
 $successMessage = "";
 $errorMessage = "";
 
@@ -24,48 +23,72 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $total_pembayaran_piutang = $_POST['total_pembayaran_piutang'] ?? null;
 
     // Validasi input
-    if ($id_transaksi_pendapatan && $tanggal_pembayaran && $id_customer && $saldo_piutang && $total_pembayaran_piutang) {
-        if (!is_numeric($id_transaksi_pendapatan) || !is_numeric($id_customer)) {
-            $errorMessage = "ID Transaksi Pendapatan dan ID Customer harus berupa angka.";
-        } elseif (!is_numeric($saldo_piutang) || !is_numeric($total_pembayaran_piutang)) {
-            $errorMessage = "Saldo piutang dan total pembayaran harus berupa angka.";
-        } else {
-            $date = DateTime::createFromFormat('Y-m-d', $tanggal_pembayaran);
-            if (!$date || $date->format('Y-m-d') !== $tanggal_pembayaran) {
-                $errorMessage = "Format tanggal tidak valid.";
-            } else {
-                // Query prepared statement
+    if (empty($id_transaksi_pendapatan) || empty($tanggal_pembayaran) || empty($id_customer) || 
+        empty($saldo_piutang) || empty($total_pembayaran_piutang)) {
+        $errorMessage = "Semua field wajib diisi.";
+    } 
+    // Validasi format numerik
+    elseif (!is_numeric($id_transaksi_pendapatan) || !is_numeric($id_customer)) {
+        $errorMessage = "ID Transaksi Pendapatan dan ID Customer harus berupa angka.";
+    }
+    elseif (!is_numeric($saldo_piutang) || !is_numeric($total_pembayaran_piutang)) {
+        $errorMessage = "Saldo piutang dan total pembayaran harus berupa angka.";
+    }
+    // Validasi tanggal
+    else {
+        $date = DateTime::createFromFormat('Y-m-d', $tanggal_pembayaran);
+        if (!$date || $date->format('Y-m-d') !== $tanggal_pembayaran) {
+            $errorMessage = "Format tanggal tidak valid.";
+        } 
+        else {
+            try {
+                // Siapkan query dengan prepared statement
                 $stmt = $koneksi->prepare("
-                    INSERT INTO transaksi_piutang (
-                        id_transaksi_pendapatan, tanggal_pembayaran, id_customer, saldo_piutang, total_pembayaran_piutang
-                    ) VALUES (?, ?, ?, ?, ?)
+                    INSERT INTO transaksi_piutang 
+                    (id_transaksi_pendapatan, tanggal_pembayaran, id_customer, saldo_piutang, total_pembayaran_piutang)
+                    VALUES (?, ?, ?, ?, ?)
                 ");
-                if ($stmt) {
-                    $stmt->bind_param(
-                        "issdd",
-                        $id_transaksi_pendapatan,
-                        $tanggal_pembayaran,
-                        $id_customer,
-                        $saldo_piutang,
-                        $total_pembayaran_piutang
-                    );
 
-                    if ($stmt->execute()) {
-                        $successMessage = "Transaksi berhasil disimpan.";
-                    } else {
-                        $errorMessage = "Kesalahan eksekusi query: " . $stmt->error;
-                    }
-                } else {
-                    $errorMessage = "Kesalahan saat menyiapkan query: " . $koneksi->error;
+                if (!$stmt) {
+                    throw new Exception("Kesalahan menyiapkan query: " . $koneksi->error);
                 }
+
+                // Bind parameter
+                $stmt->bind_param("isiss", 
+                    $id_transaksi_pendapatan,
+                    $tanggal_pembayaran,
+                    $id_customer,
+                    $saldo_piutang,
+                    $total_pembayaran_piutang
+                );
+
+                // Eksekusi query
+                if ($stmt->execute()) {
+
+                    
+                    // Update sisa pembayaran di tabel transaksi_pendapatan
+                    $new_sisa = $saldo_piutang - $total_pembayaran_piutang;
+                    $update_stmt = $koneksi->prepare("
+                        UPDATE transaksi_pendapatan 
+                        SET sisa_pembayaran = ? 
+                        WHERE id_transaksi_pendapatan = ?
+                    ");
+                    
+                    $update_stmt->bind_param("di", $new_sisa, $id_transaksi_pendapatan);
+                    $update_stmt->execute();
+                    $update_stmt->close();
+                } else {
+                    throw new Exception("Kesalahan menyimpan data: " . $stmt->error);
+                }
+
+                $stmt->close();
+            } catch (Exception $e) {
+                $errorMessage = $e->getMessage();
             }
         }
-    } else {
-        $errorMessage = "Semua field wajib diisi.";
     }
 }
 ?>
-
 
 
 
@@ -219,7 +242,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             Data Produk
                         </a>
                         <a class="nav-link" href="master_jenis_pendapatan.php">
-                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div> 
                             Data Jenis Pendapatan
                         </a>
                         <a class="nav-link" href="master_metode_pembayaran.php">
@@ -252,58 +275,67 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </nav>
         </div>
         <div id="layoutSidenav_content">
-            <main>
-                <div class="container mt-5">
-                    <h1 class="mb-4">Form Pelunasan Piutang</h1>
+        <main>
+            <div class="container mt-5">
+                <?php if ($errorMessage): ?>
+                    <div class="alert alert-danger"><?php echo $errorMessage; ?></div>
+                <?php endif; ?>
+                <?php if ($successMessage): ?>
+                    <div class="alert alert-success"><?php echo $successMessage; ?></div>
+                <?php endif; ?>
 
-                    <!-- Form -->
-                    <form method="POST" action="">
-                        <div class="mb-3">
-                            <label for="id_transaksi_pendapatan" class="form-label">Pilih Transaksi Pendapatan</label>
-                            <select class="form-select" id="id_transaksi_pendapatan" name="id_transaksi_pendapatan" onchange="getCustomerDetails()" required>
-                                <option value="">Pilih ID Transaksi Pendapatan</option>
-                                <?php
-                                $transaksiPendapatan = mysqli_query($koneksi, "SELECT id_transaksi_pendapatan, id_customer, sisa_pembayaran FROM transaksi_pendapatan");
-                                while ($transaksi = mysqli_fetch_assoc($transaksiPendapatan)) {
-                                    echo "<option value='{$transaksi['id_transaksi_pendapatan']}' data-id_customer='{$transaksi['id_customer']}' data-sisa_pembayaran='{$transaksi['sisa_pembayaran']}'>
-                                {$transaksi['id_transaksi_pendapatan']}
-                              </option>";
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="tanggal_pembayaran" class="form-label">Tanggal Pembayaran</label>
-                            <input type="date" class="form-control" id="tanggal_pembayaran" name="tanggal_pembayaran" required>
-                        </div>
+                <h1 class="mb-4">Form Pelunasan Piutang</h1>
 
-                        <div class="mb-3">
-                            <label for="id_customer" class="form-label">ID Customer</label>
-                            <input type="text" class="form-control" id="id_customer" name="id_customer" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="saldo_piutang" class="form-label">Saldo Piutang</label>
-                            <input type="number" step="0.01" class="form-control" id="saldo_piutang" name="saldo_piutang" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="total_pembayaran_piutang" class="form-label">Total Pembayaran Piutang</label>
-                            <input type="number" step="0.01" class="form-control" id="total_pembayaran_piutang" name="total_pembayaran_piutang" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Simpan Transaksi</button>
-                    </form>
-                </div>
-                <script>
-                    function getCustomerDetails() {
-                        const selectElement = document.getElementById("id_transaksi_pendapatan");
-                        const selectedOption = selectElement.options[selectElement.selectedIndex];
+                <!-- Form -->
+                <form method="POST" action="">                        
+                    <div class="mb-3">
+                        <label for="id_transaksi_pendapatan" class="form-label">Pilih Transaksi Pendapatan</label>
+                        <select class="form-select" id="id_transaksi_pendapatan" name="id_transaksi_pendapatan" onchange="getCustomerDetails()" required>
+                            <option value="">Pilih ID Transaksi Pendapatan</option>
+                            <?php                                
+                            $transaksiPendapatan = mysqli_query($koneksi, "SELECT id_transaksi_pendapatan, id_customer, sisa_pembayaran FROM transaksi_pendapatan");
+                            while ($transaksi = mysqli_fetch_assoc($transaksiPendapatan)) {
+                                echo "<option value='{$transaksi['id_transaksi_pendapatan']}' 
+                                            data-id_customer='{$transaksi['id_customer']}' 
+                                            data-sisa_pembayaran='{$transaksi['sisa_pembayaran']}'>
+                                        {$transaksi['id_transaksi_pendapatan']}
+                                    </option>";
+                            }
+                            ?>  
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tanggal_pembayaran" class="form-label">Tanggal Pembayaran</label>
+                        <input type="date" class="form-control" id="tanggal_pembayaran" name="tanggal_pembayaran" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_customer" class="form-label">ID Customer</label>
+                        <input type="text" class="form-control" id="id_customer" name="id_customer" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="saldo_piutang" class="form-label">Saldo Piutang</label>
+                        <input type="number" step="0.01" class="form-control" id="saldo_piutang" name="saldo_piutang" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="total_pembayaran_piutang" class="form-label">Total Pembayaran Piutang</label>
+                        <input type="number" step="0.01" class="form-control" id="total_pembayaran_piutang" name="total_pembayaran_piutang" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Simpan Transaksi</button>
+                </form>
+            </div>
 
-                        const idCustomer = selectedOption.getAttribute("data-id_customer");
-                        const sisaPembayaran = selectedOption.getAttribute("data-sisa_pembayaran");
+            <script>
+                function getCustomerDetails() {
+                    const selectElement = document.getElementById("id_transaksi_pendapatan");
+                    const selectedOption = selectElement.options[selectElement.selectedIndex];
 
-                        document.getElementById("id_customer").value = idCustomer || "";
-                        document.getElementById("saldo_piutang").value = sisaPembayaran || 0;
-                    }
-                </script>
+                    const idCustomer = selectedOption.getAttribute("data-id_customer");
+                    const sisaPembayaran = selectedOption.getAttribute("data-sisa_pembayaran");    
+
+                    document.getElementById("id_customer").value = idCustomer || "";
+                    document.getElementById("saldo_piutang").value = sisaPembayaran || 0;
+                }
+            </script>
             </main>
         </div>
     </div>

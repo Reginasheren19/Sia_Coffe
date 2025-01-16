@@ -177,7 +177,6 @@ error_reporting(0)
                                             <th>Nama</th>
                                             <th>Alamat</th>
                                             <th>No Telepon</th>
-                                            <th>Saldo Piutang</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -191,7 +190,6 @@ error_reporting(0)
                                                 <td>{$row['nama_customer']}</td>
                                                 <td>{$row['alamat_customer']}</td>
                                                 <td>{$row['telp_customer']}</td>
-                                                <td>{$row['saldo_piutang']}</td>
                                                 <td>{$row['Action']}
                                                     <button class='btn btn-primary btn-sm btn-update'>Update</button>
                                                     <a href='delete_customer.php?customer={$row['id_customer']}' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure you want to delete this data customer?')\">Delete</a>
@@ -227,11 +225,7 @@ error_reporting(0)
                             </div>
                             <div class="mb-3">
                                 <label for="no_telp" class="form-label">No Telepon</label>
-                                <input type="text" class="form-control" id="no_telp" name="no_telp"  required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="saldo_piutang" class="form-label">Saldo Piutang</label>
-                                <input type="text" class="form-control" id="saldo_piutang" name="saldo_piutang"  required>
+                                <input type="number" class="form-control" id="no_telp" name="no_telp"  required>
                             </div>
                         </div>
                         <div class="modal-footer">
@@ -268,10 +262,6 @@ error_reporting(0)
                                 <label for="editTelpCustomer" class="form-label">No Telepon</label>
                                 <input type="text" class="form-control" id="editTelpCustomer" name="telp_customer" required>
                             </div>
-                            <div class="mb-3">
-                                <label for="editSaldoPiutang" class="form-label">Saldo</label>
-                                <input type="text" class="form-control" id="editSaldoPiutang" name="saldo_piutang" required>
-                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -296,14 +286,12 @@ error_reporting(0)
                     const nama_customer = row.cells[1].innerText;
                     const alamat_customer = row.cells[2].innerText;
                     const telp_customer = row.cells[3].innerText;
-                    const saldo_piutang = row.cells[4].innerText;
 
                     // Isi modal dengan data yang diambil
                     document.getElementById('editIdCustomer').value = id_customer;
                     document.getElementById('editNamaCustomer').value = nama_customer;
                     document.getElementById('editAlamatCustomer').value = alamat_customer;
                     document.getElementById('editTelpCustomer').value = telp_customer;
-                    document.getElementById('editSaldoPiutang').value = saldo_piutang;
 
                     // Tampilkan modal
                     var editModal = new bootstrap.Modal(document.getElementById('editCustomerModal'));

@@ -9,14 +9,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nama_customer = mysqli_real_escape_string($koneksi, $_POST['nama_customer']);
     $alamat_customer = mysqli_real_escape_string($koneksi, $_POST['alamat_customer']);
     $telp_customer = mysqli_real_escape_string($koneksi, $_POST['telp_customer']);
-    $saldo_piutang = mysqli_real_escape_string($koneksi, $_POST['saldo_piutang']);
 
     // Query untuk memperbarui data ke database
     $sql = "UPDATE master_customer SET 
             nama_customer = '$nama_customer',
             alamat_customer = '$alamat_customer', 
-            telp_customer = '$telp_customer',
-            saldo_piutang = '$saldo_piutang'
+            telp_customer = '$telp_customer'
             WHERE id_customer = '$id_customer'";
 
     // Eksekusi query
@@ -65,10 +63,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="mb-3">
                         <label for="editTelpCustomer" class="form-label">No Telepon</label>
                         <input type="text" class="form-control" id="editTelpCustomer" name="telp_customer" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editSaldoPiutang" class="form-label">Saldo</label>
-                        <input type="text" class="form-control" id="editSaldoPiutang" name="saldo_piutang" required>
                     </div>
                 </div>
                 <div class="modal-footer">

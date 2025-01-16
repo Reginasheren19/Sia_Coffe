@@ -13,11 +13,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nama_customer = mysqli_real_escape_string($koneksi, $_POST['nama_customer']);
     $alamat_customer = mysqli_real_escape_string($koneksi, $_POST['alamat_customer']);
     $telp_customer = mysqli_real_escape_string($koneksi, $_POST['telp_customer']);
-    $saldo_piutang = mysqli_real_escape_string($koneksi, $_POST['saldo_piutang']);
 
     // Query untuk menyimpan data ke database
-    $sql = "INSERT INTO master_customer (id_customer, nama_customer, alamat_customer, telp_customer, saldo_piutang) 
-            VALUES ('$id_customer', '$nama_customer', '$alamat_customer', '$telp_customer', '$saldo_piutang')";
+    $sql = "INSERT INTO master_customer (id_customer, nama_customer, alamat_customer, telp_customer) 
+            VALUES ('$id_customer', '$nama_customer', '$alamat_customer', '$telp_customer')";
 
     // Eksekusi query
     if (mysqli_query($koneksi, $sql)) {
@@ -53,7 +52,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <th>Nama</th>
                         <th>Alamat</th>
                         <th>No Telepon</th>
-                        <th>Saldo Piutang</th>
                 </tr>
             </thead>
             <tbody>
@@ -65,7 +63,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <td>{$row['nama_customer']}</td>
                             <td>{$row['alamat_customer']}</td>
                             <td>{$row['telp_customer']}</td>
-                            <td>{$row['saldo_piutang']}</td>
                           </tr>";
                 }
                 ?>
@@ -95,10 +92,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <div class="mb-3">
                         <label for="no_telp" class="form-label">No Telepon</label>
                         <input type="number" class="form-control" id="no_telp" name="no_telp"  required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="saldo_piutang" class="form-label">Saldo Piutang</label>
-                        <input type="number" class="form-control" id="saldo_piutang" name="saldo_piutang"  required>
                     </div>
                 </div>
                 <div class="modal-footer">
