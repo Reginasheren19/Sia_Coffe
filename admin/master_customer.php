@@ -225,7 +225,7 @@ error_reporting(0)
                             </div>
                             <div class="mb-3">
                                 <label for="no_telp" class="form-label">No Telepon</label>
-                                <input type="number" class="form-control" id="no_telp" name="no_telp"  required>
+                                <input type="text" class="form-control" id="no_telp" name="no_telp"  required>
                             </div>
                         </div>
                         <div class="modal-footer">

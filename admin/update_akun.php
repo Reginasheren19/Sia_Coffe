@@ -113,7 +113,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                         <option value="Modal">Modal</option>
                                         <option value="Pendapatan">Pendapatan</option>
                                         <option value="Beban">Beban</option>
-                                        <option value="Piutang">Piutang</option>
                                     </select>
                                 </div>
                                 <div class="mb-3">
