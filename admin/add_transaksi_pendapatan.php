@@ -39,18 +39,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $sisa_pembayaran, $jumlah_dibayar, $id_akun
         );
 
-        // Query untuk mendapatkan nama akun
-        $query_akun = "SELECT nama_akun FROM master_akun WHERE id_akun = '$id_akun'";
-        $result_akun = mysqli_query($koneksi, $query_akun);
-        $nama_akun = '';
-        
-        if ($result_akun && mysqli_num_rows($result_akun) > 0) {
-            $row_akun = mysqli_fetch_assoc($result_akun);
-            $nama_akun = $row_akun['nama_akun'];
-        }
-
-
         if ($stmt->execute()) {
+            // Masukkan ke jurnal umum
+            if ($jumlah_dibayar > 0) {
+                // Debit Kas
+                $query_jurnal_kas = "
+                    INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
+                    VALUES ('$tgl_transaksi', 'Kas', '2', '$jumlah_dibayar', 0)
+                ";
+                mysqli_query($koneksi, $query_jurnal_kas);
+            }
+
+            if ($sisa_pembayaran > 0) {
+                // Debit Piutang
+                $query_jurnal_piutang = "
+                    INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
+                    VALUES ('$tgl_transaksi', 'Piutang Pelanggan', '7', '$sisa_pembayaran', 0)
+                ";
+                mysqli_query($koneksi, $query_jurnal_piutang);
+            }
+
+            // Kredit Pendapatan
+            $query_jurnal_pendapatan = "
+                INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
+                VALUES ('$tgl_transaksi', 'Pendapatan', '8', 0, '$subtotal')
+            ";
+            mysqli_query($koneksi, $query_jurnal_pendapatan);
+
             header("Location: transaksi_pendapatan.php?success=1");
             exit();
         } else {

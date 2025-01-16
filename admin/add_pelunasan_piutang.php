@@ -77,18 +77,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $nama_akun = $row_akun['nama_akun'];
                     }
 
-                    
-                    // Update sisa pembayaran di tabel transaksi_pendapatan
-                    $new_sisa = $saldo_piutang - $total_pembayaran_piutang;
-                    $update_stmt = $koneksi->prepare("
-                        UPDATE transaksi_pendapatan 
-                        SET sisa_pembayaran = ? 
-                        WHERE id_transaksi_pendapatan = ?
-                    ");
-                    
-                    $update_stmt->bind_param("di", $new_sisa, $id_transaksi_pendapatan);
-                    $update_stmt->execute();
-                    $update_stmt->close();
+                    // Insert jurnal umum untuk pelunasan piutang
+                        $query_jurnal_debit = "
+                        INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
+                        VALUES ('$tanggal_pembayaran', 'Kas', '2', '$total_pembayaran_piutang', 0)
+                        ";
+
+                        $query_jurnal_kredit = "
+                        INSERT INTO jurnal_umum (tanggal, keterangan, id_akun, debit, kredit)
+                        VALUES ('$tanggal_pembayaran', 'Piutang Pelanggan', '7', 0, '$total_pembayaran_piutang')
+                        ";
+
+                    // Eksekusi query jurnal umum
+                    if (mysqli_query($koneksi, $query_jurnal_debit) && mysqli_query($koneksi, $query_jurnal_kredit)) {
+                        // Update sisa pembayaran di tabel transaksi_pendapatan
+                        $new_sisa = $saldo_piutang - $total_pembayaran_piutang;
+                        $update_stmt = $koneksi->prepare("
+                            UPDATE transaksi_pendapatan 
+                            SET sisa_pembayaran = ? 
+                            WHERE id_transaksi_pendapatan = ?
+                        ");
+                        
+                        $update_stmt->bind_param("di", $new_sisa, $id_transaksi_pendapatan);
+                        $update_stmt->execute();
+                        $update_stmt->close();
+                        
+                        $successMessage = "Pelunasan berhasil dan jurnal umum tercatat!";
+                    } else {
+                        throw new Exception("Error mencatat jurnal umum: " . mysqli_error($koneksi));
+                    }
+
                 } else {
                     throw new Exception("Kesalahan menyimpan data: " . $stmt->error);
                 }
