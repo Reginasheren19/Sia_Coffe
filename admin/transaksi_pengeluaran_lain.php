@@ -1,11 +1,15 @@
 <?php
 include("../config/koneksi_mysql.php");
 
-// Mengatur error reporting
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+$sql = mysqli_query($koneksi,"SELECT * FROM transaksi_pengeluaran_lain");
 
 ?>
+
+<?php
+error_reporting(0)
+?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +27,7 @@ ini_set('display_errors', 1);
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
             <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="dashboard_admin.php">SIA Coffee Shop</a>
+            <a class="navbar-brand ps-3">SIA Coffee Shop</a>
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
@@ -143,7 +147,7 @@ ini_set('display_errors', 1);
                     </div>
                     <div class="sb-sidenav-footer">
                         <div class="small">Logged in as:</div>
-                        Admin
+                        Start Bootstrap
                     </div>
                 </nav>
             </div>
@@ -160,12 +164,12 @@ ini_set('display_errors', 1);
                             Tabel Transaksi Pengeluaran Lain
                         </div>
                         <div class="card-body">
-                        <!-- Tombol Tambah Data -->
-                        <div class="mb-3 d-flex justify-content-end">
-                            <a href="add_transaksi_pendapatan_lain.php" class="btn btn-success">
-                                Add Pengeluaran Lain
-                            </a>
-                        </div>
+<!-- Tombol Tambah Data -->
+<div class="mb-3 d-flex justify-content-end">
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addTransaksiPengeluaranLainModal">
+        Add Pengeluaran Lain
+    </button>
+</div>
 
 <!-- Table for Data Transactions -->
 <div class="table-responsive">
@@ -179,7 +183,7 @@ ini_set('display_errors', 1);
                 <th>Total</th>
             </tr>
         </thead>
-        <tbody id="data_transaksi_pendapatan_lain">
+        <tbody id="data_pengeluaran">
             <?php
             // Query to fetch transaction data and join master_akun
             $result = mysqli_query($koneksi, "
@@ -203,9 +207,80 @@ ini_set('display_errors', 1);
                 </tr>";
             }
             ?>
-            
+            <?php
+                // Query untuk mendapatkan ID transaksi terakhir
+                $result_last_id = mysqli_query($koneksi, "SELECT MAX(id_pengeluaran_lain) AS last_id FROM transaksi_pengeluaran_lain");
+                $row_last_id = mysqli_fetch_assoc($result_last_id);
+                $lastId = isset($row_last_id['last_id']) ? $row_last_id['last_id'] + 1 : 1; // Jika kosong, mulai dari 1
+
+                // Format no_nota
+                $nota_pengeluaran_lain = 'TRPL-' . date('Ymd') . '-' . $lastId;
+            ?>
 
         </tbody>
     </table>
 </div>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaksi Pengeluaran</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<!-- Modal for Adding Expense Transaction -->
+<div class="modal fade" id="addTransaksiPengeluaranLainModal" tabindex="-1" aria-labelledby="addTransaksiPengeluaranLainModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="add_transaksi_pengeluaran_lain.php">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTransaksiPengeluaranLainModalLabel">Tambah Pengeluaran Lain</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="nota_pengeluaran_lain" class="form-label">Nota Pengeluaran</label>
+                        <input type="text" class="form-control" id="nota_pengeluaran_lain"  name="nota_pengeluaran_lain" value="<?php echo $nota_pengeluaran_lain; ?>" readonly>
+                    </div>
+                    <!-- Dropdown for Account Name -->
+                    <div class="mb-3">
+                        <label for="id_akun" class="form-label">Nama Akun</label>
+                        <select class="form-select" id="id_akun" name="id_akun" required>
+                            <option value="">Pilih Akun</option>
+                            <?php
+                            $accounts = mysqli_query($koneksi, "SELECT id_akun, nama_akun FROM master_akun");
+                            while ($account = mysqli_fetch_assoc($accounts)) {
+                                echo "<option value='{$account['id_akun']}'>{$account['nama_akun']}</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tanggal_pengeluaran_lain" class="form-label">Tanggal Pengeluaran</label>
+                        <input type="date" class="form-control" id="tanggal_pengeluaran_lain" name="tanggal_pengeluaran_lain" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="total" class="form-label">Total</label>
+                        <input type="number" class="form-control" id="total" name="total" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="js/scripts.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+<script src="js/datatables-simple-demo.js"></script>
+<script>
 
