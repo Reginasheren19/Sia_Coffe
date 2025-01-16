@@ -65,7 +65,7 @@ ini_set('display_errors', 1);
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Pendapatan
                             </a>
-                            <a class="nav-link" href="pelunasan_piutag.php">
+                            <a class="nav-link" href="pelunasan_piutang.php">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                                 Pelunasan Piutang
                             </a>

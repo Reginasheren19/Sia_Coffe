@@ -285,7 +285,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php endif; ?>
 
                 <h1 class="mb-4">Form Pelunasan Piutang</h1>
-
                 <!-- Form -->
                 <form method="POST" action="">                        
                     <div class="mb-3">
