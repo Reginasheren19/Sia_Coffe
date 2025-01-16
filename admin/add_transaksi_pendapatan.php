@@ -16,10 +16,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $jumlah_dibayar = $_POST['jumlah_dibayar'] ?? null;
     $sisa_pembayaran = $_POST['sisa_pembayaran'] ?? null;
     $status_pembayaran = $_POST['status_pembayaran'] ?? null;
+    $id_akun = $_POST['id_akun'] ?? null;
 
     // Validasi data wajib dan tipe data
     if (
-        $id_customer && $tgl_transaksi && $id_metode && $id_produk &&
+        $id_customer && $tgl_transaksi && $id_metode && $id_produk && $id_akun &&
         is_numeric($jumlah_produk) && is_numeric($harga_satuan) &&
         is_numeric($subtotal) && is_numeric($jumlah_dibayar) &&
         is_numeric($sisa_pembayaran) && $status_pembayaran
@@ -27,16 +28,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Query dengan prepared statement
         $query = "INSERT INTO transaksi_pendapatan (
             id_customer, tgl_transaksi, id_metode, id_produk, jumlah_produk, 
-            harga_satuan, subtotal, status_pembayaran, sisa_pembayaran, jumlah_dibayar
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            harga_satuan, subtotal, status_pembayaran, sisa_pembayaran, jumlah_dibayar, id_akun
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = $koneksi->prepare($query);
         $stmt->bind_param(
-            'issiiddsds',
+            'issiiddsdsi',
             $id_customer, $tgl_transaksi, $id_metode, $id_produk,
             $jumlah_produk, $harga_satuan, $subtotal, $status_pembayaran,
-            $sisa_pembayaran, $jumlah_dibayar
+            $sisa_pembayaran, $jumlah_dibayar, $id_akun
         );
+
+        // Query untuk mendapatkan nama akun
+        $query_akun = "SELECT nama_akun FROM master_akun WHERE id_akun = '$id_akun'";
+        $result_akun = mysqli_query($koneksi, $query_akun);
+        $nama_akun = '';
+        
+        if ($result_akun && mysqli_num_rows($result_akun) > 0) {
+            $row_akun = mysqli_fetch_assoc($result_akun);
+            $nama_akun = $row_akun['nama_akun'];
+        }
+
 
         if ($stmt->execute()) {
             header("Location: transaksi_pendapatan.php?success=1");
@@ -148,9 +160,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Pendapatan
                         </a>
-                        <a class="nav-link" href="transaksi_pembayaran.php">
+                        <a class="nav-link" href="pelunasan_piutang.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Pembayaran
+                            Pelunasan Piutang
+                        </a>
+                        <a class="nav-link" href="transaksi_pendapatan_lain.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Pendapatan Lain
                         </a>
                         <div class="sb-sidenav-menu-heading">Expenditure Cycle</div>
                         <a class="nav-link" href="charts.html">
@@ -305,6 +321,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <option value="Belum Lunas">Belum Lunas</option>
                         </select>
                     </div>
+                    <div class="mb-3">
+                            <label for="id_akun" class="form-label">Nama Akun</label>
+                            <select class="form-select" id="id_akun" name="id_akun" required>
+                                <option value="">Pilih Akun</option>
+                                <?php
+                                $accounts = mysqli_query($koneksi, "SELECT id_akun, nama_akun FROM master_akun");
+                                while ($account = mysqli_fetch_assoc($accounts)) {
+                                    echo "<option value='{$account['id_akun']}'>{$account['nama_akun']}</option>";
+                                }
+                                ?>
+                        </select>
+                    </div>
                     <button type="submit" class="btn btn-primary">Simpan Transaksi</button>
                 </form>
             </div>
@@ -323,6 +351,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     var jumlahDibayar = document.getElementById('jumlah_dibayar').value;
                     var sisaPembayaran = subtotal - jumlahDibayar;
                     document.getElementById('sisa_pembayaran').value = sisaPembayaran;
+
+                    
                 }
 
                 // Event listener untuk menghitung subtotal dan sisa pembayaran ketika jumlah produk atau jumlah dibayar diubah

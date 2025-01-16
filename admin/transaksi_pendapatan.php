@@ -184,8 +184,9 @@ ini_set('display_errors', 1);
                                             <th>Harga Satuan</th>
                                             <th>Subtotal</th>
                                             <th>Status Pembayaran</th>
-                                            <th>Jumlah Di Bayar</th>
                                             <th>Sisa Pembayaran</th>
+                                            <th>Jumlah Di Bayar</th>
+                                            <th>Nama Akun</th>
                                         </tr>
                                     </thead>
                                     <tbody id="data_transaksi_pendapatan">
@@ -211,7 +212,8 @@ ini_set('display_errors', 1);
                                             mm.nama_metode,
                                             tp.status_pembayaran,
                                             IF(tp.jumlah_dibayar < (tp.jumlah_produk * tp.harga_satuan), (tp.jumlah_produk * tp.harga_satuan) - tp.jumlah_dibayar, 0) AS sisa_pembayaran,
-                                            tp.jumlah_dibayar
+                                            tp.jumlah_dibayar,
+                                            ma.nama_akun
                                         FROM 
                                             transaksi_pendapatan tp 
                                         LEFT JOIN 
@@ -220,6 +222,7 @@ ini_set('display_errors', 1);
                                             master_produk mp ON tp.id_produk = mp.id_produk
                                         LEFT JOIN 
                                             master_metode_pembayaran mm ON tp.id_metode = mm.id_metode
+                                        JOIN master_akun ma ON tp.id_akun = ma.id_akun
                                         ";
                                                                                 
                                 
@@ -247,6 +250,7 @@ ini_set('display_errors', 1);
                                             <td>{$row['status_pembayaran']}</td>
                                             <td>{$row['sisa_pembayaran']}</td>
                                             <td>{$row['jumlah_dibayar']}</td>
+                                            <td>{$row['nama_akun']}</td>
                                         </tr>";
                                             }
                                         } else {

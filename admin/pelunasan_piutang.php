@@ -184,6 +184,7 @@ ini_set('display_errors', 1);
                     <th>Nama Customer</th>
                     <th>Saldo Piutang</th>
                     <th>Total Pembayaran Piutang</th>
+                    <th>Nama Akun</th>
                 </tr>
             </thead>
             <tbody id="data_piutang">
@@ -196,16 +197,20 @@ ini_set('display_errors', 1);
                         piutang.tanggal_pembayaran, 
                         mc.nama_customer, 
                         piutang.saldo_piutang, 
-                        piutang.total_pembayaran_piutang
+                        piutang.total_pembayaran_piutang,
+                        ma.nama_akun
                     FROM 
                         transaksi_piutang piutang
                     JOIN 
                         master_customer mc ON piutang.id_customer = mc.id_customer
                     JOIN 
-                        transaksi_pendapatan pendapatan ON piutang.id_transaksi_pendapatan = pendapatan.id_transaksi_pendapatan;
+                        transaksi_pendapatan pendapatan ON piutang.id_transaksi_pendapatan = pendapatan.id_transaksi_pendapatan
+                    JOIN 
+                        master_akun ma ON piutang.id_akun = ma.id_akun
                     ";
                 // Menampilkan data pelunasan piutang
                 $result = mysqli_query($koneksi, $query);
+                if ($result) {
                 while ($row = mysqli_fetch_assoc($result)) {
                     echo "<tr>
                         <td>{$row['id_piutang']}</td>
@@ -214,8 +219,15 @@ ini_set('display_errors', 1);
                         <td>{$row['nama_customer']}</td>
                         <td>" . number_format($row['saldo_piutang'], 2) . "</td>
                         <td>" . number_format($row['total_pembayaran_piutang'], 2) . "</td>
+                        <td>{$row['nama_akun']}</td>
                     </tr>";
                 } 
+                } else {
+                    echo "<tr><td colspan='8'>Data tidak ditemukan atau query gagal dijalankan.</td></tr>";
+                }
+                // Tutup koneksi
+                mysqli_close($koneksi);
+
                 ?>
                 
 

@@ -21,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_customer = $_POST['id_customer'] ?? null;
     $saldo_piutang = $_POST['saldo_piutang'] ?? null;
     $total_pembayaran_piutang = $_POST['total_pembayaran_piutang'] ?? null;
+    $id_akun = $_POST['id_akun'] ?? null;
 
     // Validasi input
     if (empty($id_transaksi_pendapatan) || empty($tanggal_pembayaran) || empty($id_customer) || 
@@ -45,8 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Siapkan query dengan prepared statement
                 $stmt = $koneksi->prepare("
                     INSERT INTO transaksi_piutang 
-                    (id_transaksi_pendapatan, tanggal_pembayaran, id_customer, saldo_piutang, total_pembayaran_piutang)
-                    VALUES (?, ?, ?, ?, ?)
+                    (id_transaksi_pendapatan, tanggal_pembayaran, id_customer, saldo_piutang, total_pembayaran_piutang, id_akun)
+                    VALUES (?, ?, ?, ?, ?, ?)
                 ");
 
                 if (!$stmt) {
@@ -54,16 +55,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
 
                 // Bind parameter
-                $stmt->bind_param("isiss", 
+                $stmt->bind_param("isissi", 
                     $id_transaksi_pendapatan,
                     $tanggal_pembayaran,
                     $id_customer,
                     $saldo_piutang,
-                    $total_pembayaran_piutang
+                    $total_pembayaran_piutang,
+                    $id_akun
                 );
 
                 // Eksekusi query
                 if ($stmt->execute()) {
+
+                    // Query untuk mendapatkan nama akun
+                    $query_akun = "SELECT nama_akun FROM master_akun WHERE id_akun = '$id_akun'";
+                    $result_akun = mysqli_query($koneksi, $query_akun);
+                    $nama_akun = '';
+        
+                    if ($result_akun && mysqli_num_rows($result_akun) > 0) {
+                    $row_akun = mysqli_fetch_assoc($result_akun);
+                    $nama_akun = $row_akun['nama_akun'];
+                    }
 
                     
                     // Update sisa pembayaran di tabel transaksi_pendapatan
@@ -189,9 +201,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                             Pendapatan
                         </a>
-                        <a class="nav-link" href="transaksi_pembayaran.php">
+                        <a class="nav-link" href="pelunasan_piutang.php">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Pembayaran
+                            Pelunasan Piutang
+                        </a>
+                        <a class="nav-link" href="transaksi_pendapatan_lain.php">
+                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                            Pendapatan Lain
                         </a>
                         <div class="sb-sidenav-menu-heading">Expenditure Cycle</div>
                         <a class="nav-link" href="charts.html">
@@ -318,6 +334,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="mb-3">
                         <label for="total_pembayaran_piutang" class="form-label">Total Pembayaran Piutang</label>
                         <input type="number" step="0.01" class="form-control" id="total_pembayaran_piutang" name="total_pembayaran_piutang" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_akun" class="form-label">Nama Akun</label>
+                        <select class="form-select" id="id_akun" name="id_akun" required>
+                            <option value="">Pilih Akun</option>
+                            <?php
+                            $accounts = mysqli_query($koneksi, "SELECT id_akun, nama_akun FROM master_akun");
+                            while ($account = mysqli_fetch_assoc($accounts)) {
+                                echo "<option value='{$account['id_akun']}'>{$account['nama_akun']}</option>";
+                            }
+                            ?>
+                        </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Simpan Transaksi</button>
                 </form>

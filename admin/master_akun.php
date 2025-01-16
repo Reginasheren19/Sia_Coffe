@@ -278,6 +278,7 @@ ini_set('display_errors', 1);
                                         <option value="Modal">Modal</option>
                                         <option value="Pendapatan">Pendapatan</option>
                                         <option value="Beban">Beban</option>
+                                        <option value="Piutang">Piutang</option>
                                     </select>
                                 </div>
                                 <div class="mb-3">
