@@ -29,7 +29,7 @@ $query = "SELECT
                     WHEN ma2.nama_akun LIKE 'Beban Gaji' THEN 'Membayar Beban Gaji'
                     WHEN ma2.nama_akun LIKE 'Beban Listrik' THEN 'Membayar Beban Listrik'
                     WHEN ma2.nama_akun LIKE 'Beban Air' THEN 'Membayar Beban Air'
-                    WHEN ma2.nama_akun = 'Hutang' THEN 'Membayar Hutang'
+                    WHEN ma2.nama_akun = 'Hutang' THEN 'Pembayaran Hutang'
                     WHEN ma2.nama_akun = 'Perlengkapan' THEN 'Pembelian Perlengkapan'
                     WHEN ma2.nama_akun = 'Peralatan' THEN 'Pembelian Peralatan'
                     ELSE 'Transaksi Tidak Dikenali'
@@ -37,7 +37,6 @@ $query = "SELECT
             FROM jurnal_umum ju2
             JOIN master_akun ma2 ON ju2.id_akun = ma2.id_akun
             WHERE ju2.tanggal = ju.tanggal 
-                AND ju2.debit = ju.kredit -- Menyocokkan debit dan kredit pada transaksi yang sama
                 AND ju2.debit > 0
               LIMIT 1)
 
@@ -46,14 +45,14 @@ $query = "SELECT
         WHEN ma.nama_akun IN ('Peralatan', 'Perlengkapan') AND ju.kredit > 0 
             THEN CONCAT('Pembelian ', IFNULL(ma.nama_akun, ''))
         WHEN ma.nama_akun = 'Hutang' AND ju.kredit = 0 
-            THEN 'Membayar Hutang'
+            THEN 'Pembayaran Hutang'
         WHEN ma.nama_akun = 'Pendapatan' AND ju.debit = 0 
             THEN 'Menerima Pendapatan'
         WHEN ma.nama_akun IN ('Piutang', 'Pendapatan') AND ju.debit = 0 
             THEN 'Menerima Pendapatan Piutang'
         WHEN ma.nama_akun = 'Pendapatan Lain-lain' AND ju.kredit = 0 
             THEN 'Menerima Pendapatan Lain-lain'
-        ELSE 'Pembelian Kredit'
+    ELSE CONCAT('Pembayaran ', IFNULL(ma.nama_akun, ''))
     END AS keterangan
 FROM 
     jurnal_umum ju
