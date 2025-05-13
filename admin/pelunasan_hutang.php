@@ -193,7 +193,8 @@ ini_set('display_errors', 1);
                             th.total_pelunasan
                     FROM transaksi_hutang th
                     JOIN transaksi_pengeluaran tp ON th.id_transaksi = tp.id_transaksi
-                    JOIN master_supplier ms ON th.id_supplier = ms.id_supplier";
+                    JOIN master_supplier ms ON th.id_supplier = ms.id_supplier
+                    ORDER BY th.id_hutang ASC";
 
 
                 // Menampilkan data hutang
